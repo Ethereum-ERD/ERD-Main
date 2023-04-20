@@ -104,6 +104,7 @@
 }
 
 .max {
+    margin-right: 20px;
     font-size: 12px;
     cursor: pointer;
     color: var(--main-color);
@@ -168,6 +169,10 @@
     &:last-child {
         margin-right: 0;
     }
+
+    &.active {
+        background-color: var(--main-color);
+    }
 }
 
 .dot {
@@ -208,7 +213,6 @@
     background-color: var(--main-color);
 
     &.disable {
-        width: 100%;
         color: #a6a6a6;
         background: #C5C5C5;
         cursor: not-allowed;

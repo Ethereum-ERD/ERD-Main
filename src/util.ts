@@ -1,6 +1,10 @@
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
+export function throwFloat(num: number) {
+    return ~~(num);
+}
+
 export function toBN(num: number) {
     return ethers.BigNumber.from(fixNumber(num));
 }

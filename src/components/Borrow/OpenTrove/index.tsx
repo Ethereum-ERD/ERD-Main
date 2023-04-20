@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
-import { addCommas, formatUnits } from 'src/util';
+import { addCommas, formatUnits, throwFloat } from 'src/util';
 import { BorrowItem } from 'src/types';
 import { useStore } from 'src/hooks';
 
@@ -17,6 +17,7 @@ const Steps = [25, 50, 75, 100];
 
 export default observer(function OpenTrove() {
     const { store } = useStore();
+    const [fastStep, setFastStep] = useState(0);
     const [borrowNum, setBorrowNum] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -29,6 +30,7 @@ export default observer(function OpenTrove() {
     }, [userCollateralInfo]);
 
     const onChange = (key: string, v: any) => {
+        setFastStep(0);
         const item = borrowInfo.find(i => i.token === key);
 
         let val: number;
@@ -58,6 +60,7 @@ export default observer(function OpenTrove() {
     };
 
     const onBorrowNumChange = (v: any) => {
+        setFastStep(0);
         if (v == null) {
             return setBorrowNum(0);
         }
@@ -78,13 +81,15 @@ export default observer(function OpenTrove() {
     };
 
     const setMax = (key: string, v: number) => {
+        setFastStep(0);
         const item = userCollateralInfo.find(i => i.tokenAddr === key);
 
         onChange(key, formatUnits(v, item!.tokenDecimals));
     };
 
     const onFastChoose = (v: number) => {
-        setBorrowNum(v / 100 * assetValue);
+        setFastStep(v);
+        setBorrowNum(throwFloat(v / 100 * assetValue / systemMCR));
     };
 
     useEffect(() => {
@@ -219,13 +224,13 @@ export default observer(function OpenTrove() {
                 </div>
                 <div className={s.fastChooseWrap}>
                     {Steps.map(step => {
-                        return <div key={step} className={s.step} onClick={() => onFastChoose(step)} />
+                        return <div key={step} className={cx(s.step, { [s.active]: step <= fastStep })} onClick={() => onFastChoose(step)} />
                     })}
                 </div>
                 {!!assetValue && (
                     <div className={s.tips}>
                         <p>{addCommas(formatUnits(minBorrowAmount, stableCoinDecimals))} {stableCoinName} Min</p>
-                        <p>{addCommas(assetValue)} {stableCoinName} Max</p>
+                        <p>{addCommas(throwFloat(assetValue / systemMCR))} {stableCoinName} Max</p>
                     </div>
                 )}
             </div>
@@ -242,7 +247,7 @@ export default observer(function OpenTrove() {
                         <div className={cx(s.btn, s.cancel)} onClick={toggleStartBorrow}>Cancel</div>
                         <div
                             className={cx(s.btn, {
-                                [s.disable]: borrowNum < +formatUnits(minBorrowAmount, stableCoinDecimals),
+                                [s.disable]: borrowNum < +formatUnits(minBorrowAmount, stableCoinDecimals) || collateralRatio < systemMCR,
                                 [s.loading]: isProcessing
                             })}
                             onClick={handleConfirm}
