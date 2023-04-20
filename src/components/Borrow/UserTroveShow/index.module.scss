@@ -1,0 +1,146 @@
+.wrap {
+    width: 530px;
+    padding: 30px;
+    border-radius: 32px;
+    background-color: #fff;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    color: #333;
+}
+
+.info {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    width: 50%;
+    margin-top: 30px;
+
+    & > p:first-child {
+        font-size: 14px;
+        line-height: 133%;
+        color: #999;
+    }
+
+    & > div:first-child {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        line-height: 133%;
+        color: #999;
+
+        svg {
+            margin-right: 10px;
+        }
+    }
+
+    & > p:last-child {
+        margin-top: 10px;
+        font-size: 20px;
+        line-height: 30px;
+        color: #333;
+
+        span {
+            margin-left: 5px;
+            display: inline-block;
+            font-size: 14px;
+            color: #999;
+        }
+    }
+
+    & > p span.cr {
+        font-size: 20px;
+
+        &.emergency {
+            color: #FF4646
+        }
+        &.waring {
+            color: #FF8A00;
+        }
+        &.health {
+            color: #47BE77;
+        }
+    }
+}
+
+.collateralItem {
+    width: 50%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.collateralItemHead {
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 133%;
+        color: #999;
+    }
+}
+
+.collateralItemBody {
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 30px;
+    color: #333;
+
+    span {
+        margin-left: 5px;
+        font-size: 14px;
+        line-height: 21px;
+        display: inline-block;
+        color: #999;
+    }
+}
+
+.btnArea {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 294px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    font-size: 16px;
+    border-radius: 63px;
+    color: #fff;
+    background-color: var(--main-color);
+
+    &.disable {
+        width: 100%;
+        color: #a6a6a6;
+        background: #C5C5C5;
+        cursor: not-allowed;
+    }
+
+    &.repay {
+        width: 160px;
+        color: #999;
+        border: 1px solid #999;
+        background-color: #fff;
+    }
+}

@@ -1,0 +1,52 @@
+.wrap {
+    width: 100vw;
+    height: 100px;
+    padding: 0 360px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(35, 97, 255, 0.1);
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leftWrap {
+    display: flex;
+    align-items: center;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+}
+
+.tab {
+    margin-right: 40px;
+    color: #999;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.tab:last-child {
+    margin-right: 0;
+}
+
+.active {
+    color: var(--main-color);
+}
+
+.walletAddr {
+    width: 194px;
+    height: 50px;
+
+    cursor: pointer;
+    border: 1px solid var(--main-color);
+    border-radius: 97px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-color);
+    font-size: 20px;
+    flex: 0 0 auto;
+}

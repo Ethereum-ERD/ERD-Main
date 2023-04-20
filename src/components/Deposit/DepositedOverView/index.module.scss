@@ -1,0 +1,139 @@
+.wrap {
+    width: 530px;
+    padding: 30px;
+    border-radius: 32px;
+    background-color: #fff;
+}
+
+.overviewTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    color: #333;
+}
+
+.claimBtn {
+    width: 123px;
+    height: 41px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+
+    border: 1px solid #999;
+    border-radius: 63px;
+
+    color: #999;
+    font-size: 16px;
+
+    p {
+        margin-left: 10px;
+        line-height: 20px;
+    }
+}
+
+.depositInfo {
+    width: 100%;
+    margin-top: 30px;
+
+    display: flex;
+    align-items: center;
+}
+
+.depositAmount,
+.poolShare {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    &>p:first-child {
+        color: #999;
+        font-size: 14px;
+        line-height: 133%;
+    }
+
+    &>p:last-child {
+        color: #333;
+        font-size: 20px;
+        line-height: 30px;
+        font-weight: 500;
+
+        span {
+            margin-left: 5px;
+
+            color: #999;
+            font-size: 14px;
+            display: inline-block;
+        }
+    }
+}
+
+.img {
+    margin-top: 21px;
+    width: 100%;
+    height: 278px;
+}
+
+.tvlInfo {
+    width: 100%;
+    height: 78px;
+    padding: 0 24px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #F8FAFE;
+    border-radius: 16px;
+    font-size: 14px;
+    color: #999;
+}
+
+.tvlAmount {
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
+
+    span {
+        margin-left: 5px;
+        display: inline-block;
+        font-size: 14px;
+        color: #999;
+    }
+}
+
+.btnArea {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 300px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 63px;
+    background-color: var(--main-color);
+
+    &.withdrawBtn {
+        width: 150px;
+        color: #999;
+        border: 1px solid #999;
+        background-color: #fff;
+    }
+}

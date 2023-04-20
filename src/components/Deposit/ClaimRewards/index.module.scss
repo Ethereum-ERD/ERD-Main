@@ -1,0 +1,166 @@
+:global {
+    .ant-modal-content {
+        padding: 0 !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+}
+
+.modal {
+    height: 440px;
+    width: 530px !important;
+    padding: 30px;
+    border-radius: 32px;
+    background-color: #fff;
+}
+
+.content {
+    width: 100%;
+    border-radius: 32px;
+}
+
+.modalHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modalHeadTitle {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    color: #333;
+}
+
+.closeIcon {
+    height: 40px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+.modalBody {
+    width: 100%;
+
+    padding: 20px;
+    margin-top: 30px;
+
+    background: #FAFAFA;
+    border-radius: 16px;
+}
+
+.modalBodyTitle {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 133%;
+    color: #333;
+}
+
+.rewardList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rewardItem {
+    width: 50%;
+}
+
+.rewardItemHead {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin-top: 0;
+        border-radius: 50%;
+    }
+
+    p {
+        margin-left: 10px;
+        font-size: 14px;
+        line-height: 133%;
+        color: #999;
+    }
+}
+
+.rewardItemBody {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+
+    &>p:first-child {
+        margin-right: 5px;
+        color: #333;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    &>p:last-child {
+        font-size: 14px;
+        line-height: 20px;
+        color: #999;
+    }
+}
+
+.modalFoot {
+    width: 100%;
+
+    margin-top: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 225px;
+    height: 52px;
+
+
+    background-color: var(--main-color);
+
+    border: 1px solid var(--main-color);
+    border-radius: 63px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+
+    &.leftBtn {
+
+        color: #999;
+        border: 1px solid #999;
+        background-color: #fff;
+    }
+}
+
+.tips {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    cursor: help;
+}
+
+.tipsModal {
+    width: 340px;
+    height: 89px;
+    padding: 16px 20px;
+
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 8px 21px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+
+    color: #666;
+    font-size: 14px;
+    line-height: 19px;
+}

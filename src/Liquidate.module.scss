@@ -1,0 +1,401 @@
+.wrap {
+    width: 100%;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topLeft {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 32px;
+    color: #333;
+    font-weight: 700;
+}
+
+.systemMode {
+    width: 182px;
+    height: 42px;
+    margin-left: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 61px;
+    font-size: 16px;
+    background: rgba(48, 131, 255, 0.1);
+    color: var(--main-color);
+
+    div {
+        margin-left: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+    &.recoveryMode {
+        color: #FF8A00;
+        background: rgba(255, 138, 0, 0.1);
+    }
+}
+
+.modelTips,
+.selectTroveTips {
+    cursor: help;
+}
+
+.tipsModal {
+    width: 342px;
+    padding: 16px 20px;
+
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 8px 21px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+
+    font-style: normal;
+    font-weight: 450;
+    font-size: 14px;
+    line-height: 133%;
+    color: #666;
+
+    border-radius: 16px;
+}
+
+.topRight {
+    display: flex;
+    align-items: center;
+}
+
+.helpText {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    color: #666;
+
+    svg {
+        margin-right: 9px;
+    }
+}
+
+.selectTroves {
+    width: 224px;
+    height: 42px;
+    padding: 0 5px;
+    margin-left: 16px;
+
+    border: 1px solid #D8E3F2;
+    border-radius: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+        margin-left: 15px;
+        color: #333;
+        font-size: 16px;
+    }
+
+    span {
+        font-size: 14px;
+        color: #999;
+    }
+
+    div {
+        height: 32px;
+        cursor: pointer;
+    }
+}
+
+.liquidateNumInput {
+    width: 100%;
+    height: 100% !important;
+
+    border-radius: 58px;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+
+    & > div {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    &:focus,
+    &:hover {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    input {
+        height: 100% !important;
+
+        font-size: 23px !important;
+        font-style: normal;
+        font-weight: 450;
+        font-family: CircularStd;
+    }
+}
+
+.emptyWrap {
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.troveList {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.tableHead {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #F4F8FF;
+
+    border: 1px solid #DAE6F8;
+    border-radius: 16px;
+}
+
+.tableHeadOfOwner,
+.tableHeadDebt,
+.tableHeadCollRatio,
+.tableHeadCollateral {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    font-size: 20px;
+}
+
+.tableHeadCollateral {
+    width: 600px;
+}
+
+.tableHeadOfOwner,
+.tableHeadDebt,
+.tableHeadCollRatio {
+    width: 200px;
+}
+
+.collateralIcons {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 24px;
+        height: 24px;
+        margin-left: -5px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+.tableHeadOfOwner {
+    padding-left: 24px;
+}
+
+.tableHeadDebt {
+    span {
+        color: #999;
+        font-size: 14px;
+    }
+}
+
+.tableBody {
+    width: 100%;
+}
+
+.tableItem {
+    width: 100%;
+    height: 80px;
+    margin-top: 24px;
+    display: flex;
+    border-radius: 16px;
+    align-items: center;
+    background-color: #fff;
+    user-select: none;
+    cursor: pointer;
+    justify-content: space-between;
+
+    &:hover {
+        & .deleteIconWrap {
+            display: inline-flex;
+        }
+    }
+}
+
+.tableItemCollateralAmountList {
+    width: 600px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.tableItemOwner,
+.tableItemDebt,
+.tableItemRatio {
+    width: 200px;
+    flex: 0 0 auto;
+}
+
+.tableItemOwner {
+    padding-left: 24px;
+    display: flex;
+    align-items: center;
+
+    .owner {
+        color: #666;
+        font-size: 20px;
+        margin-right: 10px;
+    }
+}
+
+.copyIcon {
+    display: flex;
+    align-items: center;
+    cursor: copy;
+}
+
+.collateralCell {
+    margin-right: 64px;
+    display: flex;
+    flex-direction: column;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.collateralAmount {
+    font-size: 20px;
+    color: #333;
+}
+
+.collateralName {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #999;
+}
+
+.tableItemDebt {
+    color: #666;
+    font-size: 20px;
+}
+
+.tableItemRatio {
+    display: flex;
+    align-items: center;
+}
+
+.addonAfter {
+    margin-left: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.deleteIconWrap {
+    display: none;
+    align-items: center;
+
+    &.showDeleteIcon {
+        display: inline-flex;
+    }
+}
+
+.tableItemCollRatioText {
+    font-size: 20px;
+
+    &.emergency {
+        color: #FF4646
+    }
+
+    &.waring {
+        color: #FF8A00;
+    }
+
+    &.health {
+        color: #47BE77;
+    }
+}
+
+.pageControl {
+    margin-top: 20px;
+    float: right;
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1919px) {
+    .tableHeadOfOwner,
+    .tableHeadCollRatio {
+        width: 150px;
+    }
+
+    .tableHeadCollateral {
+        width: 300px;
+    }
+
+    .tableHeadDebt {
+        width: 100px;
+    }
+
+    .tableHeadCollRatio {
+        display: flex;
+        justify-content: center;
+    }
+
+    .tableItemOwner {
+        width: 150px;
+
+        .owner {
+            font-size: 16px;
+        }
+    }
+
+
+    .tableItemCollateralAmountList {
+        width: 300px;
+    }
+
+    .collateralCell {
+        margin-right: 30px;
+
+        .collateralAmount {
+            font-size: 16px;
+        }
+    }
+
+    .tableItemDebt {
+        width: 100px;
+        font-size: 16px;
+    }
+
+    .tableItemRatio {
+        width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .tableItemCollRatioText {
+            font-size: 16px;
+        }
+    }
+
+    .addonAfter {
+        margin-left: 20px;
+    }
+}
