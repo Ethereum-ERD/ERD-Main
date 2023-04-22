@@ -124,6 +124,7 @@ export default observer(function AdjustTrove() {
 
     const handleConfirm = async () => {
         if (isProcessing) return;
+        if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) return;
         if (collateralRatio < systemMCR) {
             return notification.error({
                 message: 'ICR less than MCR is not permitted.'
@@ -257,8 +258,8 @@ export default observer(function AdjustTrove() {
                     <>
                         <div className={cx(s.btn, s.cancel)} onClick={toggleStartAdjustTrove}>Cancel</div>
                         <div className={cx(s.btn, {
-                                [s.loading]: isProcessing,
-                                [s.disable]: collateralRatio < systemMCR
+                            [s.disable]: collateralRatio < systemMCR || borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount,
+                                [s.loading]: isProcessing
                             })}
                             onClick={handleConfirm}
                         >

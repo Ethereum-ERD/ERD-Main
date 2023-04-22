@@ -119,7 +119,7 @@ export default observer(function OpenTrove() {
 
     const handleConfirm = async () => {
         if (isProcessing) return;
-        if (borrowNum < +formatUnits(minBorrowAmount, stableCoinDecimals)) {
+        if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) {
             return notification.error({
                 message: 'debt is less than minDebt.'
             });
@@ -247,7 +247,7 @@ export default observer(function OpenTrove() {
                         <div className={cx(s.btn, s.cancel)} onClick={toggleStartBorrow}>Cancel</div>
                         <div
                             className={cx(s.btn, {
-                                [s.disable]: borrowNum < +formatUnits(minBorrowAmount, stableCoinDecimals) || collateralRatio < systemMCR,
+                                [s.disable]: borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount || collateralRatio < systemMCR,
                                 [s.loading]: isProcessing
                             })}
                             onClick={handleConfirm}
