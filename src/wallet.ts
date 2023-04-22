@@ -32,7 +32,7 @@ export function createBoard() {
         {
             id: `0x${(PRIVATE_CHAIN_ID).toString(16)}`,
             token: 'ETH',
-            label: 'Private NetWork',
+            label: 'ERD Private NetWork',
             rpcUrl: PRIVATE_RPC_URL
           }
       ],

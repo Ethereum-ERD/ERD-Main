@@ -142,6 +142,16 @@
     }
 }
 
+.confirmBtn {
+    height: 32px;
+    cursor: pointer;
+
+    &.disableBtn {
+        cursor: not-allowed;
+        filter: brightness(0);
+    }
+}
+
 .emptyWrap {
     width: 100%;
     min-height: 300px;

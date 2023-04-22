@@ -256,7 +256,7 @@ function Liquidate() {
                                 precision={0}
                             />
                         </div>
-                        <div onClick={handleLiquidateN}>
+                        <div onClick={handleLiquidateN} className={cx(s.confirmBtn, { [s.disableBtn]: isLiquidateIng })}>
                             <svg
                                 width="32"
                                 height="32"

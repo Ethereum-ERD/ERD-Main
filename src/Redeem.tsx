@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { observer } from "mobx-react";
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import { InputNumber, notification, Popover } from 'antd';
+import { InputNumber, notification } from 'antd';
 
 import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
@@ -90,11 +90,9 @@ function Redeem() {
             <div className={s.feeInfo}>
                 <div className={s.feeInfoTitle}>
                     Redemption Fee{'\u00A0'}
-                    <Popover title='' content={<div>Todo</div>}>
-                        <div className={s.tipsHelp}>
-                            <CircleHelp />
-                        </div>
-                    </Popover>
+                    <div className={s.tipsHelp}>
+                        <CircleHelp />
+                    </div>
                 </div>
                 <p className={s.feeAmount}>
                     <span>{redeemFee}</span>
