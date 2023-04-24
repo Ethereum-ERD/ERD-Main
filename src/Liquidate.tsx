@@ -159,13 +159,13 @@ function Liquidate() {
                                         <div className={s.tipsModal}>
                                             Recovery Mode will be activated when
                                             the Total Collateralization Ratio
-                                            (TCR) falls below 150%. When
+                                            (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
                                             activated, your Trove can be
                                             liquidated if the collateralization
                                             ratio of your Trove is lower than
                                             TCR. The maximum collateral you can
                                             lose in liquidation is capped at
-                                            110% of your Trove debt.
+                                            {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
                                             Manipulations that negatively affect
                                             TCR are also restricted.
                                         </div>
@@ -174,13 +174,13 @@ function Liquidate() {
                                         <div className={s.tipsModal}>
                                             Recovery Mode will be activated when
                                             the Total Collateralization Ratio
-                                            (TCR) falls below 150%. When
+                                            (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
                                             activated, your Trove can be
                                             liquidated if the collateralization
                                             ratio of your Trove is lower than
                                             TCR. The maximum collateral you can
                                             lose in liquidation is capped at
-                                            110% of your Trove debt.
+                                            {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
                                             Manipulations that negatively affect
                                             TCR are also restricted.
                                         </div>
@@ -215,7 +215,7 @@ function Liquidate() {
                 </div>
                 <div className={s.topRight}>
                     <div className={s.helpText}>
-                        <Popover title="" content={<div className={s.tipsModal}>The amount of troves you want to liquidate.</div>}>
+                        <Popover title="" content={<div className={s.tipsModal}>Enter the trove quantity you want to liquidate for batch liquidation. Liquidation is performed in order of mortgage ratio from low to high.</div>}>
                             <div style={{ cursor: "help" }}>
                                 <svg
                                     width="15"

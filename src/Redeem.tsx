@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { observer } from "mobx-react";
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import { InputNumber, notification } from 'antd';
+import { InputNumber, Popover, notification } from 'antd';
 
 import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
@@ -85,14 +85,16 @@ function Redeem() {
                 <p className={s.max} onClick={setToMax}>Max</p>
             </div>
             <div className={cx(s.redeemWarning, { [s.show]: !canRedeem })}>
-                You can't redeem {stableCoinName} when the total collateral ratio is less than {systemMCR * 100}% in { isNormalMode ? 'Normal Mode' : 'Recovery Mode' }.
+                You can't redeem {stableCoinName} when the total collateral ratio is less than {(systemMCR * 100).toFixed(0)}% in { isNormalMode ? 'Normal Mode' : 'Recovery Mode' }.
             </div>
             <div className={s.feeInfo}>
                 <div className={s.feeInfoTitle}>
                     Redemption Fee{'\u00A0'}
-                    <div className={s.tipsHelp}>
-                        <CircleHelp />
-                    </div>
+                    <Popover title='' content={<div className={s.redeemFeeTips}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on eUSD redemption volumes and is 0.5% at minimum.</div>}>
+                        <div className={s.tipsHelp}>
+                            <CircleHelp />
+                        </div>
+                    </Popover>
                 </div>
                 <p className={s.feeAmount}>
                     <span>{redeemFee}</span>
