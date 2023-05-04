@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .top {
     display: flex;
     align-items: center;
@@ -71,11 +77,30 @@
     align-items: center;
 }
 
+.riskTrovesTitle {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 133%;
+    color: #333;
+    display: none;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+}
+
 .helpText {
     display: flex;
     align-items: center;
     font-size: 20px;
     color: #666;
+
+    div {
+        display: flex;
+        align-items: center;
+        cursor: help;
+    }
 
     svg {
         margin-right: 9px;
@@ -104,11 +129,6 @@
     span {
         font-size: 14px;
         color: #999;
-    }
-
-    div {
-        height: 32px;
-        cursor: pointer;
     }
 }
 
@@ -230,6 +250,7 @@
 }
 
 .tableItem {
+    position: relative;
     width: 100%;
     height: 80px;
     margin-top: 24px;
@@ -242,10 +263,16 @@
     justify-content: space-between;
 
     &:hover {
-        & .deleteIconWrap {
+        & .addonAfter {
             display: inline-flex;
         }
     }
+}
+
+.tableItemContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .tableItemCollateralAmountList {
@@ -271,6 +298,10 @@
         color: #666;
         font-size: 20px;
         margin-right: 10px;
+    }
+
+    .ownerOnMobile {
+        display: none;
     }
 }
 
@@ -312,15 +343,18 @@
 }
 
 .addonAfter {
-    margin-left: 75px;
-    display: flex;
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    transform: translateY(-50%);
+    display: none;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
 }
 
 .deleteIconWrap {
-    display: none;
+    display: flex;
     align-items: center;
 
     &.showDeleteIcon {
@@ -349,63 +383,338 @@
     float: right;
 }
 
-@media only screen and (min-width: 960px) and (max-width: 1919px) {
-    .tableHeadOfOwner,
-    .tableHeadCollRatio {
-        width: 150px;
+@media only screen and (min-width: 744px) and (max-width: 1199px) {
+    .container {
+        width: 684px;
     }
 
-    .tableHeadCollateral {
-        width: 300px;
+    .top {
+        flex-wrap: wrap;
     }
 
-    .tableHeadDebt {
-        width: 100px;
+    .topLeft,
+    .topRight {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .tableHeadCollRatio {
-        display: flex;
-        justify-content: center;
+    .topRight {
+        margin-top: 30px;
+        padding: 0 20px;
     }
 
-    .tableItemOwner {
-        width: 150px;
+    .riskTrovesTitle {
+        display: block;
+    }
 
-        .owner {
-            font-size: 16px;
+    .selectTroves {
+        width: 124px;
+        height: 32px;
+    }
+
+    .confirmBtn {
+        width: 24px;
+        height: 24px;
+
+        svg {
+            width: 24px;
+            height: 24px;
         }
     }
 
+    .tableHead {
+        justify-content: flex-start;
+    }
+
+    .tableHeadOfOwner {
+        width: 107px;
+        font-size: 12px;
+        order: 1;
+    }
+
+    .tableHeadCollRatio {
+        width: 55px;
+        margin-left: 40px;
+        font-size: 12px;
+        order: 2;
+    }
+
+    .tableHeadDebt {
+        width: 75px;
+        margin-left: 40px;
+        font-size: 12px;
+        order: 3;
+
+        span {
+            font-size: 12px;
+        }
+    }
+
+    .tableHeadCollateral {
+        width: 237px;
+        margin-left: 34px;
+        font-size: 12px;
+        order: 4;
+    }
+
+    .collateralIcons {
+        margin-left: 10px;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .tableItem {
+        justify-content: flex-start;
+    }
+
+    .tableItemOwner {
+        width: 107px;
+        order: 1;
+
+        .owner {
+            font-size: 12px;
+        }
+    }
+
+    .tableItemRatio {
+        width: 55px;
+        margin-left: 40px;
+        order: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .tableItemCollRatioText {
+            font-size: 12px;
+        }
+    }
+
+    .tableItemDebt {
+        width: 75px;
+        margin-left: 40px;
+        order: 3;
+        font-size: 12px;
+    }
 
     .tableItemCollateralAmountList {
-        width: 300px;
+        width: 237px;
+        margin-left: 40px;
+        order: 4;
     }
 
     .collateralCell {
         margin-right: 30px;
 
         .collateralAmount {
-            font-size: 16px;
+            font-size: 12px;
+        }
+    }
+}
+
+@media only screen and (max-width: 743px) {
+    .container {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 25px;
+        line-height: 32px;
+    }
+
+    .systemMode {
+        width: 144px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .top {
+        flex-wrap: wrap;
+    }
+
+    .topLeft,
+    .topRight {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .topRight {
+        width: 100vw;
+        height: 52px;
+        margin-top: 20px;
+        margin-left: calc(50% - 50vw);
+        padding: 0 20px;
+        flex: 0 0 auto;
+        background-color: #F4F8FF;
+    }
+
+    .riskTrovesTitle {
+        display: block;
+    }
+
+    .helpText {
+        font-size: 12px;
+    }
+
+    .selectTroves {
+        width: 124px;
+        height: 32px;
+    }
+
+    .liquidateNumInput {
+        input {    
+            height: 32px !important;
+            font-size: 14px !important;
+        }
+    }
+
+    .confirmBtn {
+        width: 24px;
+        height: 24px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .troveList {
+        margin-top: 15px;
+    }
+
+    .tableHead {
+        height: auto;
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+    .tableHeadOfOwner,
+    .tableHeadCollRatio,
+    .tableHeadDebt,
+    .tableHeadCollateral {
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .tableHeadOfOwner {
+        width: 40px;
+        padding-left: 0;
+        order: 1;
+    }
+
+    .tableHeadCollRatio {
+        width: 55px;
+        margin-left: 30px;
+        order: 2;
+    }
+
+    .tableHeadDebt {
+        width: 70px;
+        margin-left: 30px;
+        order: 3;
+
+        span {
+            font-size: 12px;
+        }
+    }
+
+    .tableHeadCollateral {
+        margin-left: 30px;
+        flex: 1 0 auto;
+        order: 4;
+    }
+
+    .collateralIcons {
+        margin-left: 5px;
+
+        img {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .tableItem {
+        height: auto;
+    }
+
+    .tableItemContainer {
+        overflow-x: scroll;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .tableItemContainer::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .tableItemOwner {
+        width: 40px;
+        padding-left: 0;
+        order: 1;
+
+        .owner {
+            display: none;
+        }
+
+        .ownerOnMobile {
+            display: block;
+            font-size: 12px;
+        }
+
+        .copyIcon {
+            display: none;
+        }
+    }
+
+    .tableItemRatio {
+        width: 55px;
+        margin-left: 30px;
+        order: 2;
+        
+        .tableItemCollRatioText {
+            font-size: 12px;
         }
     }
 
     .tableItemDebt {
-        width: 100px;
-        font-size: 16px;
+        width: 70px;
+        margin-left: 30px;
+        font-size: 12px;
+        order: 3;
     }
 
-    .tableItemRatio {
-        width: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .tableItemCollateralAmountList {
+        width: auto;
+        margin-left: 30px;
+        flex: 1 0 auto;
+        order: 4;
+    }
 
-        .tableItemCollRatioText {
-            font-size: 16px;
-        }
+    .collateralCell {
+        margin-right: 16px;
+        flex-direction: row;
+    }
+
+    .collateralAmount,
+    .collateralName {
+        font-size: 12px;
+        line-height: 14px;
+    }
+
+    .collateralName {
+        margin-top: 0;
+        margin-left: 5px;
     }
 
     .addonAfter {
-        margin-left: 20px;
+        right: calc(100% + 4px);
+    }
+
+    .deleteIconWrap > svg {
+        width: 12px;
+        height: 14px;
     }
 }

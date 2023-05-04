@@ -97,12 +97,12 @@
         color: #333;
         font-weight: 500;
         font-size: 20px;
-        line-height: 30px;
+        line-height: 133%;
     }
 
     &>p:last-child {
         font-size: 14px;
-        line-height: 20px;
+        line-height: 133%;
         color: #999;
     }
 }
@@ -163,4 +163,59 @@
     color: #666;
     font-size: 14px;
     line-height: 19px;
+}
+
+@media screen and (max-width: 743px) {
+    .modal {
+        height: auto;
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .modalHeadTitle {
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+    .closeIcon {
+        display: none;
+    }
+
+    .modalBody {
+        margin-top: 15px;
+    }
+
+    .modalBodyTitle {
+        font-size: 16px;
+    }
+
+    .rewardItemHead {
+        p {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+    }
+
+    .rewardItemBody {
+        &>p:first-child {
+            font-size: 16px;
+        }
+    }
+
+    .modalFoot {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+
+        &.leftBtn {
+            order: 2;
+            margin-top: 10px;
+        }
+    }
+
 }

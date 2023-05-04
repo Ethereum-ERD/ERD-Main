@@ -1,6 +1,5 @@
 @import "./color.css";
 @import "./font.css";
-@import "./size.css";
 
 * {
     margin: 0;
@@ -64,4 +63,10 @@ div.ant-popover-inner {
     padding: 0 !important;
     box-shadow: none !important;
     border-radius: 16px !important;
+}
+
+@media screen and (max-width: 743px) {
+    #root {
+        background-color: #fff;
+    }
 }

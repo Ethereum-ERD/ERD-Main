@@ -1,9 +1,22 @@
 .wrap {
-    padding: 0;
+    width: 100vw;
 }
 
 .content {
     width: 100%;
-    padding: 0 360px;
-    margin-top: 30px;
+    width: 1200px;
+    margin: 30px auto 0;
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .content {
+        width: 684px;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .content {
+        width: calc(100vw - 40px);
+        margin: 30px 20px 0;
+    }
 }

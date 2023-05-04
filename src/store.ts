@@ -21,6 +21,8 @@ import ContractConfig from 'src/contract';
 export default class Store {
     chainId = 0;
 
+    walletLabel = '';
+
     isInit = false;
 
     walletAddr = '';
@@ -113,6 +115,8 @@ export default class Store {
 
     isLoadingAssetSupport = false;
 
+    showSupportAsset = false;
+
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
 
@@ -189,6 +193,16 @@ export default class Store {
             await this.onboard.setChain({
                 chainId: `0x${PRIVATE_CHAIN_ID.toString(16)}`,
             });
+        } catch {
+            // do nothing
+        }
+    }
+
+    async disConnectWallet() {
+        if (!this.onboard || !this.walletAddr) return;
+        try {
+            const [primaryWallet] = this.onboard.state.get().wallets;
+            await this.onboard.disconnectWallet({ label: primaryWallet.label })
         } catch {
             // do nothing
         }
@@ -474,9 +488,10 @@ export default class Store {
         });
     }
 
-    onChainChange(chains: Array<{ id: string }>) {
+    onChainChange(chains: Array<{ id: string; label: string }>) {
         runInAction(() => {
             this.chainId = +(chains[0] || { id: '0' }).id;
+            this.walletLabel = (chains[0] || { label: '' }).label;
         });
     }
 
@@ -526,6 +541,12 @@ export default class Store {
     toggleIsLoadingTroves() {
         runInAction(() => {
             this.isPreLoadTroves = !this.isPreLoadTroves;
+        });
+    }
+
+    toggleShowSupportAsset() {
+        runInAction(() => {
+            this.showSupportAsset = !this.showSupportAsset;
         });
     }
 
@@ -823,7 +844,7 @@ export default class Store {
 
             const isDebtIncrease = newDebtAmount.gt(debt);
     
-            const stableCoinChange = newDebtAmount.gt(debt) ? newDebtAmount.sub(debt) : BN_ZERO;
+            const stableCoinChange = isDebtIncrease ? newDebtAmount.sub(debt) : debt.sub(newDebtAmount);
     
             const collIn: Array<{ token: string; amount: ethers.BigNumber }> = [];
             const collOut: Array<{ token: string; amount: ethers.BigNumber }> = [];
@@ -848,7 +869,7 @@ export default class Store {
             const approveList = await Promise.all(
                 collIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
             );
-            
+
             if (!approveList.every(x => x)) return false;
 
             const override = { value: BN_ZERO };
@@ -1018,6 +1039,7 @@ export default class Store {
 
             if (result.status === 1) {
                 this.queryUserTokenInfo();
+                this.queryUserDepositInfo();
                 this.queryStabilityPoolTVL();
             }
             return result.status === 1;
@@ -1124,7 +1146,7 @@ export default class Store {
                 this.troveList = [
                     ...this.troveList,
                     ...newTroves
-                ];
+                ].sort((troveA, troveB) => troveA.ICR - troveB.ICR);
             });
         } finally {
             runInAction(() => {

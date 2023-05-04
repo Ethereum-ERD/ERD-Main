@@ -202,6 +202,7 @@
     width: 294px;
     height: 52px;
 
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -218,8 +219,13 @@
         cursor: not-allowed;
     }
 
+    &.notReady {
+        width: 100%;
+    }
+
     &.cancel {
         width: 160px;
+        margin-right: 20px;
         color: #999;
         border: 1px solid #999;
         background-color: #fff;
@@ -230,6 +236,42 @@
 
         & > span {
             margin-right: 5px;
+        }
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+
+    .btn {
+        width: 454px;
+        flex: 1 0 auto;
+
+        &.cancel {
+            flex: 0 0 auto;
+        }
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .btn {
+        width: 220px;
+        font-size: 14px;
+
+        &.cancel {
+            width: 120px;
+            margin-right: 10px;
         }
     }
 }

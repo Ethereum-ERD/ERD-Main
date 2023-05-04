@@ -12,15 +12,15 @@ export default observer(function WatchWallet() {
     useEffect(() => {
         if (!isInit || !onboard) return;
 
-        const state = onboard.state.select('wallets');
+        const walletSub = onboard.state.select('wallets');
         // @ts-ignore
-        const { unsubscribe } = state.subscribe(([wallet]) => {
+        const { unsubscribe } = walletSub.subscribe(([wallet]) => {
             if (wallet) {
                 const { label, accounts, provider, chains } = wallet;
                 saveWallet(label);
-                onChainChange(chains);
                 onProviderChange(provider);
                 onAccountChange(accounts);
+                onChainChange(chains.map((x: any) => ({ ...x, label })));
             } else {
                 onChainChange([]);
                 onAccountChange([]);

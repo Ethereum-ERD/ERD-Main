@@ -3,16 +3,22 @@
     padding: 30px;
     border-radius: 32px;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .title {
+    width: 100%;
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
     color: #333;
+    text-align: left;
 }
 
 .descWrap {
+    width: 100%;
     margin-top: 30px;
     display: flex;
     align-items: center;
@@ -27,6 +33,7 @@
 }
 
 .tips {
+    width: 100%;
     margin-top: 10px;
     font-size: 14px;
     font-weight: 450;
@@ -35,9 +42,9 @@
 }
 
 .img {
-    margin-top: 30px;
-    width: 100%;
+    width: 470px;
     height: 278px;
+    margin: 20px auto 0;
 }
 
 .btn {
@@ -59,4 +66,38 @@
     justify-content: center;
 
     cursor: pointer;
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .descWrap {
+        margin-top: 15px;
+    }
+
+    .desc {
+        font-size: 16px;
+    }
+
+    .tips {
+        font-size: 12px;
+    }
+
+    .img {
+        width: 350px;
+        height: 222px;
+    }
 }

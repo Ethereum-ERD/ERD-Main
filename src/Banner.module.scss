@@ -1,9 +1,15 @@
 .wrap {
     width: 100vw;
     height: 100px;
-    padding: 0 360px;
-    background: rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(35, 97, 255, 0.1);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(3px);
 
     display: flex;
@@ -14,6 +20,11 @@
 .leftWrap {
     display: flex;
     align-items: center;
+
+    img {
+        width: 56px;
+        height: 56px;
+    }
 }
 
 .tabs {
@@ -49,4 +60,63 @@
     color: var(--main-color);
     font-size: 20px;
     flex: 0 0 auto;
+}
+
+.mobileIcons {
+    display: none;
+    align-items: center;
+}
+
+@media screen and (max-width: 1199px) {
+    .leftWrap img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        height: 50px;
+    }
+
+    .container {
+        width: 684px;
+    }
+
+    .tab {
+        font-size: 13px;
+    }
+
+    .walletAddr {
+        width: 126px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        height: 50px;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+
+    .tabs,
+    .walletAddr {
+        display: none;
+    }
+
+    .mobileIcons {
+        display: flex;
+
+        div {
+            margin-right: 30px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
 }

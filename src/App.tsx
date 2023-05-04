@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 
+import SupportAsset from "src/SupportAsset";
 import WatchConnect from "src/WatchConnect";
 import WatchWallet from "src/WatchWallet";
 import RouterComp from 'src/RouterComp';
@@ -32,6 +33,7 @@ function App() {
             <WatchRoute />
             <WatchWallet />
             <WatchConnect />
+            <SupportAsset />
         </div>
     );
 }

@@ -4,13 +4,13 @@ import { observer } from 'mobx-react';
 import { useStore } from 'src/hooks';
 
 export default observer(function WatchConnect() {
-    const { store: { isInit, walletAddr, connectWallet } } = useStore();
+    const { store: { isInit, connectWallet } } = useStore();
 
     useEffect(() => {
-        if (isInit && !walletAddr) {
+        if (isInit) {
             connectWallet();
         }
-    }, [isInit, walletAddr, connectWallet]);
+    }, [isInit, connectWallet]);
 
     return null;
 });

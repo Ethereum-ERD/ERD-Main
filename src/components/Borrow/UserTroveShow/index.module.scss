@@ -120,6 +120,7 @@
     width: 294px;
     height: 52px;
 
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,8 +140,57 @@
 
     &.repay {
         width: 160px;
+        margin-right: 20px;
         color: #999;
         border: 1px solid #999;
         background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+
+    .btn {
+        width: 454px;
+        flex: 1 0 auto;
+
+        &.repay {
+            flex: 0 0 auto;
+        }
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .info {
+        margin-top: 20px;
+        padding: 0 20px 20px;
+        border-radius: 16px;
+        background-color: #F8FAFE;
+    }
+
+    .item,
+    .collateralItem {
+        margin-top: 20px;
+    }
+
+    .btn {
+        height: 50px;
+        width: 120px;
+        flex: 1 0 auto;
+        font-size: 14px;
+
+        &.repay {
+            width: 120px;
+            margin-right: 10px;
+            flex: 0 0 auto;
+        }
     }
 }

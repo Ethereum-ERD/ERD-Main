@@ -209,7 +209,7 @@
         margin-right: 5px;
 
         font-size: 20px;
-        line-height: 30px;
+        line-height: 133%;
         font-weight: 500;
         color: #333;
     }
@@ -227,23 +227,11 @@
     justify-content: space-between;
 }
 
-.cancelBtn {
-    width: 150px;
-    height: 52px;
-
-    border: 1px solid #999;
-    border-radius: 63px;
-    font-size: 16px;
-    color: #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
 .btn {
     width: 300px;
     height: 52px;
+
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -259,6 +247,14 @@
         background-color: #c5c5c5;
     }
 
+    &.cancel {
+        width: 160px;
+        margin-right: 20px;
+        color: #999;
+        border: 1px solid #999;
+        background-color: #fff;
+    }
+
     &.loading {
         opacity: .65;
 
@@ -267,3 +263,62 @@
         }
     }
 }
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+
+    .btn {
+        width: 454px;
+        flex: 1 0 auto;
+
+        &.cancel {
+            flex: 0 0 auto;
+        }
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .depositNumInputWrap {
+        margin-top: 20px;
+    }
+
+    .userCollateralTitle {
+        font-size: 16px;
+    }
+
+    .userCollateralItemHead {    
+        p {
+            margin-left: 5px;
+            font-size: 12px;
+            line-height: 133%;
+        }
+    }
+
+    .userCollateralItemBody {
+        p {
+            font-size: 16px;
+        }
+    }
+
+    .btn {
+        width: 220px;
+        font-size: 14px;
+
+        &.cancel {
+            width: 120px;
+            margin-right: 10px;
+        }
+    }
+}
+

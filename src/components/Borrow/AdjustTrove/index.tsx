@@ -252,7 +252,7 @@ export default observer(function AdjustTrove() {
             <FeeInfo liquidationReserve={assetValue} totalDebt={userTrove.debt} />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (
-                    <div className={cx(s.btn, s.disable)}>Get Start</div>
+                    <div className={cx(s.btn, s.disable, s.notReady)}>Get Start</div>
                 )}
                 {validColls.length > 0 && (
                     <>

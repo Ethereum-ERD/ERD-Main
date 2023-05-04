@@ -142,334 +142,344 @@ function Liquidate() {
 
     return (
         <div className={s.wrap}>
-            <div className={s.top}>
-                <div className={s.topLeft}>
-                    <p className={s.title}>Liquidate</p>
-                    <div
-                        className={cx(s.systemMode, {
-                            [s.recoveryMode]: !isNormalMode,
-                        })}
-                    >
-                        {isNormalMode ? "Normal Mode" : "Recovery Mode"}
-                        <Popover
-                            title=""
-                            content={
-                                <>
-                                    {isNormalMode && (
-                                        <div className={s.tipsModal}>
-                                            Recovery Mode will be activated when
-                                            the Total Collateralization Ratio
-                                            (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
-                                            activated, your Trove can be
-                                            liquidated if the collateralization
-                                            ratio of your Trove is lower than
-                                            TCR. The maximum collateral you can
-                                            lose in liquidation is capped at
-                                            {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
-                                            Manipulations that negatively affect
-                                            TCR are also restricted.
-                                        </div>
-                                    )}
-                                    {!isNormalMode && (
-                                        <div className={s.tipsModal}>
-                                            Recovery Mode will be activated when
-                                            the Total Collateralization Ratio
-                                            (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
-                                            activated, your Trove can be
-                                            liquidated if the collateralization
-                                            ratio of your Trove is lower than
-                                            TCR. The maximum collateral you can
-                                            lose in liquidation is capped at
-                                            {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
-                                            Manipulations that negatively affect
-                                            TCR are also restricted.
-                                        </div>
-                                    )}
-                                </>
-                            }
-                        >
-                            <div className={s.modelTips}>
-                                <svg
-                                    width="15"
-                                    height="14"
-                                    viewBox="0 0 15 14"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M6.89404 10.6C6.89404 10.2686 7.16267 10 7.49404 10C7.82541 10 8.09404 10.2686 8.09404 10.6C8.09404 10.9314 7.82541 11.2 7.49404 11.2C7.16267 11.2 6.89404 10.9314 6.89404 10.6Z"
-                                        fill="#888888"
-                                    />
-                                    <path
-                                        d="M7.49409 3.0061C6.15645 3.0061 5.06909 4.09346 5.06909 5.4311H6.06909C6.06909 4.64574 6.70873 4.0061 7.49409 4.0061C8.27945 4.0061 8.91909 4.64574 8.91909 5.4311C8.91909 5.96885 8.4746 6.50808 7.89445 6.74376L7.8919 6.74481C7.36235 6.96335 6.99414 7.48413 6.99414 8.0925V9H7.99414V8.0925C7.99414 7.89828 8.10945 7.73731 8.27236 7.66961C9.09969 7.33289 9.91909 6.49869 9.91909 5.4311C9.91909 4.09346 8.83173 3.0061 7.49409 3.0061Z"
-                                        fill="#888888"
-                                    />
-                                    <path
-                                        d="M14.4941 7C14.4941 3.13401 11.3601 1.18292e-06 7.49414 0C3.62815 -2.14186e-06 0.494142 3.134 0.494141 7C0.494138 10.866 3.62815 14 7.49414 14C11.3601 14 14.4941 10.866 14.4941 7ZM13.4941 7C13.4941 10.3137 10.8078 13 7.49414 13C4.18043 13 1.49414 10.3137 1.49414 7C1.49414 3.68629 4.18043 0.999999 7.49414 1C10.8079 1 13.4941 3.68629 13.4941 7Z"
-                                        fill="#888888"
-                                    />
-                                </svg>
-                            </div>
-                        </Popover>
-                    </div>
-                </div>
-                <div className={s.topRight}>
-                    <div className={s.helpText}>
-                        <Popover title="" content={<div className={s.tipsModal}>Enter the trove quantity you want to liquidate for batch liquidation. Liquidation is performed in order of mortgage ratio from low to high.</div>}>
-                            <div style={{ cursor: "help" }}>
-                                <svg
-                                    width="15"
-                                    height="14"
-                                    viewBox="0 0 15 14"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M6.89404 10.6C6.89404 10.2686 7.16267 10 7.49404 10C7.82541 10 8.09404 10.2686 8.09404 10.6C8.09404 10.9314 7.82541 11.2 7.49404 11.2C7.16267 11.2 6.89404 10.9314 6.89404 10.6Z"
-                                        fill="#888888"
-                                    />
-                                    <path
-                                        d="M7.49409 3.0061C6.15645 3.0061 5.06909 4.09346 5.06909 5.4311H6.06909C6.06909 4.64574 6.70873 4.0061 7.49409 4.0061C8.27945 4.0061 8.91909 4.64574 8.91909 5.4311C8.91909 5.96885 8.4746 6.50808 7.89445 6.74376L7.8919 6.74481C7.36235 6.96335 6.99414 7.48413 6.99414 8.0925V9H7.99414V8.0925C7.99414 7.89828 8.10945 7.73731 8.27236 7.66961C9.09969 7.33289 9.91909 6.49869 9.91909 5.4311C9.91909 4.09346 8.83173 3.0061 7.49409 3.0061Z"
-                                        fill="#888888"
-                                    />
-                                    <path
-                                        d="M14.4941 7C14.4941 3.13401 11.3601 1.18292e-06 7.49414 0C3.62815 -2.14186e-06 0.494142 3.134 0.494141 7C0.494138 10.866 3.62815 14 7.49414 14C11.3601 14 14.4941 10.866 14.4941 7ZM13.4941 7C13.4941 10.3137 10.8078 13 7.49414 13C4.18043 13 1.49414 10.3137 1.49414 7C1.49414 3.68629 4.18043 0.999999 7.49414 1C10.8079 1 13.4941 3.68629 13.4941 7Z"
-                                        fill="#888888"
-                                    />
-                                </svg>
-                            </div>
-                        </Popover>
-                        <p>Up to</p>
-                    </div>
-                    <div className={s.selectTroves}>
-                        <div>
-                            <InputNumber
-                                className={s.liquidateNumInput}
-                                value={liquidateTroveAmount}
-                                min={0}
-                                step={1}
-                                max={10}
-                                onChange={(v) =>
-                                    setLiquidateTroveAmount(v || 0)
-                                }
-                                controls={false}
-                                precision={0}
-                            />
-                        </div>
-                        <div onClick={handleLiquidateN} className={cx(s.confirmBtn, { [s.disableBtn]: isLiquidateIng })}>
-                            <svg
-                                width="32"
-                                height="32"
-                                viewBox="0 0 32 32"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <rect
-                                    width="32"
-                                    height="32"
-                                    rx="16"
-                                    fill="#3083FF"
-                                    fillOpacity="0.1"
-                                />
-                                <path
-                                    d="M13.6667 20.5714V13.7143H14.8333V20.5714H13.6667Z"
-                                    fill="#3083FF"
-                                />
-                                <path
-                                    d="M17.1667 13.7143V20.5714H18.3333V13.7143H17.1667Z"
-                                    fill="#3083FF"
-                                />
-                                <path
-                                    d="M18.9167 10.2857H23V11.4286H21.8333V22.8571C21.8333 23.4883 21.311 24 20.6667 24H11.3333C10.689 24 10.1667 23.4883 10.1667 22.8571V11.4286H9V10.2857H13.0833L13.0833 8.91429C13.0833 8.40934 13.5012 8 14.0167 8H17.9833C18.4988 8 18.9167 8.40934 18.9167 8.91429V10.2857ZM14.25 10.2857H17.75L17.75 9.14286L14.25 9.14286V10.2857ZM11.3333 11.4286V22.8571H20.6667V11.4286H11.3333Z"
-                                    fill="#3083FF"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={s.troveList}>
-                <div className={s.tableHead}>
-                    <div className={s.tableHeadOfOwner}>Owner</div>
-                    <div className={s.tableHeadCollateral}>
-                        <p>Collateral</p>
-                        <div className={s.collateralIcons}>
-                            {supportAssets.map((asset) => {
-                                return (
-                                    <img
-                                        key={asset.assetName}
-                                        src={asset.icon}
-                                        alt=""
-                                    />
-                                );
+            <div className={s.container}>
+                <div className={s.top}>
+                    <div className={s.topLeft}>
+                        <p className={s.title}>Liquidate</p>
+                        <div
+                            className={cx(s.systemMode, {
+                                [s.recoveryMode]: !isNormalMode,
                             })}
-                        </div>
-                    </div>
-                    <div className={s.tableHeadDebt}>
-                        Debt{"\u00A0"}
-                        <span>({stableCoinName})</span>
-                    </div>
-                    <div className={s.tableHeadCollRatio}>Coll.Ratio</div>
-                </div>
-                <div className={s.tableBody}>
-                    {(isLoadingTroves || isPreLoadTroves) && (
-                        <div className={s.emptyWrap}>
-                            <Spin />
-                        </div>
-                    )}
-                    {!isLoadingTroves && (
-                        <>
-                            {!canShowList && (
-                                <div className={s.emptyWrap}>
-                                    <Empty />
+                        >
+                            {isNormalMode ? "Normal Mode" : "Recovery Mode"}
+                            <Popover
+                                title=""
+                                content={
+                                    <>
+                                        {isNormalMode && (
+                                            <div className={s.tipsModal}>
+                                                Recovery Mode will be activated when
+                                                the Total Collateralization Ratio
+                                                (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
+                                                activated, your Trove can be
+                                                liquidated if the collateralization
+                                                ratio of your Trove is lower than
+                                                TCR. The maximum collateral you can
+                                                lose in liquidation is capped at
+                                                {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
+                                                Manipulations that negatively affect
+                                                TCR are also restricted.
+                                            </div>
+                                        )}
+                                        {!isNormalMode && (
+                                            <div className={s.tipsModal}>
+                                                Recovery Mode will be activated when
+                                                the Total Collateralization Ratio
+                                                (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
+                                                activated, your Trove can be
+                                                liquidated if the collateralization
+                                                ratio of your Trove is lower than
+                                                TCR. The maximum collateral you can
+                                                lose in liquidation is capped at
+                                                {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
+                                                Manipulations that negatively affect
+                                                TCR are also restricted.
+                                            </div>
+                                        )}
+                                    </>
+                                }
+                            >
+                                <div className={s.modelTips}>
+                                    <svg
+                                        width="15"
+                                        height="14"
+                                        viewBox="0 0 15 14"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M6.89404 10.6C6.89404 10.2686 7.16267 10 7.49404 10C7.82541 10 8.09404 10.2686 8.09404 10.6C8.09404 10.9314 7.82541 11.2 7.49404 11.2C7.16267 11.2 6.89404 10.9314 6.89404 10.6Z"
+                                            fill="#888888"
+                                        />
+                                        <path
+                                            d="M7.49409 3.0061C6.15645 3.0061 5.06909 4.09346 5.06909 5.4311H6.06909C6.06909 4.64574 6.70873 4.0061 7.49409 4.0061C8.27945 4.0061 8.91909 4.64574 8.91909 5.4311C8.91909 5.96885 8.4746 6.50808 7.89445 6.74376L7.8919 6.74481C7.36235 6.96335 6.99414 7.48413 6.99414 8.0925V9H7.99414V8.0925C7.99414 7.89828 8.10945 7.73731 8.27236 7.66961C9.09969 7.33289 9.91909 6.49869 9.91909 5.4311C9.91909 4.09346 8.83173 3.0061 7.49409 3.0061Z"
+                                            fill="#888888"
+                                        />
+                                        <path
+                                            d="M14.4941 7C14.4941 3.13401 11.3601 1.18292e-06 7.49414 0C3.62815 -2.14186e-06 0.494142 3.134 0.494141 7C0.494138 10.866 3.62815 14 7.49414 14C11.3601 14 14.4941 10.866 14.4941 7ZM13.4941 7C13.4941 10.3137 10.8078 13 7.49414 13C4.18043 13 1.49414 10.3137 1.49414 7C1.49414 3.68629 4.18043 0.999999 7.49414 1C10.8079 1 13.4941 3.68629 13.4941 7Z"
+                                            fill="#888888"
+                                        />
+                                    </svg>
                                 </div>
-                            )}
-                            {canShowList &&
-                                troveList
-                                    .slice(
-                                        page * ROW_PER_PAGE,
-                                        page * ROW_PER_PAGE + ROW_PER_PAGE
-                                    )
-                                    .map((row) => {
-                                        const { owner, collateral, debt, ICR } =
-                                            row;
-                                        const len = owner.length;
-
-                                        const tokens = collateral.map(
-                                            (t: any) => {
-                                                const token =
-                                                    supportAssets.find(
-                                                        (asset) => {
-                                                            return (
-                                                                asset.tokenAddr ===
-                                                                t.tokenAddr
-                                                            );
-                                                        }
-                                                    );
-                                                return token;
-                                            }
-                                        );
-
-                                        const troveCollRatioClass = [
-                                            s.tableItemCollRatioText,
-                                        ];
-                                        if (ICR >= systemCCR) {
-                                            troveCollRatioClass.push(s.health);
-                                        } else if (ICR >= systemMCR) {
-                                            troveCollRatioClass.push(s.waring);
-                                        } else {
-                                            troveCollRatioClass.push(s.emergency);
+                            </Popover>
+                        </div>
+                    </div>
+                    <div className={s.topRight}>
+                        <p className={s.riskTrovesTitle}>Risk Troves</p>
+                        <div className={s.inputContainer}>
+                            <div className={s.helpText}>
+                                <Popover title="" content={<div className={s.tipsModal}>Enter the trove quantity you want to liquidate for batch liquidation. Liquidation is performed in order of mortgage ratio from low to high.</div>}>
+                                    <div>
+                                        <svg
+                                            width="15"
+                                            height="14"
+                                            viewBox="0 0 15 14"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M6.89404 10.6C6.89404 10.2686 7.16267 10 7.49404 10C7.82541 10 8.09404 10.2686 8.09404 10.6C8.09404 10.9314 7.82541 11.2 7.49404 11.2C7.16267 11.2 6.89404 10.9314 6.89404 10.6Z"
+                                                fill="#888888"
+                                            />
+                                            <path
+                                                d="M7.49409 3.0061C6.15645 3.0061 5.06909 4.09346 5.06909 5.4311H6.06909C6.06909 4.64574 6.70873 4.0061 7.49409 4.0061C8.27945 4.0061 8.91909 4.64574 8.91909 5.4311C8.91909 5.96885 8.4746 6.50808 7.89445 6.74376L7.8919 6.74481C7.36235 6.96335 6.99414 7.48413 6.99414 8.0925V9H7.99414V8.0925C7.99414 7.89828 8.10945 7.73731 8.27236 7.66961C9.09969 7.33289 9.91909 6.49869 9.91909 5.4311C9.91909 4.09346 8.83173 3.0061 7.49409 3.0061Z"
+                                                fill="#888888"
+                                            />
+                                            <path
+                                                d="M14.4941 7C14.4941 3.13401 11.3601 1.18292e-06 7.49414 0C3.62815 -2.14186e-06 0.494142 3.134 0.494141 7C0.494138 10.866 3.62815 14 7.49414 14C11.3601 14 14.4941 10.866 14.4941 7ZM13.4941 7C13.4941 10.3137 10.8078 13 7.49414 13C4.18043 13 1.49414 10.3137 1.49414 7C1.49414 3.68629 4.18043 0.999999 7.49414 1C10.8079 1 13.4941 3.68629 13.4941 7Z"
+                                                fill="#888888"
+                                            />
+                                        </svg>
+                                    </div>
+                                </Popover>
+                                <p>Up to</p>
+                            </div>
+                            <div className={s.selectTroves}>
+                                <div>
+                                    <InputNumber
+                                        className={s.liquidateNumInput}
+                                        value={liquidateTroveAmount}
+                                        min={0}
+                                        step={1}
+                                        max={10}
+                                        onChange={(v) =>
+                                            setLiquidateTroveAmount(v || 0)
                                         }
+                                        controls={false}
+                                        precision={0}
+                                    />
+                                </div>
+                                <div onClick={handleLiquidateN} className={cx(s.confirmBtn, { [s.disableBtn]: isLiquidateIng })}>
+                                    <svg
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 32 32"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <rect
+                                            width="32"
+                                            height="32"
+                                            rx="16"
+                                            fill="#3083FF"
+                                            fillOpacity="0.1"
+                                        />
+                                        <path
+                                            d="M13.6667 20.5714V13.7143H14.8333V20.5714H13.6667Z"
+                                            fill="#3083FF"
+                                        />
+                                        <path
+                                            d="M17.1667 13.7143V20.5714H18.3333V13.7143H17.1667Z"
+                                            fill="#3083FF"
+                                        />
+                                        <path
+                                            d="M18.9167 10.2857H23V11.4286H21.8333V22.8571C21.8333 23.4883 21.311 24 20.6667 24H11.3333C10.689 24 10.1667 23.4883 10.1667 22.8571V11.4286H9V10.2857H13.0833L13.0833 8.91429C13.0833 8.40934 13.5012 8 14.0167 8H17.9833C18.4988 8 18.9167 8.40934 18.9167 8.91429V10.2857ZM14.25 10.2857H17.75L17.75 9.14286L14.25 9.14286V10.2857ZM11.3333 11.4286V22.8571H20.6667V11.4286H11.3333Z"
+                                            fill="#3083FF"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={s.troveList}>
+                    <div className={s.tableHead}>
+                        <div className={s.tableHeadOfOwner}>Owner</div>
+                        <div className={s.tableHeadCollateral}>
+                            <p>Collateral</p>
+                            <div className={s.collateralIcons}>
+                                {supportAssets.map((asset) => {
+                                    return (
+                                        <img
+                                            key={asset.assetName}
+                                            src={asset.icon}
+                                            alt=""
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className={s.tableHeadDebt}>
+                            Debt{"\u00A0"}
+                            <span>({stableCoinName})</span>
+                        </div>
+                        <div className={s.tableHeadCollRatio}>Coll.Ratio</div>
+                    </div>
+                    <div className={s.tableBody}>
+                        {(isLoadingTroves || isPreLoadTroves) && (
+                            <div className={s.emptyWrap}>
+                                <Spin />
+                            </div>
+                        )}
+                        {!isLoadingTroves && (
+                            <>
+                                {!canShowList && (
+                                    <div className={s.emptyWrap}>
+                                        <Empty />
+                                    </div>
+                                )}
+                                {canShowList &&
+                                    troveList
+                                        .slice(
+                                            page * ROW_PER_PAGE,
+                                            page * ROW_PER_PAGE + ROW_PER_PAGE
+                                        )
+                                        .map((row) => {
+                                            const { owner, collateral, debt, ICR } =
+                                                row;
+                                            const len = owner.length;
 
-                                        return (
-                                            <div
-                                                key={owner}
-                                                className={s.tableItem}
-                                                onClick={() =>
-                                                    handleLiquidateOne(
-                                                        row.owner
-                                                    )
+                                            const tokens = collateral.map(
+                                                (t: any) => {
+                                                    const token =
+                                                        supportAssets.find(
+                                                            (asset) => {
+                                                                return (
+                                                                    asset.tokenAddr ===
+                                                                    t.tokenAddr
+                                                                );
+                                                            }
+                                                        );
+                                                    return token;
                                                 }
-                                            >
+                                            );
+
+                                            const troveCollRatioClass = [
+                                                s.tableItemCollRatioText,
+                                            ];
+                                            if (ICR >= systemCCR) {
+                                                troveCollRatioClass.push(s.health);
+                                            } else if (ICR >= systemMCR) {
+                                                troveCollRatioClass.push(s.waring);
+                                            } else {
+                                                troveCollRatioClass.push(s.emergency);
+                                            }
+
+                                            return (
                                                 <div
-                                                    className={s.tableItemOwner}
+                                                    key={owner}
+                                                    className={s.tableItem}
+                                                    onClick={() =>
+                                                        handleLiquidateOne(
+                                                            row.owner
+                                                        )
+                                                    }
                                                 >
-                                                    <p className={s.owner}>
-                                                        {owner.slice(0, 4) +
-                                                            "..." +
-                                                            owner.slice(
-                                                                len - 4
-                                                            )}
-                                                    </p>
-                                                    <CopyToClipboard
-                                                        text={owner}
-                                                        onCopy={ShowAlert}
-                                                    >
+                                                    <div className={s.tableItemContainer}>
+                                                        <div
+                                                            className={s.tableItemOwner}
+                                                        >
+                                                            <p className={s.owner}>
+                                                                {owner.slice(0, 4) +
+                                                                    "..." +
+                                                                    owner.slice(
+                                                                        len - 4
+                                                                    )}
+                                                            </p>
+                                                            <p className={cx(s.owner, s.ownerOnMobile)}>
+                                                                {owner.slice(0, 4) + "..."}
+                                                            </p>
+                                                            <CopyToClipboard
+                                                                text={owner}
+                                                                onCopy={ShowAlert}
+                                                            >
+                                                                <div
+                                                                    className={
+                                                                        s.copyIcon
+                                                                    }
+                                                                    onClick={(
+                                                                        e: any
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        e.stopPropagation();
+                                                                        e.nativeEvent.stopImmediatePropagation();
+                                                                    }}
+                                                                >
+                                                                    <CopyIcon />
+                                                                </div>
+                                                            </CopyToClipboard>
+                                                        </div>
                                                         <div
                                                             className={
-                                                                s.copyIcon
+                                                                s.tableItemCollateralAmountList
                                                             }
-                                                            onClick={(
-                                                                e: any
-                                                            ) => {
-                                                                e.preventDefault();
-                                                                e.stopPropagation();
-                                                                e.nativeEvent.stopImmediatePropagation();
-                                                            }}
                                                         >
-                                                            <CopyIcon />
+                                                            {tokens.map(
+                                                                (
+                                                                    token: any,
+                                                                    index: number
+                                                                ) => {
+                                                                    const amount =
+                                                                        collateral[
+                                                                            index
+                                                                        ].amount;
+                                                                    return (
+                                                                        <div
+                                                                            key={
+                                                                                token?.tokenAddr ||
+                                                                                index
+                                                                            }
+                                                                            className={
+                                                                                s.collateralCell
+                                                                            }
+                                                                        >
+                                                                            <p
+                                                                                className={
+                                                                                    s.collateralAmount
+                                                                                }
+                                                                            >
+                                                                                {formatUnits(
+                                                                                    +amount,
+                                                                                    token?.tokenDecimals
+                                                                                )}
+                                                                            </p>
+                                                                            <p
+                                                                                className={
+                                                                                    s.collateralName
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    token?.tokenName
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    );
+                                                                }
+                                                            )}
                                                         </div>
-                                                    </CopyToClipboard>
-                                                </div>
-                                                <div
-                                                    className={
-                                                        s.tableItemCollateralAmountList
-                                                    }
-                                                >
-                                                    {tokens.map(
-                                                        (
-                                                            token: any,
-                                                            index: number
-                                                        ) => {
-                                                            const amount =
-                                                                collateral[
-                                                                    index
-                                                                ].amount;
-                                                            return (
-                                                                <div
-                                                                    key={
-                                                                        token?.tokenAddr ||
-                                                                        index
-                                                                    }
-                                                                    className={
-                                                                        s.collateralCell
-                                                                    }
-                                                                >
-                                                                    <p
-                                                                        className={
-                                                                            s.collateralAmount
-                                                                        }
-                                                                    >
-                                                                        {formatUnits(
-                                                                            +amount,
-                                                                            token?.tokenDecimals
-                                                                        )}
-                                                                    </p>
-                                                                    <p
-                                                                        className={
-                                                                            s.collateralName
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            token?.tokenName
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            );
-                                                        }
-                                                    )}
-                                                </div>
-                                                <p className={s.tableItemDebt}>
-                                                    {addCommas(
-                                                        formatUnits(
-                                                            debt,
-                                                            stableCoinDecimals
-                                                        )
-                                                    )}
-                                                </p>
-                                                <div
-                                                    className={
-                                                        s.tableItemRatio
-                                                    }
-                                                >
-                                                    <p
-                                                        className={cx(
-                                                            troveCollRatioClass
-                                                        )}
-                                                    >
-                                                        {(ICR * 100).toFixed(2)}
-                                                        %
-                                                    </p>
+                                                        <p className={s.tableItemDebt}>
+                                                            {addCommas(
+                                                                formatUnits(
+                                                                    debt,
+                                                                    stableCoinDecimals
+                                                                )
+                                                            )}
+                                                        </p>
+                                                        <div
+                                                            className={
+                                                                s.tableItemRatio
+                                                            }
+                                                        >
+                                                            <p
+                                                                className={cx(
+                                                                    troveCollRatioClass
+                                                                )}
+                                                            >
+                                                                {(ICR * 100).toFixed(2)}
+                                                                %
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                     <div className={s.addonAfter}>
                                                         <div
                                                             className={cx(
@@ -485,19 +495,19 @@ function Liquidate() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
-                        </>
-                    )}
+                                            );
+                                        })}
+                            </>
+                        )}
+                    </div>
+                    <Pagination
+                        current={page + 1}
+                        className={s.pageControl}
+                        total={troveAmount}
+                        pageSize={ROW_PER_PAGE}
+                        onChange={onPageChange}
+                    />
                 </div>
-                <Pagination
-                    current={page + 1}
-                    className={s.pageControl}
-                    total={troveAmount}
-                    pageSize={ROW_PER_PAGE}
-                    onChange={onPageChange}
-                />
             </div>
         </div>
     );

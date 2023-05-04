@@ -120,7 +120,7 @@ function NewDeposit() {
                 </div>
             </div>
             <div className={s.btnArea}>
-                <div className={s.cancelBtn} onClick={toggleStartDeposit}>Cancel</div>
+                <div className={cx(s.btn, s.cancel)} onClick={toggleStartDeposit}>Cancel</div>
                 <div className={cx(s.btn, {
                         [s.disable]: +depositNum * Math.pow(10, stableCoinDecimals) > userStableCoinBalance || +depositNum < 1,
                         [s.loading]: isProcessing

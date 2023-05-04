@@ -3,9 +3,14 @@
     padding: 30px;
     border-radius: 32px;
     background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .title {
+    width: 100%;
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
@@ -13,6 +18,7 @@
 }
 
 .descWrap {
+    width: 100%;
     margin-top: 30px;
     display: flex;
     align-items: center;
@@ -27,6 +33,7 @@
 }
 
 .tips {
+    width: 100%;
     margin-top: 10px;
     font-size: 14px;
     font-weight: 450;
@@ -35,9 +42,9 @@
 }
 
 .img {
-    margin-top: 30px;
-    width: 100%;
+    width: 470px;
     height: 278px;
+    margin-top: 30px;
 }
 
 .tvlInfo {
@@ -80,4 +87,38 @@
     cursor: pointer;
     border-radius: 63px;
     background-color: var(--main-color);
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .desc {
+        font-size: 16px;
+    }
+
+    .tips {
+        font-size: 12px;
+    }
+
+    .img {
+        width: 350px;
+        height: 222px;
+    }
+
+    .tvlAmount {
+        font-size: 20px;
+    }
 }

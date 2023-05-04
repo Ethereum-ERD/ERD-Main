@@ -1,0 +1,63 @@
+.title {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.asset {
+    width: 100%;
+    padding: 17px 12px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: #fbfbfc;
+}
+
+.assetName {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    font-weight: 450;
+    font-size: 14px;
+    line-height: 133%;
+
+    img {
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+    }
+}
+
+.tokenInfo,
+.depositInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.tokenInfo {
+    width: 100px;
+}
+
+.depositInfo {
+    width: 180px;
+}
+
+.tokenTitle,
+.depositTitle {
+    color: #999;
+    font-size: 12px;
+    line-height: 133%;
+    font-weight: 450;
+}
+
+.tokenContent,
+.depositContent {
+    margin-top: 5px;
+    color: #333;
+    font-size: 12px;
+    line-height: 133%;
+    font-weight: 450;
+}
