@@ -57,18 +57,18 @@ export function cutFloat(v: number, len = 2) {
 
 export function translateUint(v: number) {
     if (Number.isNaN(v) || typeof v !== 'number') {
-        return v;
+        return [v, ''];
     }
     if (v > 1e10) {
-        return (v / 1e10).toFixed(2) + 'B';
+        return [(v / 1e10).toFixed(2), 'B'];
     }
     if (v > 1e6) {
-        return (v / 1e6).toFixed(2) + 'M';
+        return [(v / 1e6).toFixed(2), 'M'];
     }
 
     if (v > 1e3) {
-        return (v / 1e3).toFixed(2) + 'K';
+        return [(v / 1e3).toFixed(2), 'K'];
     }
 
-    return `${v}`;
+    return [`${v}`, ''];
 }

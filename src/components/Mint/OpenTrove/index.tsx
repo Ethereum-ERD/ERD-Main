@@ -6,6 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
 import { addCommas, formatUnits, throwFloat } from 'src/util';
+import MintTitle from 'src/components/common/MintTitle';
 import { BorrowItem } from 'src/types';
 import { useStore } from 'src/hooks';
 
@@ -150,7 +151,7 @@ export default observer(function OpenTrove() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Borrow</p>
+            <MintTitle />
             {validColls.length === 0 && (
                 <div className={s.warning}>
                     You have no  support Collateral 😅 

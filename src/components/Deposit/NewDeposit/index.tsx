@@ -61,7 +61,7 @@ function NewDeposit() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Deposit</p>
+            <p className={s.title}>Deposit-SP</p>
             <div className={s.depositNumInputWrap}>
                 <InputNumber
                     stringMode
@@ -100,7 +100,7 @@ function NewDeposit() {
                     {(userDepositAmount/spTVL * 100).toFixed(2)}%
                 </p>
             </div>
-            <div className={s.userCollateral}>
+            {/* <div className={s.userCollateral}>
                 <p className={s.userCollateralTitle}>Your Collateral</p>
                 <div className={s.userCollateralList}>
                     {userCollateralInfo.map((coll) => {
@@ -118,7 +118,7 @@ function NewDeposit() {
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartDeposit}>Cancel</div>
                 <div className={cx(s.btn, {

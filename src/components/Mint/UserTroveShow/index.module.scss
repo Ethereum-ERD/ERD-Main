@@ -5,13 +5,6 @@
     background-color: #fff;
 }
 
-.title {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 40px;
-    color: #333;
-}
-
 .info {
     width: 100%;
     display: flex;
@@ -167,6 +160,10 @@
         width: 100%;
         padding: 0;
         border-radius: 0;
+    }
+
+    .supportIcon {
+        display: none;
     }
 
     .info {

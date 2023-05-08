@@ -48,6 +48,8 @@ export default class Store {
 
     stableCoinDecimals = 0;
 
+    stableCoinTotalSupply = 0;
+
     /* user own eUSD info */
     userStableCoinBalance = 0;
 
@@ -76,6 +78,8 @@ export default class Store {
 
     protocolAssetsInfo: Array<ProtocolCollateralItem> = [];
 
+    protocolTotalValueInUSD = 0;
+
     /* user collateral info */
     userCollateralInfo: Array<UserCollateralItem> = [];
 
@@ -101,6 +105,8 @@ export default class Store {
 
     /* stability pool info */
     spTVL = 0;
+
+    spOwnStableCoinAmount = 0;
 
     /* system status control */
     isPreLoadTroves = false;
@@ -150,9 +156,20 @@ export default class Store {
         reaction(() => this.supportAssets, (assetList) => {
             this.queryCollateralValue(assetList);
             this.queryProtocolAssetInfo(assetList);
+            this.querySystemTVLInETH(assetList);
         });
 
         reaction(() => this.contractMap, this.initSystemKeyInfo);
+    }
+
+    @computed get protocolValInETH() {
+        const { protocolTotalValueInUSD, collateralValueInfo } = this;
+        const valueInETH = protocolTotalValueInUSD / collateralValueInfo[MOCK_ETH_ADDR];
+        if (Number.isNaN(valueInETH)) {
+            return 0;
+        }
+
+        return valueInETH;
     }
 
     @computed get didUserDeposited() {
@@ -267,15 +284,26 @@ export default class Store {
     }
 
     async querySystemInfo() {
-        const { CollateralManager } = this.contractMap;
-        if (!CollateralManager) return;
-        const [MCR, gasCompensation, minDebt, systemCCR, redeemFeeFloor, borrowFeeFloor] = await Promise.all([
+        const { CollateralManager, StableCoin, StabilityPool } = this.contractMap;
+        if (!CollateralManager || !StableCoin || !StabilityPool) return;
+        const [
+            MCR,
+            gasCompensation,
+            minDebt,
+            systemCCR,
+            redeemFeeFloor,
+            borrowFeeFloor,
+            stableCoinTotalSupply,
+            spOwnStableCoinAmount
+        ] = await Promise.all([
             CollateralManager.getMCR(),
             CollateralManager.getEUSDGasCompensation(),
             CollateralManager.getMinNetDebt(),
             CollateralManager.getCCR(),
             CollateralManager.getRedemptionFeeFloor(),
-            CollateralManager.getBorrowingFeeFloor()
+            CollateralManager.getBorrowingFeeFloor(),
+            StableCoin.totalSupply(),
+            StableCoin.balanceOf(StabilityPool.address)
         ]);
 
         this.querySystemTCR(true);
@@ -287,6 +315,53 @@ export default class Store {
             this.gasCompensation = +gasCompensation;
             this.borrowFeeRatio = borrowFeeFloor / 1e18;
             this.redeemFeeRatio = redeemFeeFloor / 1e18;
+            this.stableCoinTotalSupply = +stableCoinTotalSupply;
+            this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
+        });
+    }
+
+    async querySystemTVLInETH(assetList: Array<SupportAssetsItem>) {
+        const { CollateralManager, PriceFeeds, ERC20, ActivePool } = this.contractMap;
+        if (!CollateralManager || !PriceFeeds || !ERC20) return;
+
+        if (assetList.length < 1) return;
+
+        const tokenAddr = assetList.map(asset => asset.tokenAddr);
+
+        const collateralInfo = await Promise.all(
+            tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
+        );
+
+        const oracles = collateralInfo.map(c => c.oracle);
+
+        const prices = await Promise.all(
+            oracles.map(o => {
+                if (o === EMPTYADDRESS) {
+                    return 0;
+                }
+                return PriceFeeds.attach(o).fetchPrice_view()
+            })
+        );
+
+        const amounts = await Promise.all(
+            tokenAddr.map(t => {
+                if (t === MOCK_ETH_ADDR) {
+                    return ERC20.attach(WETH_ADDR).balanceOf(ActivePool.address)
+                }
+
+                return ERC20.attach(t).balanceOf(ActivePool.address)
+            })
+        );
+
+        const totalValue = prices.reduce((tv, price, index) => {
+            const asset = assetList[index];
+            const priceInUint = price / 1e18;
+            const amount = +formatUnits(+amounts[index], asset.tokenDecimals);
+            return tv.add(toBN(amount * priceInUint));
+        }, BN_ZERO);
+
+        runInAction(() => {
+            this.protocolTotalValueInUSD = +totalValue;
         });
     }
 
@@ -634,14 +709,15 @@ export default class Store {
                 .filter((c: { token: string; amount: ethers.BigNumber }) => c.amount.gt(BN_ZERO));
     
             const assetInfo: Array<SupportAssetsItem & { amount: ethers.BigNumber }> =
-                troveCollateralInfo.map((c: any) => {
-                    const tokenAddr = c.token === WETH_ADDR ? MOCK_ETH_ADDR : WETH_ADDR;
+                troveCollateralInfo
+                .map((c: any) => {
+                    const tokenAddr = c.token === WETH_ADDR ? MOCK_ETH_ADDR : c.token;
                     const asset = supportAssets.find(asset => asset.tokenAddr === tokenAddr);
                     return {
                         ...asset!,
                         amount: c.amount
                     };
-            });
+                });
 
             const queryAssetList = assetInfo.map(asset => {
                 if (asset.tokenAddr === MOCK_ETH_ADDR) {
@@ -848,17 +924,35 @@ export default class Store {
     
             const collIn: Array<{ token: string; amount: ethers.BigNumber }> = [];
             const collOut: Array<{ token: string; amount: ethers.BigNumber }> = [];
-    
-            newTroveCollateralInfo.forEach(c => {
+            
+            const compareTarget = [
+                ...oldTroveCollateralInfo.map(c => ({ ...c, isOld: true, isNew: false })),
+                ...newTroveCollateralInfo.map(c => ({ ...c, isNew: true, isOld: false }))
+            ];
+
+            compareTarget.forEach(c => {
                 const { token, amount } = c;
-                const collateralInOld = oldTroveCollateralInfo.find(i => i.token === token);
-                if (!collateralInOld) {
-                    collIn.push(c);
-                } else if (amount.gt(collateralInOld.amount)) {
-                    collIn.push({ ...c, amount: amount.sub(collateralInOld.amount) });
-                } else if (amount.lt(collateralInOld.amount)) {
-                    collOut.push({ ...c, amount: collateralInOld.amount.sub(amount) });
+
+                if (c.isOld) {
+                    const collateralInNew = newTroveCollateralInfo.find(i => i.token === token);
+                    if (!collateralInNew) {
+                        collOut.push(c);
+                    } else if (amount.gt(collateralInNew.amount)) {
+                        collOut.push({ ...c, amount: amount.sub(collateralInNew.amount) });
+                    } else if (amount.lt(collateralInNew.amount)) {
+                        collIn.push({ ...c, amount: collateralInNew.amount.sub(amount) });
+                    }
+                } else {
+                    const collateralInOld = oldTroveCollateralInfo.find(i => i.token === token);
+                    if (!collateralInOld) {
+                        collIn.push(c);
+                    } else if (amount.gt(collateralInOld.amount)) {
+                        collIn.push({ ...c, amount: amount.sub(collateralInOld.amount) });
+                    } else if (amount.lt(collateralInOld.amount)) {
+                        collOut.push({ ...c, amount: collateralInOld.amount.sub(amount) });
+                    }
                 }
+
             });
 
             const [lowerHint, upperHint] = await this.getBorrowerOpsListHint(
@@ -866,22 +960,55 @@ export default class Store {
                 newDebtAmount
             );
 
+            const CollInObject = collIn.reduce((map, item) => {
+                const { token, amount } = item;
+                if (map[token]) {
+                    map[token].add(amount);
+                } else {
+                    map[token] = amount;
+                }
+
+                return map;
+            }, {} as { [key: string]: ethers.BigNumber });
+
+            const CollOutObject = collOut.reduce((map, item) => {
+                const { token, amount } = item;
+                if (map[token]) {
+                    map[token].add(amount);
+                } else {
+                    map[token] = amount;
+                }
+
+                return map;
+            }, {} as { [key: string]: ethers.BigNumber });
+
+            const formatCollIn = Object.keys(CollInObject)
+                .map(key => {
+                    return { token: key, amount: CollInObject[key] };
+                });
+
+            const formatCollOut = Object.keys(CollOutObject)
+                .map(key => {
+                    return { token: key, amount: CollOutObject[key] };
+                });
+
             const approveList = await Promise.all(
-                collIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
+                formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
             );
 
             if (!approveList.every(x => x)) return false;
 
             const override = { value: BN_ZERO };
 
-            const ethCollateralIdx = collIn.findIndex(c => c.token === MOCK_ETH_ADDR);
+            const ethCollateralIdx = formatCollIn.findIndex(c => c.token === MOCK_ETH_ADDR);
 
             if (ethCollateralIdx !== -1) {
-                override.value = collIn[ethCollateralIdx].amount;
+                override.value = formatCollIn[ethCollateralIdx].amount;
             }
-            const pass2ContractCollateral = collIn.filter((_, idx) => idx !== ethCollateralIdx);
 
-            const passOutContractCollateral = collOut.map(c => {
+            const pass2ContractCollateral = formatCollIn.filter((_, idx) => idx !== ethCollateralIdx);
+
+            const passOutContractCollateral = formatCollOut.map(c => {
                 if (c.token === MOCK_ETH_ADDR) {
                     return {
                         ...c,

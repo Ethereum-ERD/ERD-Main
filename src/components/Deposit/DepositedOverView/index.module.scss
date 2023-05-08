@@ -46,75 +46,59 @@
     }
 }
 
+.titleDesc {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 133%;
+    font-weight: 450;
+    color: #999;
+}
+
 .depositInfo {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 63px;
+    padding: 24px;
 
     display: flex;
     align-items: center;
+    flex-direction: column;
+    background-color: #F8FAFE;
+    border-radius: 16px;
 }
 
 .depositAmount,
 .poolShare {
-    width: 50%;
-
-    display: flex;
-    flex-direction: column;
-
-    &>p:first-child {
-        color: #999;
-        font-size: 14px;
-        line-height: 133%;
-    }
-
-    &>p:last-child {
-        color: #333;
-        font-size: 20px;
-        line-height: 133%;
-        font-weight: 500;
-
-        span {
-            margin-left: 5px;
-
-            color: #999;
-            font-size: 14px;
-            display: inline-block;
-        }
-    }
-}
-
-.img {
-    width: 470px;
-    height: 278px;
-    margin: 21px auto 0;
-}
-
-.tvlInfo {
     width: 100%;
-    height: 78px;
-    padding: 0 24px;
-    margin-top: 20px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    background: #F8FAFE;
-    border-radius: 16px;
-    font-size: 14px;
-    color: #999;
 }
 
-.tvlAmount {
-    font-size: 24px;
+.indexName {
+    color: #999;
+    font-size: 14px;
+    line-height: 133%;
+}
+
+.indexValue {
     color: #333;
+    font-size: 24px;
+    line-height: 133%;
     font-weight: 500;
 
     span {
         margin-left: 5px;
-        display: inline-block;
-        font-size: 14px;
+
         color: #999;
+        font-size: 14px;
+        display: inline-block;
     }
+}
+
+.poolShare {
+    margin-top: 10px;
 }
 
 .btnArea {
@@ -182,15 +166,6 @@
             font-size: 16px;
             line-height: 133%;
         }
-    }
-
-    .img {
-        width: 350px;
-        height: 222px;
-    }
-
-    .tvlAmount {
-        font-size: 20px;
     }
 
     .btn {

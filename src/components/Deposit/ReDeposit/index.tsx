@@ -61,7 +61,7 @@ function ReDeposit() {
     return (
         <div className={s.wrap}>
             <div className={s.overviewTop}>
-                <p className={s.title}>Deposit</p>
+                <p className={s.title}>Deposit-SP</p>
                 <div className={s.claimBtn} onClick={toggleStartClaimRewards}>
                     <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" clipRule="evenodd" d="M11.0764 0L6.29967 6.81923L11.0746 8.56903L15.7866 6.81826L11.0764 0ZM11.0718 7.51925L7.89581 6.3554L11.0701 1.82382L14.2013 6.35645L11.0718 7.51925ZM15.9412 7.1587L11.0693 9.25283L6.05882 7.17332L11.0811 13.4839L15.9412 7.1587ZM11.0657 11.8019L9.3056 9.59025L11.0772 10.3255L12.7539 9.60486L11.0657 11.8019Z" fill="#999999"/>
@@ -70,6 +70,7 @@ function ReDeposit() {
                     <p>Claim</p>
                 </div>
             </div>
+            <p className={s.titleDesc}>Deposit {stableCoinName} in the stable pool to earn liquidation income</p>
             <div className={s.depositNumInputWrap}>
                 <InputNumber
                     stringMode
@@ -107,7 +108,7 @@ function ReDeposit() {
                     <p>{(userDepositAmount/spTVL * 100).toFixed(2)}%</p>
                 </div>
             </div>
-            <div className={s.userCollateral}>
+            {/* <div className={s.userCollateral}>
                 <p className={s.userCollateralTitle}>Your Collateral</p>
                 <div className={s.userCollateralList}>
                     {userCollateralInfo.map((coll) => {
@@ -125,7 +126,7 @@ function ReDeposit() {
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartDeposit}>Cancel</div>
                 <div className={cx(s.btn, {

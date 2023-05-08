@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { observer } from 'mobx-react';
 import cx from 'classnames';
 
+import MintTitle from 'src/components/common/MintTitle';
 import { addCommas, formatUnits } from 'src/util';
 import { useStore } from 'src/hooks';
 
@@ -27,7 +28,7 @@ export default observer(function UserTroveShow() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Borrow</p>
+            <MintTitle />
             <div className={s.info}>
                 <div className={s.item}>
                     <p>Total Debt</p>
@@ -71,7 +72,7 @@ export default observer(function UserTroveShow() {
                         <div key={coll.tokenAddr} className={s.collateralItem}>
                             <div className={s.collateralItemHead}>
                                 <img src={coll.icon} alt='' />
-                                <p>{coll.tokenName}</p>
+                                <p>{coll.assetName}</p>
                             </div>
                             <div className={s.collateralItemBody}>
                                 {formatUnits(coll.amount, coll.tokenDecimals)}

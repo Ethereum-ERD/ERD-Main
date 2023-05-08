@@ -12,6 +12,8 @@ export const ROW_PER_PAGE = 10;
 
 export const BN_ZERO = ethers.BigNumber.from(0);
 
+export const BN_ONE = ethers.BigNumber.from(1);
+
 export const MOCK_ETH_ADDR = '0x' + '0'.repeat(40);
 
 export enum SORT_BY {
@@ -22,11 +24,11 @@ export enum SORT_BY {
 export const Routes = [
     {
         path: '/',
-        name: 'Borrow'
+        name: 'Mint'
     },
     {
         path: '/deposit',
-        name: 'Deposit'
+        name: 'Deposit-SP'
     },
     {
         path: '/liquidate',
@@ -35,6 +37,10 @@ export const Routes = [
     {
         path: '/redeem',
         name: 'Redemption'
+    },
+    {
+        path: '/statistics',
+        name: 'Statistics'
     }
 ];
 
