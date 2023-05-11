@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
 export function throwFloat(num: number) {
-    return ~~(num);
+    return Math.trunc(num);
 }
 
 export function toBN(num: number) {
@@ -50,7 +50,10 @@ export function formatUnits(v: number, uint = 18, floatLen = 2) {
 
 export function cutFloat(v: number, len = 2) {
     const [int, float] = `${v}`.split('.');
-    if (!float) return [int, '.', '00'].join('');
+    if (len < 1) {
+        return `${int}`;
+    }
+    if (!float) return [int, '.', ('0').repeat(len)].join('');
 
     return [int, '.', float.slice(0, len)].join('');
 }

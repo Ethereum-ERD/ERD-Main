@@ -284,8 +284,8 @@ export default class Store {
     }
 
     async querySystemInfo() {
-        const { CollateralManager, StableCoin, StabilityPool } = this.contractMap;
-        if (!CollateralManager || !StableCoin || !StabilityPool) return;
+        const { CollateralManager, StableCoin, StabilityPool, TroveManager } = this.contractMap;
+        if (!CollateralManager || !StableCoin || !StabilityPool || !TroveManager) return;
         const [
             MCR,
             gasCompensation,
@@ -300,8 +300,8 @@ export default class Store {
             CollateralManager.getEUSDGasCompensation(),
             CollateralManager.getMinNetDebt(),
             CollateralManager.getCCR(),
-            CollateralManager.getRedemptionFeeFloor(),
-            CollateralManager.getBorrowingFeeFloor(),
+            TroveManager.getRedemptionRate(),
+            TroveManager.getBorrowingRate(),
             StableCoin.totalSupply(),
             StableCoin.balanceOf(StabilityPool.address)
         ]);
@@ -1100,6 +1100,7 @@ export default class Store {
                 );
             const result = await web3Provider.waitForTransaction(hash);
             if (result.status === 1) {
+                this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
             return result.status === 1;
@@ -1345,5 +1346,17 @@ export default class Store {
                 shares: []
             }
         });
+    }
+
+    /** help function */
+    async querySystemTotalValueAndDebt() {
+        const { PriceFeeds, BorrowerOperation } = this.contractMap;
+        if (!PriceFeeds || !BorrowerOperation) return 0;
+        const ethPrice = await PriceFeeds.fetchPrice_view();
+        const [systemTotalValueInfo, systemDebtInfo] = await Promise.all([
+            BorrowerOperation.getEntireSystemColl(ethPrice),
+            BorrowerOperation.getEntireSystemDebt()
+        ]);
+        console.log(systemTotalValueInfo, systemDebtInfo);
     }
 }

@@ -3,7 +3,7 @@ import { Popover } from "antd";
 import cx from 'classnames';
 
 import CircleHelp from 'src/components/common/CircleHelp';
-import { formatUnits, translateUint } from 'src/util';
+import { formatUnits, translateUint, cutFloat } from 'src/util';
 import { useStore } from 'src/hooks';
 
 import s from './Dashboard.module.scss';
@@ -46,7 +46,7 @@ export default observer(function Dashboard() {
                                 </div>
                             </Popover>
                         </div>
-                        <p className={s.indexValue}>{borrowFeeRatio * 100}<span>%</span></p>
+                        <p className={s.indexValue}>{cutFloat(borrowFeeRatio * 100, 0)}<span>%</span></p>
                     </div>
                 </div>
                 <div className={s.index}>

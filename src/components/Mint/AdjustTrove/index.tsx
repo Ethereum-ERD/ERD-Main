@@ -6,6 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
 import { addCommas, formatUnits, throwFloat } from 'src/util';
+import { MAX_MINTING_FEE } from 'src/constants';
 import { useStore } from 'src/hooks';
 
 import FeeInfo from '../FeeInfo';
@@ -24,10 +25,11 @@ export default observer(function AdjustTrove() {
     const [fastStep, setFastStep] = useState(0);
     const [borrowNum, setBorrowNum] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
+    const [maxBorrowNum, setMaxBorrowNum] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR } = store;
+    const { systemCCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, borrowFeeRatio, gasCompensation } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -93,7 +95,7 @@ export default observer(function AdjustTrove() {
 
     const onFastChoose = (v: number) => {
         setFastStep(v);
-        setBorrowNum(throwFloat(v / 100 * assetValue / systemMCR));
+        setBorrowNum(throwFloat(v / 100 * maxBorrowNum));
     };
 
     useEffect(() => {
@@ -121,6 +123,12 @@ export default observer(function AdjustTrove() {
     useEffect(() => {
         setCollateralRatio(assetValue / borrowNum);
     }, [borrowNum, assetValue]);
+
+    useEffect(() => {
+        const maxBorrowAble = (assetValue / systemMCR - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+
+        setMaxBorrowNum(throwFloat(maxBorrowAble));
+    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR]);
 
     const handleConfirm = async () => {
         if (isProcessing) return;
@@ -246,10 +254,13 @@ export default observer(function AdjustTrove() {
                 </div>
                 <div className={s.tips}>
                     <p>{addCommas(formatUnits(minBorrowAmount, stableCoinDecimals))} {stableCoinName} Min</p>
-                    <p>{addCommas(throwFloat(assetValue / systemMCR))} {stableCoinName} Max</p>
+                    <p>{addCommas(maxBorrowNum)} {stableCoinName} Max</p>
                 </div>
             </div>
-            <FeeInfo liquidationReserve={assetValue} totalDebt={userTrove.debt} />
+            <FeeInfo
+                totalDebt={userTrove.debt}
+                fee={(userTrove.debt * borrowFeeRatio) / Math.pow(10, stableCoinDecimals)}
+            />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (
                     <div className={cx(s.btn, s.disable, s.notReady)}>Get Start</div>

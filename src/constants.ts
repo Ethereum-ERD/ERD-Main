@@ -16,6 +16,8 @@ export const BN_ONE = ethers.BigNumber.from(1);
 
 export const MOCK_ETH_ADDR = '0x' + '0'.repeat(40);
 
+export const MAX_MINTING_FEE = 0.05;
+
 export enum SORT_BY {
     DescCollateralRatio = 1,
     AscCollateralRatio

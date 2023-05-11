@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { observer } from 'mobx-react';
 import { InputNumber, notification } from 'antd';
 import cx from 'classnames';
@@ -15,9 +15,8 @@ export default observer(function Repay() {
     const { store } = useStore();
 
     const [repayNum, setRepayNum] = useState(0);
-    const [assetValue, setAssetValue] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
-    const { userTrove, fetchWrappedETH2USD, userStableCoinBalance, stableCoinName, stableCoinDecimals, toggleStartRepay, closeTrove } = store;
+    const { userTrove, userStableCoinBalance, stableCoinName, stableCoinDecimals, toggleStartRepay, closeTrove, borrowFeeRatio } = store;
 
     const onRepayNumChange = (v: any) => {
         if (v == null) {
@@ -42,14 +41,6 @@ export default observer(function Repay() {
     const setToMax = () => {
         setRepayNum(+formatUnits(userStableCoinBalance, stableCoinDecimals));
     };
-
-    useEffect(() => {
-        const collInfo = userTrove.collateral.map(coll => {
-            return { token: coll.tokenAddr, amount: + formatUnits(coll.amount, coll.tokenDecimals) };
-        });
-        const value = fetchWrappedETH2USD(collInfo);
-        setAssetValue(value);
-    }, [fetchWrappedETH2USD, userTrove, stableCoinDecimals]);
 
     const handleConfirm = async () => {
         if (isProcessing) return;
@@ -103,7 +94,10 @@ export default observer(function Repay() {
                     You do not have enough {stableCoinName} to pay back 😅
                 </div>
             )}
-            <FeeInfo liquidationReserve={assetValue} totalDebt={userTrove.debt} />
+            <FeeInfo
+                totalDebt={userTrove.debt}
+                fee={(userTrove.debt * borrowFeeRatio) / Math.pow(10, stableCoinDecimals)}
+            />
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartRepay}>Cancel</div>
                 <div

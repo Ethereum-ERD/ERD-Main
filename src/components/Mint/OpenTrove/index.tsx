@@ -7,6 +7,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
 import { addCommas, formatUnits, throwFloat } from 'src/util';
 import MintTitle from 'src/components/common/MintTitle';
+import { MAX_MINTING_FEE } from 'src/constants';
 import { BorrowItem } from 'src/types';
 import { useStore } from 'src/hooks';
 
@@ -21,10 +22,11 @@ export default observer(function OpenTrove() {
     const [fastStep, setFastStep] = useState(0);
     const [borrowNum, setBorrowNum] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
+    const [maxBorrowNum, setMaxBorrowNum] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, toggleStartBorrow } = store;
+    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, borrowFeeRatio, toggleStartBorrow } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -90,7 +92,7 @@ export default observer(function OpenTrove() {
 
     const onFastChoose = (v: number) => {
         setFastStep(v);
-        setBorrowNum(throwFloat(v / 100 * assetValue / systemMCR));
+        setBorrowNum(throwFloat(v / 100 * maxBorrowNum));
     };
 
     useEffect(() => {
@@ -102,8 +104,27 @@ export default observer(function OpenTrove() {
     }, [fetchWrappedETH2USD, borrowInfo]);
 
     useEffect(() => {
-        setCollateralRatio(assetValue / borrowNum);
-    }, [borrowNum, assetValue]);
+        if (borrowNum === 0) {
+            setCollateralRatio(0);
+            return;
+        }
+        const realDebt = borrowNum + gasCompensation / Math.pow(10, stableCoinDecimals) + borrowNum * MAX_MINTING_FEE;
+        setCollateralRatio(assetValue / realDebt);
+    }, [borrowNum, assetValue, gasCompensation, stableCoinDecimals]);
+
+    useEffect(() => {
+        const maxBorrowAble = (assetValue / systemMCR - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+
+        setMaxBorrowNum(throwFloat(maxBorrowAble));
+    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR]);
+
+    const realDebt = useMemo(() => {
+        if (borrowNum === 0) {
+            return 0;
+        }
+        const debt = borrowNum * (1 + borrowFeeRatio) + gasCompensation / Math.pow(10, stableCoinDecimals);
+        return throwFloat(debt);
+    }, [borrowNum, gasCompensation, stableCoinDecimals, borrowFeeRatio]);
 
     const crClasses = useMemo(() => {
         if (Number.isNaN(collateralRatio) || collateralRatio === 0) return [];
@@ -231,13 +252,13 @@ export default observer(function OpenTrove() {
                 {!!assetValue && (
                     <div className={s.tips}>
                         <p>{addCommas(formatUnits(minBorrowAmount, stableCoinDecimals))} {stableCoinName} Min</p>
-                        <p>{addCommas(throwFloat(assetValue / systemMCR))} {stableCoinName} Max</p>
+                        <p>{addCommas(maxBorrowNum)} {stableCoinName} Max</p>
                     </div>
                 )}
             </div>
             <FeeInfo
-                liquidationReserve={assetValue}
-                totalDebt={borrowNum * Math.pow(10, stableCoinDecimals)}
+                totalDebt={realDebt * Math.pow(10, stableCoinDecimals)}
+                fee={(borrowNum * borrowFeeRatio)}
             />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (

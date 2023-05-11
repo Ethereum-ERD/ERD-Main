@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 
+import LoopQueryTCR from "src/LoopQueryTCR";
 import SupportAsset from "src/SupportAsset";
 import WatchConnect from "src/WatchConnect";
 import WatchWallet from "src/WatchWallet";
@@ -30,6 +31,7 @@ function App() {
             <div className={s.content}>
                 <RouterComp />
             </div>
+            <LoopQueryTCR />
             <WatchRoute />
             <WatchWallet />
             <WatchConnect />
