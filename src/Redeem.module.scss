@@ -177,6 +177,14 @@
         cursor: not-allowed;
         background-color: #C5C5C5;
     }
+
+    &.loading {
+        opacity: .65;
+
+        & > span {
+            margin-right: 5px;
+        }
+    }
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {

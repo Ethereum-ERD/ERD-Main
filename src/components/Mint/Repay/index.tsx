@@ -16,7 +16,7 @@ export default observer(function Repay() {
 
     const [repayNum, setRepayNum] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
-    const { userTrove, userStableCoinBalance, stableCoinName, stableCoinDecimals, toggleStartRepay, closeTrove, borrowFeeRatio } = store;
+    const { userTrove, userStableCoinBalance, stableCoinName, stableCoinDecimals, toggleStartRepay, closeTrove, mintingFeeRatio } = store;
 
     const onRepayNumChange = (v: any) => {
         if (v == null) {
@@ -96,7 +96,7 @@ export default observer(function Repay() {
             )}
             <FeeInfo
                 totalDebt={userTrove.debt}
-                fee={(userTrove.debt * borrowFeeRatio) / Math.pow(10, stableCoinDecimals)}
+                fee={(userTrove.basicDebt * mintingFeeRatio) / Math.pow(10, stableCoinDecimals)}
             />
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartRepay}>Cancel</div>

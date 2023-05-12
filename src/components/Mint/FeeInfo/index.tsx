@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { Popover } from "antd";
 
 import CircleHelp from "src/components/common/CircleHelp";
-import { formatUnits, cutFloat } from 'src/util';
+import { formatUnits, truncateDecimal } from 'src/util';
 import { useStore } from "src/hooks";
 
 import s from "./index.module.scss";
@@ -15,7 +15,7 @@ export default observer(function FeeInfo({
     fee: number
 }) {
     const { store } = useStore();
-    const { gasCompensation, stableCoinName, stableCoinDecimals, borrowFeeRatio, redeemFeeRatio } = store;
+    const { gasCompensation, stableCoinName, stableCoinDecimals, mintingFeeRatio, interestRatio } = store;
 
     return (
         <div className={s.wrap}>
@@ -44,14 +44,14 @@ export default observer(function FeeInfo({
             </div>
             <div className={s.item}>
                 <p>Interest Rate</p>
-                <p>{cutFloat(redeemFeeRatio * 100)}%</p>
+                <p>{truncateDecimal(interestRatio * 100)}%</p>
             </div>
             <div className={s.item}>
-                <p>Borrow Fee</p>
+                <p>Minting Fee</p>
                 <p>
                     {(fee).toFixed(0)}
                     {"\u00A0"}
-                    <span>{stableCoinName}({cutFloat(borrowFeeRatio * 100)}%)</span>
+                    <span>{stableCoinName}({truncateDecimal(mintingFeeRatio * 100)}%)</span>
                 </p>
             </div>
         </div>

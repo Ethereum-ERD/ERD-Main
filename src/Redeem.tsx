@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { InputNumber, Popover, notification } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
@@ -14,6 +15,7 @@ function Redeem() {
 
     const { store } = useStore();
     const [redeemNum, setRedeemNum] = useState('0.00');
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const { userStableCoinBalance, stableCoinName, stableCoinDecimals, redeemFeeRatio, isNormalMode, systemMCR, systemTCR, redeem } = store;
 
@@ -51,6 +53,7 @@ function Redeem() {
                 message: `Can't redeem right now.`
             });
         }
+        setIsProcessing(true);
         const result = await redeem(+redeemNum * Math.pow(10, stableCoinDecimals));
         if (result) {
             notification.success({
@@ -61,6 +64,7 @@ function Redeem() {
                 message: 'transaction failed.'
             });
         }
+        setIsProcessing(false);
     };
 
     return (
@@ -103,7 +107,16 @@ function Redeem() {
                         ({(redeemFeeRatio * 100).toFixed(2)}%)
                     </p>
                 </div>
-                <div className={cx(s.btn, { [s.disable]: +redeemNum === 0 })} onClick={handleConfirm}>Confirm</div>
+                <div className={cx(s.btn, {
+                            [s.disable]: +redeemNum === 0 || isProcessing,
+                            [s.loading]: isProcessing
+                        }
+                    )}
+                    onClick={handleConfirm}
+                >
+                    {isProcessing && <LoadingOutlined />}
+                    Confirm
+                </div>
             </div>
         </div>
     );

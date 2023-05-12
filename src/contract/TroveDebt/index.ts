@@ -4,6 +4,19 @@ export default {
           "anonymous": false,
           "inputs": [
             {
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "version",
+              "type": "uint8"
+            }
+          ],
+          "name": "Initialized",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
               "indexed": true,
               "internalType": "address",
               "name": "previousOwner",
@@ -89,6 +102,13 @@ export default {
             }
           ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "initialize",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -205,6 +225,6 @@ export default {
           "stateMutability": "nonpayable",
           "type": "function"
         }
-      ],
-      addr: '0x00D20df81A29432ec95aBB34D490F78B904a94dC'
+    ],
+    addr: '0xFc778F65fb361Df950ACcc823f6e9133A0b838f4'
 }

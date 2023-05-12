@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
-import { addCommas, formatUnits, throwFloat } from 'src/util';
+import { addCommas, formatUnits, truncateNumber } from 'src/util';
 import { MAX_MINTING_FEE } from 'src/constants';
 import { useStore } from 'src/hooks';
 
@@ -29,7 +29,7 @@ export default observer(function AdjustTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, borrowFeeRatio, gasCompensation } = store;
+    const { systemCCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, mintingFeeRatio, gasCompensation, isNormalMode, querySystemTotalValueAndDebt } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -95,7 +95,7 @@ export default observer(function AdjustTrove() {
 
     const onFastChoose = (v: number) => {
         setFastStep(v);
-        setBorrowNum(throwFloat(v / 100 * maxBorrowNum));
+        setBorrowNum(truncateNumber(v / 100 * maxBorrowNum));
     };
 
     useEffect(() => {
@@ -125,10 +125,34 @@ export default observer(function AdjustTrove() {
     }, [borrowNum, assetValue]);
 
     useEffect(() => {
-        const maxBorrowAble = (assetValue / systemMCR - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+        if (assetValue < gasCompensation / Math.pow(10, stableCoinDecimals)) return;
 
-        setMaxBorrowNum(throwFloat(maxBorrowAble));
-    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR]);
+        querySystemTotalValueAndDebt(assetValue)
+        .then(([systemTotalValue, systemTotalDebt, _input]) => {
+            if (_input !== assetValue) return;
+            let maxDebt = 0;
+            if (isNormalMode) {
+                // in normal mode, ICR should be great than MCR and newTCR must be great than CCR;
+
+                // v1 is ICR > MCR
+                const v1 = assetValue / systemMCR;
+                // v2 is newTCR > CCR;
+                const v2 = (systemTotalValue + assetValue - systemCCR * systemTotalDebt) / systemCCR;
+
+                maxDebt = truncateNumber(Math.min(v1, v2));
+            } else {
+                // in recovery mode, ICR should be great than CCR;
+                maxDebt = truncateNumber(assetValue / systemCCR);
+            }
+
+            // maxDebt = maxBorrowAble + gasCompensation + mintingFee
+            // and mintingFee is [x] percent of maxBorrowAble
+            // so maxBorrowAble = (maxDebt - gasCompensation) / (1 + x)
+            const maxBorrowAble = (maxDebt - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+            if (maxBorrowAble < 0) return;
+            setMaxBorrowNum(truncateNumber(maxBorrowAble));
+        });
+    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, querySystemTotalValueAndDebt]);
 
     const handleConfirm = async () => {
         if (isProcessing) return;
@@ -156,6 +180,34 @@ export default observer(function AdjustTrove() {
         }
         setIsProcessing(false);
     };
+
+    const borrowNumChange = useMemo(() => {
+        if (!userTrove) return 0;
+        const troveDebt = userTrove.basicDebt / Math.pow(10, stableCoinDecimals);
+        if (borrowNum  <= troveDebt) return 0;
+        return borrowNum - troveDebt;
+    }, [userTrove, borrowNum, stableCoinDecimals]);
+
+    const mintingFee = useMemo(() => {
+        return borrowNumChange * mintingFeeRatio;
+    }, [borrowNumChange, mintingFeeRatio]);
+
+    const realDebt = useMemo(() => {
+        if (!userTrove) return 0;
+        const oldTroveDebt = userTrove.debt / Math.pow(10, stableCoinDecimals);
+        const recordedInterest = userTrove.interest / Math.pow(10, stableCoinDecimals);
+
+        if (borrowNum === 0) {
+            return 0;
+        }
+        // means user decrease mint number
+        // therefore the total debt is latest mint number add recorded interest
+        if (oldTroveDebt >= borrowNum) {
+            return borrowNum + recordedInterest;
+        }
+
+        return borrowNum + mintingFee + recordedInterest;
+    }, [userTrove, borrowNum, stableCoinDecimals, mintingFee]);
 
     const crClasses = useMemo(() => {
         if (Number.isNaN(collateralRatio) || collateralRatio === 0) return [];
@@ -258,8 +310,8 @@ export default observer(function AdjustTrove() {
                 </div>
             </div>
             <FeeInfo
-                totalDebt={userTrove.debt}
-                fee={(userTrove.debt * borrowFeeRatio) / Math.pow(10, stableCoinDecimals)}
+                totalDebt={realDebt * Math.pow(10, stableCoinDecimals)}
+                fee={mintingFee}
             />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (

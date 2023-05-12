@@ -16,7 +16,7 @@ function ReDeposit() {
     const [depositNum, setDepositNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, userCollateralInfo, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool, spTVL } = store;
+    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool, spTVL } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -105,28 +105,9 @@ function ReDeposit() {
                             </div>
                         </Popover>
                     </div>
-                    <p>{(userDepositAmount/spTVL * 100).toFixed(2)}%</p>
+                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
                 </div>
             </div>
-            {/* <div className={s.userCollateral}>
-                <p className={s.userCollateralTitle}>Your Collateral</p>
-                <div className={s.userCollateralList}>
-                    {userCollateralInfo.map((coll) => {
-                        return (
-                            <div key={coll.tokenAddr} className={s.userCollateralItem}>
-                                <div className={s.userCollateralItemHead}>
-                                    <img src={coll.icon} alt='' />
-                                    <p>{coll.assetName}</p>
-                                </div>
-                                <div className={s.userCollateralItemBody}>
-                                    <p>{formatUnits(coll.balance, coll.tokenDecimals)}</p>
-                                    <span>{coll.tokenName}</span>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div> */}
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartDeposit}>Cancel</div>
                 <div className={cx(s.btn, {

@@ -1,20 +1,17 @@
 export default {
     abi: [
         {
+          "anonymous": false,
           "inputs": [
             {
-              "internalType": "contract TroveManager",
-              "name": "_troveManager",
-              "type": "address"
-            },
-            {
-              "internalType": "contract ISortedTroves",
-              "name": "_sortedTroves",
-              "type": "address"
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "version",
+              "type": "uint8"
             }
           ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
+          "name": "Initialized",
+          "type": "event"
         },
         {
           "inputs": [
@@ -83,6 +80,24 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "contract TroveManager",
+              "name": "_troveManager",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ISortedTroves",
+              "name": "_sortedTroves",
+              "type": "address"
+            }
+          ],
+          "name": "initialize",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "sortedTroves",
           "outputs": [
@@ -109,5 +124,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x1440F1ED93861F780EF3678dD77010832e1DE490'
+    addr: '0x69095350b52393e8B6957B75D747804D64Bb3d5A'
 }

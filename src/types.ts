@@ -17,6 +17,7 @@ export type UserTrove = {
     debt: number
     owner: string
     interest: number
+    basicDebt: number
     arrayIndex: number
     status: UserTroveStatus
     shares: Array<{ token: string; amount: number }>

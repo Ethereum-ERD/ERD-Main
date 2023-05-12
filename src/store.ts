@@ -66,9 +66,11 @@ export default class Store {
 
     minBorrowAmount = 0;
 
-    borrowFeeRatio = 0;
+    mintingFeeRatio = 0;
 
     redeemFeeRatio = 0;
+
+    interestRatio = 0;
 
     systemTCR = 0;
 
@@ -284,17 +286,18 @@ export default class Store {
     }
 
     async querySystemInfo() {
-        const { CollateralManager, StableCoin, StabilityPool, TroveManager } = this.contractMap;
-        if (!CollateralManager || !StableCoin || !StabilityPool || !TroveManager) return;
+        const { CollateralManager, StableCoin, StabilityPool, TroveManager, TroveInterestRateStrategy } = this.contractMap;
+        if (!CollateralManager || !StableCoin || !StabilityPool || !TroveManager || !TroveInterestRateStrategy) return;
         const [
             MCR,
             gasCompensation,
             minDebt,
             systemCCR,
-            redeemFeeFloor,
-            borrowFeeFloor,
+            redeemFee,
+            borrowFee,
             stableCoinTotalSupply,
-            spOwnStableCoinAmount
+            spOwnStableCoinAmount,
+            [,interestRateInfo]
         ] = await Promise.all([
             CollateralManager.getMCR(),
             CollateralManager.getEUSDGasCompensation(),
@@ -303,7 +306,8 @@ export default class Store {
             TroveManager.getRedemptionRate(),
             TroveManager.getBorrowingRate(),
             StableCoin.totalSupply(),
-            StableCoin.balanceOf(StabilityPool.address)
+            StableCoin.balanceOf(StabilityPool.address),
+            TroveInterestRateStrategy['calculateInterestRates']()
         ]);
 
         this.querySystemTCR(true);
@@ -313,8 +317,9 @@ export default class Store {
             this.systemCCR = systemCCR / 1e18;
             this.systemMCR = +(MCR / +BN_ETHER);
             this.gasCompensation = +gasCompensation;
-            this.borrowFeeRatio = borrowFeeFloor / 1e18;
-            this.redeemFeeRatio = redeemFeeFloor / 1e18;
+            this.mintingFeeRatio = borrowFee / 1e18;
+            this.redeemFeeRatio = redeemFee / 1e18;
+            this.interestRatio = interestRateInfo / 1e27;
             this.stableCoinTotalSupply = +stableCoinTotalSupply;
             this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
         });
@@ -406,11 +411,10 @@ export default class Store {
     }
 
     async querySupportCollateral() {
-        // const { CollateralManager } = this.contractMap;
-        // if (!CollateralManager) return;
-        // const supportList: Array<string> = await CollateralManager.getCollateralSupport();
-        // const lowerCaseSupportList = supportList.map(key => key.toLowerCase());
-        const lowerCaseSupportList = SupportAssets.map(a => a.tokenAddr);
+        const { CollateralManager } = this.contractMap;
+        if (!CollateralManager) return;
+        const supportList: Array<string> = await CollateralManager.getCollateralSupport();
+        const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
 
         const wethIdx = lowerCaseSupportList.findIndex(s => s === WETH_ADDR);
 
@@ -433,13 +437,18 @@ export default class Store {
 
         if (assetList.length < 1) return;
 
-        const tokenAddr = assetList.map(asset => asset.tokenAddr);
+        const tokenAddr = assetList
+            .map(asset => asset.tokenAddr)
+            .filter(addr => addr !== MOCK_ETH_ADDR);
 
         const collateralInfo = await Promise.all(
             tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
         );
 
         const oracles = collateralInfo.map(c => c.oracle);
+
+        const ethPrice = await PriceFeeds.fetchPrice_view();
+        const ethPriceInNormal = +ethPrice / 1e18;
 
         const prices = await Promise.all(
             oracles.map(o => {
@@ -452,10 +461,10 @@ export default class Store {
 
         runInAction(() => {
             this.collateralValueInfo = tokenAddr.reduce((v, t, i) => {
-                v[t] = +prices[i] / 1e18;
+                v[t] = +prices[i] / 1e18 * ethPriceInNormal;
 
                 return v;
-            }, {} as { [key: string]: number });
+            }, { [MOCK_ETH_ADDR]: ethPriceInNormal } as { [key: string]: number });
         });
     }
 
@@ -470,12 +479,12 @@ export default class Store {
     }
 
     async queryProtocolAssetInfo(assetList: Array<SupportAssetsItem>) {
-        const { TroveManager } = this.contractMap;
-        if (!TroveManager || assetList.length < 1) return;
+        const { BorrowerOperation } = this.contractMap;
+        if (!BorrowerOperation || assetList.length < 1) return;
         const [
             tokenAddrList,
             amountInfo
-        ]: [Array<string>, Array<ethers.BigNumber>] = await TroveManager.getEntireSystemColl();
+        ]: [Array<string>, Array<ethers.BigNumber>] = await BorrowerOperation['getEntireSystemColl()']();
 
         const tokenList = tokenAddrList
             .map(c => c.toLowerCase())
@@ -687,7 +696,7 @@ export default class Store {
                         collaterals
                 ],
                 troveData,
-                debtInfo,
+                baseDebtInfo,
                 gasCompensation
             ] = await Promise.all([
                 TroveManager.getEntireDebtAndColl(walletAddr),
@@ -742,7 +751,8 @@ export default class Store {
                 return;
             }
 
-            const interest = +debt - +gasCompensation - +debtInfo;
+            // @TODO: baseDebtInfo includes mintingFee
+            const interest = +debt - +gasCompensation - +baseDebtInfo;
 
             const trove: UserTrove = {
                 interest,
@@ -750,6 +760,7 @@ export default class Store {
                 shares: [],
                 stakes: [],
                 owner: walletAddr,
+                basicDebt: +baseDebtInfo,
                 ICR: assetValue / +debt,
                 collateral: assetInfo.map(x => {
                     return {
@@ -1349,14 +1360,14 @@ export default class Store {
     }
 
     /** help function */
-    async querySystemTotalValueAndDebt() {
+    async querySystemTotalValueAndDebt(assetValue: number) {
         const { PriceFeeds, BorrowerOperation } = this.contractMap;
-        if (!PriceFeeds || !BorrowerOperation) return 0;
+        if (!PriceFeeds || !BorrowerOperation) return [0, 0];
         const ethPrice = await PriceFeeds.fetchPrice_view();
-        const [systemTotalValueInfo, systemDebtInfo] = await Promise.all([
-            BorrowerOperation.getEntireSystemColl(ethPrice),
+        const [[,,systemCollTotalValue], systemTotalDebt] = await Promise.all([
+            BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
             BorrowerOperation.getEntireSystemDebt()
         ]);
-        console.log(systemTotalValueInfo, systemDebtInfo);
+        return [+systemCollTotalValue / 1e18, +systemTotalDebt / 1e18, assetValue];
     }
 }

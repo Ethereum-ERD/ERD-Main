@@ -35,7 +35,7 @@ function DepositedOverView() {
                 </div>
                 <div className={s.poolShare}>
                     <p className={s.indexName}>Pool Share</p>
-                    <p className={s.indexValue}>{(userDepositAmount/spTVL * 100).toFixed(2)}%</p>
+                    <p className={s.indexValue}>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

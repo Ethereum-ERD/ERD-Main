@@ -65,7 +65,7 @@ export default observer(function UserTroveShow() {
                 </div>
                 <div className={s.item}>
                     <p>Stability Pool Share</p>
-                    <p>{(userDepositAmount/spTVL * 100).toFixed(2)}<span>%</span></p>
+                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}<span>%</span></p>
                 </div>
                 {userTrove.collateral.map(coll => {
                     return (

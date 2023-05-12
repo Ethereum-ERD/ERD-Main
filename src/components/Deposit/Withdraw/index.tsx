@@ -94,7 +94,7 @@ function Withdraw() {
                             </div>
                         </Popover>
                     </div>
-                    <p>{(userDepositAmount/spTVL * 100).toFixed(2)}%</p>
+                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

@@ -10,7 +10,7 @@ export default observer(function LoopQueryTCR() {
         if (!isInit) return;
         const timer = setInterval(() => {
             querySystemTCR(true);
-        }, 1500);
+        }, 15 * 1000);
 
         return () => clearInterval(timer);
     }, [isInit, querySystemTCR]);

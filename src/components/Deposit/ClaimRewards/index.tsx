@@ -3,7 +3,7 @@ import { Modal, Popover } from 'antd';
 import cx from 'classnames';
 
 import CircleHelp from 'src/components/common/CircleHelp';
-import { formatUnits, cutFloat } from 'src/util';
+import { formatUnits, truncateDecimal } from 'src/util';
 import { useStore } from 'src/hooks';
 
 import s from './index.module.scss';
@@ -52,7 +52,7 @@ function ClaimRewards({
                                         <p>{token.assetName}</p>
                                     </div>
                                     <div className={s.rewardItemBody}>
-                                        <p>{cutFloat(+formatUnits(token.rewards, token.tokenDecimals))}</p>
+                                        <p>{truncateDecimal(+formatUnits(token.rewards, token.tokenDecimals))}</p>
                                         <p>{token.tokenName}</p>
                                     </div>
                                 </div>

@@ -1,7 +1,6 @@
 import RocketPool from 'src/asset/rocketpool.svg';
 import Coinbase from 'src/asset/coinbase.svg';
 import Lido from 'src/asset/lido.svg';
-import Frax from 'src/asset/frax.svg';
 import ETH from 'src/asset/eth.svg';
 
 import { SupportAssetsItem } from 'src/types';
@@ -13,15 +12,8 @@ export const SupportAssets: Array<SupportAssetsItem> = [
         tokenName: 'stETH',
         icon: Lido,
         tokenDecimals: 18,
-        tokenAddr: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase()
+        tokenAddr: '0xF1db4c1e30b556e2D08738E7E42B74e1c269b44e'.toLowerCase()
     },
-    // {
-    //     assetName: 'Frax',
-    //     tokenName: 'fraxETH',
-    //     icon: Frax,
-    //     tokenDecimals: 18,
-    //     tokenAddr: '0x5E8422345238F34275888049021821E8E08CAa1f'.toLowerCase()
-    // },
     {
         assetName: 'Coinbase',
         tokenName: 'cbETH',
@@ -34,7 +26,7 @@ export const SupportAssets: Array<SupportAssetsItem> = [
         tokenName: 'rETH',
         icon: RocketPool,
         tokenDecimals: 18,
-        tokenAddr: '0xae78736Cd615f374D3085123A210448E74Fc6393'.toLowerCase()
+        tokenAddr: '0xCcf273a3CA6c4b8a500cf47e0aF2f0cF82163606'.toLowerCase()
     },
     {
         assetName: 'Ethereum',

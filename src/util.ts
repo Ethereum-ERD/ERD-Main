@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
-export function throwFloat(num: number) {
+export function truncateNumber(num: number) {
     return Math.trunc(num);
 }
 
@@ -48,14 +48,9 @@ export function formatUnits(v: number, uint = 18, floatLen = 2) {
     return int;
 }
 
-export function cutFloat(v: number, len = 2) {
-    const [int, float] = `${v}`.split('.');
-    if (len < 1) {
-        return `${int}`;
-    }
-    if (!float) return [int, '.', ('0').repeat(len)].join('');
-
-    return [int, '.', float.slice(0, len)].join('');
+export function truncateDecimal(v: number, decimalPlaces = 2) {
+    const factor = Math.pow(10, decimalPlaces);
+    return Math.trunc(v * factor) / factor;
 }
 
 export function translateUint(v: number) {

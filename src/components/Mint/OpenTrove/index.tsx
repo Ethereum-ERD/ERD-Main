@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
-import { addCommas, formatUnits, throwFloat } from 'src/util';
+import { addCommas, formatUnits, truncateNumber } from 'src/util';
 import MintTitle from 'src/components/common/MintTitle';
 import { MAX_MINTING_FEE } from 'src/constants';
 import { BorrowItem } from 'src/types';
@@ -26,7 +26,7 @@ export default observer(function OpenTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, borrowFeeRatio, toggleStartBorrow } = store;
+    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, querySystemTotalValueAndDebt } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -92,7 +92,7 @@ export default observer(function OpenTrove() {
 
     const onFastChoose = (v: number) => {
         setFastStep(v);
-        setBorrowNum(throwFloat(v / 100 * maxBorrowNum));
+        setBorrowNum(truncateNumber(v / 100 * maxBorrowNum));
     };
 
     useEffect(() => {
@@ -108,23 +108,47 @@ export default observer(function OpenTrove() {
             setCollateralRatio(0);
             return;
         }
-        const realDebt = borrowNum + gasCompensation / Math.pow(10, stableCoinDecimals) + borrowNum * MAX_MINTING_FEE;
+        const realDebt = borrowNum * (1 + MAX_MINTING_FEE) + gasCompensation / Math.pow(10, stableCoinDecimals);
         setCollateralRatio(assetValue / realDebt);
     }, [borrowNum, assetValue, gasCompensation, stableCoinDecimals]);
 
     useEffect(() => {
-        const maxBorrowAble = (assetValue / systemMCR - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+        if (assetValue < gasCompensation / Math.pow(10, stableCoinDecimals)) return;
 
-        setMaxBorrowNum(throwFloat(maxBorrowAble));
-    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR]);
+        querySystemTotalValueAndDebt(assetValue)
+        .then(([systemTotalValue, systemTotalDebt, _input]) => {
+            if (_input !== assetValue) return;
+            let maxDebt = 0;
+            if (isNormalMode) {
+                // in normal mode, ICR should be great than MCR and newTCR must be great than CCR;
+
+                // v1 is ICR > MCR
+                const v1 = assetValue / systemMCR;
+                // v2 is newTCR > CCR;
+                const v2 = (systemTotalValue + assetValue - systemCCR * systemTotalDebt) / systemCCR;
+
+                maxDebt = truncateNumber(Math.min(v1, v2));
+            } else {
+                // in recovery mode, ICR should be great than CCR;
+                maxDebt = truncateNumber(assetValue / systemCCR);
+            }
+
+            // maxDebt = maxBorrowAble + gasCompensation + mintingFee
+            // and mintingFee is [x] percent of maxBorrowAble
+            // so maxBorrowAble = (maxDebt - gasCompensation) / (1 + x)
+            const maxBorrowAble = (maxDebt - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+            if (maxBorrowAble < 0) return;
+            setMaxBorrowNum(truncateNumber(maxBorrowAble));
+        });
+    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, querySystemTotalValueAndDebt]);
 
     const realDebt = useMemo(() => {
         if (borrowNum === 0) {
             return 0;
         }
-        const debt = borrowNum * (1 + borrowFeeRatio) + gasCompensation / Math.pow(10, stableCoinDecimals);
-        return throwFloat(debt);
-    }, [borrowNum, gasCompensation, stableCoinDecimals, borrowFeeRatio]);
+        const debt = borrowNum * (1 + mintingFeeRatio) + gasCompensation / Math.pow(10, stableCoinDecimals);
+        return truncateNumber(debt);
+    }, [borrowNum, gasCompensation, stableCoinDecimals, mintingFeeRatio]);
 
     const crClasses = useMemo(() => {
         if (Number.isNaN(collateralRatio) || collateralRatio === 0) return [];
@@ -258,7 +282,7 @@ export default observer(function OpenTrove() {
             </div>
             <FeeInfo
                 totalDebt={realDebt * Math.pow(10, stableCoinDecimals)}
-                fee={(borrowNum * borrowFeeRatio)}
+                fee={(borrowNum * mintingFeeRatio)}
             />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (

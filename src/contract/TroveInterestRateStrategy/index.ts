@@ -17,19 +17,6 @@ export default {
           "anonymous": false,
           "inputs": [
             {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_lastGoodPrice",
-              "type": "uint256"
-            }
-          ],
-          "name": "LastGoodPriceUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
               "indexed": true,
               "internalType": "address",
               "name": "previousOwner",
@@ -46,166 +33,153 @@ export default {
           "type": "event"
         },
         {
-          "anonymous": false,
+          "inputs": [],
+          "name": "OCR",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "activePool",
+          "outputs": [
+            {
+              "internalType": "contract IActivePool",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "calculateInterestRates",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "collateralManager",
+          "outputs": [
+            {
+              "internalType": "contract ICollateralManager",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "defaultPool",
+          "outputs": [
+            {
+              "internalType": "contract IDefaultPool",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getBaseBorrowRate",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getMaxBorrowRate",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getRateSlope1",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getRateSlope2",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
-              "indexed": false,
-              "internalType": "enum PriceFeed.Status",
-              "name": "newStatus",
-              "type": "uint8"
-            }
-          ],
-          "name": "PriceFeedStatusChanged",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "DECIMAL_PRECISION",
-          "outputs": [
+              "internalType": "uint256",
+              "name": "_OCR",
+              "type": "uint256"
+            },
             {
               "internalType": "uint256",
-              "name": "",
+              "name": "_baseBorrowRate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_rateSlope1",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_rateSlope2",
               "type": "uint256"
             }
           ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "ETHUSD_TELLOR_REQ_ID",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "MAX_PRICE_DEVIATION_FROM_PREVIOUS_ROUND",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "MAX_PRICE_DIFFERENCE_BETWEEN_ORACLES",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "NAME",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "TARGET_DIGITS",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "TELLOR_DIGITS",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "TIMEOUT",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "fetchPrice",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "fetchPrice_view",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "initialize",
           "outputs": [],
           "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "lastGoodPrice",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -223,10 +197,10 @@ export default {
         },
         {
           "inputs": [],
-          "name": "priceAggregator",
+          "name": "priceFeed",
           "outputs": [
             {
-              "internalType": "contract AggregatorV3Interface",
+              "internalType": "contract IPriceFeed",
               "name": "",
               "type": "address"
             }
@@ -245,12 +219,37 @@ export default {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_priceAggregatorAddress",
+              "name": "_troveManagerAddress",
               "type": "address"
             },
             {
               "internalType": "address",
-              "name": "_tellorCallerAddress",
+              "name": "_collateralManagerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_troveDebtAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_activePoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_defaultPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stabilityPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_priceFeedAddress",
               "type": "address"
             }
           ],
@@ -260,24 +259,50 @@ export default {
           "type": "function"
         },
         {
-          "inputs": [],
-          "name": "status",
-          "outputs": [
+          "inputs": [
             {
-              "internalType": "enum PriceFeed.Status",
-              "name": "",
-              "type": "uint8"
+              "internalType": "uint256",
+              "name": "_baseRate",
+              "type": "uint256"
             }
           ],
-          "stateMutability": "view",
+          "name": "setBaseBorrowRate",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_slope1",
+              "type": "uint256"
+            }
+          ],
+          "name": "setRateSlope1",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_slope2",
+              "type": "uint256"
+            }
+          ],
+          "name": "setRateSlope2",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
           "inputs": [],
-          "name": "tellorCaller",
+          "name": "stabilityPool",
           "outputs": [
             {
-              "internalType": "contract ITellorCaller",
+              "internalType": "contract IStabilityPool",
               "name": "",
               "type": "address"
             }
@@ -297,7 +322,33 @@ export default {
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "troveDebt",
+          "outputs": [
+            {
+              "internalType": "contract ITroveDebt",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "troveManager",
+          "outputs": [
+            {
+              "internalType": "contract ITroveManager",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         }
-      ],
-    addr: '0xa5FbA868334b60B3f00EBB25B8a2b4aa1a65055a'
+    ],
+    addr: '0x80B46Ae49F4EcAA09Ec6c1ce555391DC581093Bb'
 }
