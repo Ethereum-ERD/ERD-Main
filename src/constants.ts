@@ -2,11 +2,11 @@ import { ethers } from 'ethers';
 
 export const MAIN_CHAIN_ID = 1;
 
-export const PRIVATE_CHAIN_ID = 10086;
+export const GOERLI_CHAIN_ID = 5;
 
 export const MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com/v2/LWSwBcoKgtbYnEYGp6Rxl_aFwDyOlgJq';
 
-export const PRIVATE_RPC_URL = 'https://rpc.kyoko.finance/hardhat';
+export const GOERLI_RPC_URL = 'https://eth-goerli.g.alchemy.com/v2/LWSwBcoKgtbYnEYGp6Rxl_aFwDyOlgJq';
 
 export const ROW_PER_PAGE = 10;
 
@@ -63,6 +63,15 @@ export type UserTroveStatus =
 
 export const RANDOM_SEED = 31337;
 
-export const WETH_ADDR = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
+// @TODO: will remove this line when deploy to mainnet
+export const WETH_ADDR   = '0x23Cb0c6C75df5A88F559fE998b079C4069F14837'.toLowerCase();
+export const R_ETH_ADDR  = '0x10963DeA0a7bAe56Cd4C822bd2a58dACe5A88e7c'.toLowerCase();
+export const ST_ETH_ADDR = '0xF5Edf26C26028BB921344B7F394CB731307AB2F5'.toLowerCase();
+export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
+
+// export const WETH_ADDR   = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
+// export const ST_ETH_ADDR = '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase();
+// export const R_ETH_ADDR  = '0xae78736Cd615f374D3085123A210448E74Fc6393'.toLowerCase();
+// export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
 
 export const BN_ETHER = ethers.BigNumber.from(1 + '0'.repeat(18));

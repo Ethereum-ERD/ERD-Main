@@ -505,5 +505,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0xD78D1F68a8443F96EE018bfb5b22A7b5236c78Ad'
+    addr: '0xB66BF6D6fA284A4392B9CFCDFe81641C6B1c0610'
 }

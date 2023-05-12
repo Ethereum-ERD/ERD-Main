@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
 
 import { ROW_PER_PAGE, EmptyObject, EMPTYADDRESS, RANDOM_SEED,
-    PRIVATE_CHAIN_ID, PRIVATE_RPC_URL, WETH_ADDR, BN_ZERO,
+    GOERLI_CHAIN_ID, GOERLI_RPC_URL, WETH_ADDR, BN_ZERO,
     MOCK_ETH_ADDR, BN_ETHER
 } from 'src/constants';
 
@@ -31,7 +31,7 @@ export default class Store {
 
     web3Provider = null as any as ExternalProvider;
 
-    rpcProvider: RPCProvider = new ethers.providers.JsonRpcProvider(PRIVATE_RPC_URL);
+    rpcProvider: RPCProvider = new ethers.providers.JsonRpcProvider(GOERLI_RPC_URL);
 
     currentRoutePath = '';
 
@@ -212,7 +212,7 @@ export default class Store {
                 await this.onboard.connectWallet();
             }
             await this.onboard.setChain({
-                chainId: `0x${PRIVATE_CHAIN_ID.toString(16)}`,
+                chainId: `0x${GOERLI_CHAIN_ID.toString(16)}`,
             });
         } catch {
             // do nothing
@@ -256,7 +256,7 @@ export default class Store {
         if (
             !wallet ||
             Object.keys(map).length < 1 ||
-            chainId !== PRIVATE_CHAIN_ID
+            chainId !== GOERLI_CHAIN_ID
         ) return;
         this.queryUserTokenInfo();
         this.queryUserDepositInfo();
@@ -267,7 +267,7 @@ export default class Store {
             !wallet ||
             supportAssets.length < 1 ||
             Object.keys(map).length < 1 ||
-            chainId !== PRIVATE_CHAIN_ID
+            chainId !== GOERLI_CHAIN_ID
         ) return;
         this.getUserTroveInfo(true);
         this.queryUserDepositGain();

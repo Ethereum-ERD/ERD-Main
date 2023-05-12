@@ -53,6 +53,7 @@ function Redeem() {
                 message: `Can't redeem right now.`
             });
         }
+        if (+redeemNum < 1) return;
         setIsProcessing(true);
         const result = await redeem(+redeemNum * Math.pow(10, stableCoinDecimals));
         if (result) {
