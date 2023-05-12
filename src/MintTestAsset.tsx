@@ -1,0 +1,76 @@
+import { useState, useEffect } from 'react';
+import { observer } from "mobx-react";
+import { Select, notification } from 'antd';
+import cx from 'classnames';
+import { LoadingOutlined } from '@ant-design/icons';
+
+import { MOCK_ETH_ADDR } from "src/constants";
+import { useStore } from "src/hooks";
+
+import s from "./MintTestAsset.module.scss";
+
+const { Option } = Select;
+
+export default observer(function MintTestAsset() {
+    const { store } = useStore();
+    const [asset, setAsset] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const { supportAssets, mintTestAsset } = store;
+
+    useEffect(() => {
+        if (supportAssets.length < 1) return;
+        const defaultAsset = supportAssets.find(c => c.tokenAddr !== MOCK_ETH_ADDR);
+        if (defaultAsset) {
+            setAsset(defaultAsset.tokenAddr);
+        }
+    }, [supportAssets]);
+
+    const handleConfirm = async () => {
+        setIsProcessing(true);
+        const result = await mintTestAsset(asset);
+        if (result) {
+            notification.success({
+                message: 'transaction done.'
+            });
+        } else {
+            notification.error({
+                message: 'transaction failed.'
+            });
+        }
+        setIsProcessing(false);
+    };
+
+    return (
+        <div className={s.wrap}>
+            <div className={s.container}>
+                <p className={s.title}>Test</p>
+                <p className={s.desc}>Mint test assets to join protocol.</p>
+                <div className={s.optionList}>
+                    <Select value={asset} onChange={setAsset}>
+                        {supportAssets
+                            .filter(c => {
+                                return c.tokenAddr !== MOCK_ETH_ADDR
+                            })
+                            .map((c) => {
+                                return <Option key={c.tokenAddr} value={c.tokenAddr}>
+                                    <p>{c.tokenName}</p>
+                                </Option>
+                            })
+                        }
+                    </Select>
+                </div>
+                <div className={cx(s.btn, {
+                            [s.disable]: isProcessing,
+                            [s.loading]: isProcessing
+                        }
+                    )}
+                    onClick={handleConfirm}
+                >
+                    {isProcessing && <LoadingOutlined />}
+                    Confirm
+                </div>
+            </div>
+        </div>
+    );
+});

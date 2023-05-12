@@ -1,0 +1,109 @@
+.container {
+    width: 530px;
+    padding: 30px;
+    margin: 0 auto;
+    border-radius: 32px;
+    background-color: #fff;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    color: #333;
+}
+
+.desc {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 133%;
+    color: #999;
+}
+
+.optionList {
+    width: 100%;
+    margin-top: 30px;
+
+    :global {
+        .ant-select {
+            width: 100%;
+        }
+    }
+}
+
+.btn {
+    width: 100%;
+    height: 52px;
+    margin-top: 30px;
+
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 63px;
+    cursor: pointer;
+    background-color: var(--main-color);
+
+    &.disable {
+        color: #939393;
+        cursor: not-allowed;
+        background-color: #C5C5C5;
+    }
+
+    &.loading {
+        opacity: .65;
+
+        & > span {
+            margin-right: 5px;
+        }
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        margin: 0 auto;
+    }
+
+    .container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        margin: 0 auto;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .title {
+        font-size: 25px;
+        line-height: 32px;
+    }
+
+    .desc {
+        font-size: 12px;
+    }
+
+    .redeemNumInputWrap {
+        margin-top: 20px;
+    }
+
+    .redeemNumInput {
+        height: 48px;
+
+        input {
+            height: 48px !important;
+    
+            font-size: 20px !important;
+        }
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+}

@@ -703,5 +703,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: "0x1484171a0E2Ba4e41268997904846F041e354aD3",
+    addr: "0xe027B4A088c75A35c2966B0548734Fb5203c9f28",
 };

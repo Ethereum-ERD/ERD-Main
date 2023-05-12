@@ -12,11 +12,11 @@ export default observer(function Dashboard() {
 
     const { store } = useStore();
 
-    const { troveAmount, systemTCR, isNormalMode, stableCoinName, systemCCR, systemMCR, mintingFeeRatio, stableCoinTotalSupply, spOwnStableCoinAmount, stableCoinDecimals, protocolValInETH, protocolTotalValueInUSD } = store;
+    const { troveAmount, systemTCR, isNormalMode, stableCoinName, systemCCR, systemMCR, mintingFeeRatio, stableCoinTotalSupply, spOwnStableCoinAmount, stableCoinDecimals, protocolValInETH, systemTotalValueInUSD } = store;
 
     const [totalSupply, totalSupplyUint] = translateUint(+formatUnits(stableCoinTotalSupply, stableCoinDecimals));
     const [spOwn, spOwnUint] = translateUint(+formatUnits(spOwnStableCoinAmount, stableCoinDecimals));
-    const [valueInUSD, valueInUSDUint] = translateUint(protocolTotalValueInUSD);
+    const [valueInUSD, valueInUSDUint] = translateUint(systemTotalValueInUSD);
 
     return (
         <div className={s.wrap}>
@@ -46,7 +46,7 @@ export default observer(function Dashboard() {
                                 </div>
                             </Popover>
                         </div>
-                        <p className={s.indexValue}>{truncateDecimal(mintingFeeRatio * 100, 0)}<span>%</span></p>
+                        <p className={s.indexValue}>{truncateDecimal(mintingFeeRatio * 100, 2)}<span>%</span></p>
                     </div>
                 </div>
                 <div className={s.index}>

@@ -43,6 +43,10 @@ export const Routes = [
     {
         path: '/statistics',
         name: 'Statistics'
+    },
+    {
+        path: '/test',
+        name: 'Test'
     }
 ];
 

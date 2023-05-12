@@ -998,5 +998,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x830c9c9E237e311956747b68B605e19528DeA0a7'
+    addr: '0xF621B9460311bB0387E67ABd531f319Bcd60F986'
 }

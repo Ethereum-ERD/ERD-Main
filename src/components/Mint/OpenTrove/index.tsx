@@ -26,7 +26,7 @@ export default observer(function OpenTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, querySystemTotalValueAndDebt } = store;
+    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -115,32 +115,31 @@ export default observer(function OpenTrove() {
     useEffect(() => {
         if (assetValue < gasCompensation / Math.pow(10, stableCoinDecimals)) return;
 
-        querySystemTotalValueAndDebt(assetValue)
-        .then(([systemTotalValue, systemTotalDebt, _input]) => {
-            if (_input !== assetValue) return;
-            let maxDebt = 0;
-            if (isNormalMode) {
-                // in normal mode, ICR should be great than MCR and newTCR must be great than CCR;
+        let maxDebt = 0;
+        if (isNormalMode) {
+            // in normal mode, ICR should be great than MCR and newTCR must be great than CCR;
+            // v1 is ICR > MCR
+            const v1 = assetValue / systemMCR;
+            // v2 is newTCR > CCR;
+            const v2 = (systemTotalValueInUSD + assetValue - systemCCR * systemTotalDebtInUSD) / systemCCR;
+            maxDebt = truncateNumber(Math.min(v1, v2));
+        } else {
+            // in recovery mode, ICR should be great than CCR;
+            maxDebt = truncateNumber(assetValue / systemCCR);
+        }
 
-                // v1 is ICR > MCR
-                const v1 = assetValue / systemMCR;
-                // v2 is newTCR > CCR;
-                const v2 = (systemTotalValue + assetValue - systemCCR * systemTotalDebt) / systemCCR;
+        // maxDebt = maxBorrowAble + gasCompensation + mintingFee
+        // and mintingFee is [x] percent of maxBorrowAble
+        // so maxBorrowAble = (maxDebt - gasCompensation) / (1 + x)
+        const maxBorrowAble = (maxDebt - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+        if (maxBorrowAble < 0) return;
+        setMaxBorrowNum(truncateNumber(maxBorrowAble));
+    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, systemTotalDebtInUSD, systemTotalValueInUSD]);
 
-                maxDebt = truncateNumber(Math.min(v1, v2));
-            } else {
-                // in recovery mode, ICR should be great than CCR;
-                maxDebt = truncateNumber(assetValue / systemCCR);
-            }
-
-            // maxDebt = maxBorrowAble + gasCompensation + mintingFee
-            // and mintingFee is [x] percent of maxBorrowAble
-            // so maxBorrowAble = (maxDebt - gasCompensation) / (1 + x)
-            const maxBorrowAble = (maxDebt - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
-            if (maxBorrowAble < 0) return;
-            setMaxBorrowNum(truncateNumber(maxBorrowAble));
-        });
-    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, querySystemTotalValueAndDebt]);
+    useEffect(() => {
+        if (fastStep < 1) return;
+        setBorrowNum(truncateNumber(fastStep / 100 * maxBorrowNum));
+    }, [maxBorrowNum, fastStep]);
 
     const realDebt = useMemo(() => {
         if (borrowNum === 0) {

@@ -80,7 +80,9 @@ export default class Store {
 
     protocolAssetsInfo: Array<ProtocolCollateralItem> = [];
 
-    protocolTotalValueInUSD = 0;
+    systemTotalValueInUSD = 0;
+
+    systemTotalDebtInUSD = 0;
 
     /* user collateral info */
     userCollateralInfo: Array<UserCollateralItem> = [];
@@ -158,15 +160,14 @@ export default class Store {
         reaction(() => this.supportAssets, (assetList) => {
             this.queryCollateralValue(assetList);
             this.queryProtocolAssetInfo(assetList);
-            this.querySystemTVLInETH(assetList);
         });
 
         reaction(() => this.contractMap, this.initSystemKeyInfo);
     }
 
     @computed get protocolValInETH() {
-        const { protocolTotalValueInUSD, collateralValueInfo } = this;
-        const valueInETH = protocolTotalValueInUSD / collateralValueInfo[MOCK_ETH_ADDR];
+        const { systemTotalValueInUSD, collateralValueInfo } = this;
+        const valueInETH = systemTotalValueInUSD / collateralValueInfo[MOCK_ETH_ADDR];
         if (Number.isNaN(valueInETH)) {
             return 0;
         }
@@ -198,6 +199,7 @@ export default class Store {
             this.onboard = onboard;
         });
         this.initContract();
+        this.querySystemTotalValueAndDebt();
     }
 
     async connectWallet() {
@@ -246,6 +248,7 @@ export default class Store {
             this.querySystemInfo();
             this.queryStabilityPoolTVL();
             this.querySupportCollateral();
+            this.querySystemTotalValueAndDebt();
         }
     }
 
@@ -297,7 +300,7 @@ export default class Store {
             borrowFee,
             stableCoinTotalSupply,
             spOwnStableCoinAmount,
-            [,interestRateInfo]
+            troveData
         ] = await Promise.all([
             CollateralManager.getMCR(),
             CollateralManager.getEUSDGasCompensation(),
@@ -307,7 +310,7 @@ export default class Store {
             TroveManager.getBorrowingRate(),
             StableCoin.totalSupply(),
             StableCoin.balanceOf(StabilityPool.address),
-            TroveInterestRateStrategy['calculateInterestRates']()
+            TroveManager.getTroveData()
         ]);
 
         this.querySystemTCR(true);
@@ -319,54 +322,9 @@ export default class Store {
             this.gasCompensation = +gasCompensation;
             this.mintingFeeRatio = borrowFee / 1e18;
             this.redeemFeeRatio = redeemFee / 1e18;
-            this.interestRatio = interestRateInfo / 1e27;
             this.stableCoinTotalSupply = +stableCoinTotalSupply;
             this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
-        });
-    }
-
-    async querySystemTVLInETH(assetList: Array<SupportAssetsItem>) {
-        const { CollateralManager, PriceFeeds, ERC20, ActivePool } = this.contractMap;
-        if (!CollateralManager || !PriceFeeds || !ERC20) return;
-
-        if (assetList.length < 1) return;
-
-        const tokenAddr = assetList.map(asset => asset.tokenAddr);
-
-        const collateralInfo = await Promise.all(
-            tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
-        );
-
-        const oracles = collateralInfo.map(c => c.oracle);
-
-        const prices = await Promise.all(
-            oracles.map(o => {
-                if (o === EMPTYADDRESS) {
-                    return 0;
-                }
-                return PriceFeeds.attach(o).fetchPrice_view()
-            })
-        );
-
-        const amounts = await Promise.all(
-            tokenAddr.map(t => {
-                if (t === MOCK_ETH_ADDR) {
-                    return ERC20.attach(WETH_ADDR).balanceOf(ActivePool.address)
-                }
-
-                return ERC20.attach(t).balanceOf(ActivePool.address)
-            })
-        );
-
-        const totalValue = prices.reduce((tv, price, index) => {
-            const asset = assetList[index];
-            const priceInUint = price / 1e18;
-            const amount = +formatUnits(+amounts[index], asset.tokenDecimals);
-            return tv.add(toBN(amount * priceInUint));
-        }, BN_ZERO);
-
-        runInAction(() => {
-            this.protocolTotalValueInUSD = +totalValue;
+            this.interestRatio = troveData.currentBorrowRate / 1e27;
         });
     }
 
@@ -549,6 +507,20 @@ export default class Store {
 
         runInAction(() => {
             this.userDepositRewardsInfo = formatCollateral;
+        });
+    }
+
+    async querySystemTotalValueAndDebt() {
+        const { PriceFeeds, BorrowerOperation } = this.contractMap;
+        if (!PriceFeeds || !BorrowerOperation) return [0, 0];
+        const ethPrice = await PriceFeeds.fetchPrice_view();
+        const [[,,systemCollTotalValue], systemTotalDebt] = await Promise.all([
+            BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
+            BorrowerOperation.getEntireSystemDebt()
+        ]);
+        runInAction(() => {
+            this.systemTotalDebtInUSD = +systemTotalDebt / 1e18;
+            this.systemTotalValueInUSD = +systemCollTotalValue / 1e18;
         });
     }
 
@@ -1359,15 +1331,20 @@ export default class Store {
         });
     }
 
-    /** help function */
-    async querySystemTotalValueAndDebt(assetValue: number) {
-        const { PriceFeeds, BorrowerOperation } = this.contractMap;
-        if (!PriceFeeds || !BorrowerOperation) return [0, 0];
-        const ethPrice = await PriceFeeds.fetchPrice_view();
-        const [[,,systemCollTotalValue], systemTotalDebt] = await Promise.all([
-            BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
-            BorrowerOperation.getEntireSystemDebt()
-        ]);
-        return [+systemCollTotalValue / 1e18, +systemTotalDebt / 1e18, assetValue];
+    async mintTestAsset(asset: string) {
+        const { contractMap, web3Provider, walletAddr } = this;
+        const { StableCoin } = contractMap;
+        if (!StableCoin || !walletAddr) return false;
+        try {
+            const { hash } = await StableCoin
+                .attach(asset)
+                .connect(web3Provider.getSigner())
+                .mint(walletAddr, 1 + '0'.repeat(21));
+            const result = await web3Provider.waitForTransaction(hash);
+
+            return result.status === 1;
+        } catch {
+            return false;
+        }
     }
 }

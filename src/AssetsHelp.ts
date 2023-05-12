@@ -12,7 +12,7 @@ export const SupportAssets: Array<SupportAssetsItem> = [
         tokenName: 'stETH',
         icon: Lido,
         tokenDecimals: 18,
-        tokenAddr: '0xF1db4c1e30b556e2D08738E7E42B74e1c269b44e'.toLowerCase()
+        tokenAddr: '0xEE43812f94E8FACc9889c57A5e49D2c73c5571Dd'.toLowerCase()
     },
     {
         assetName: 'Coinbase',
@@ -26,7 +26,7 @@ export const SupportAssets: Array<SupportAssetsItem> = [
         tokenName: 'rETH',
         icon: RocketPool,
         tokenDecimals: 18,
-        tokenAddr: '0xCcf273a3CA6c4b8a500cf47e0aF2f0cF82163606'.toLowerCase()
+        tokenAddr: '0x3F71B13C8D7A14309Dcf163eb14F633CCeEF0dfB'.toLowerCase()
     },
     {
         assetName: 'Ethereum',
