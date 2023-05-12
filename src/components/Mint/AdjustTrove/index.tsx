@@ -148,11 +148,6 @@ export default observer(function AdjustTrove() {
         setMaxBorrowNum(truncateNumber(maxBorrowAble));
     }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD]);
 
-    useEffect(() => {
-        if (fastStep < 1) return;
-        setBorrowNum(truncateNumber(fastStep / 100 * maxBorrowNum));
-    }, [maxBorrowNum, fastStep]);
-
     const handleConfirm = async () => {
         if (isProcessing) return;
         if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) return;

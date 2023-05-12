@@ -136,11 +136,6 @@ export default observer(function OpenTrove() {
         setMaxBorrowNum(truncateNumber(maxBorrowAble));
     }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, systemTotalDebtInUSD, systemTotalValueInUSD]);
 
-    useEffect(() => {
-        if (fastStep < 1) return;
-        setBorrowNum(truncateNumber(fastStep / 100 * maxBorrowNum));
-    }, [maxBorrowNum, fastStep]);
-
     const realDebt = useMemo(() => {
         if (borrowNum === 0) {
             return 0;
