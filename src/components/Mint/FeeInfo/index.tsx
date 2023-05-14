@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import { Popover } from "antd";
+import cx from 'classnames';
 
 import CircleHelp from "src/components/common/CircleHelp";
 import { formatUnits, truncateDecimal } from 'src/util';
@@ -20,9 +21,12 @@ export default observer(function FeeInfo({
     return (
         <div className={s.wrap}>
             <div className={s.item}>
-                <div>
+                <div id='fee-info-div'>
                     <p>Liquidation Reserve</p>
-                    <Popover title='' content={<div className={s.tipsModal}>An amount set aside to cover the liquidator’s gas costs if your Trove needs to be liquidated. The amount increases your debt and is refunded if you close your Trove by fully paying off its net debt.</div>}>
+                    <Popover
+                        title=''
+                        arrow={false}
+                        content={<div className={cx('tipsModal', s.tipsModal)}>An amount set aside to cover the liquidator’s gas costs if your Trove needs to be liquidated. The amount increases your debt and is refunded if you close your Trove by fully paying off its net debt.</div>}>
                         <div style={{ cursor: 'help' }}>
                             <CircleHelp />
                         </div>

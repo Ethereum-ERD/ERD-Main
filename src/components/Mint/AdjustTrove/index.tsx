@@ -6,6 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
 import { addCommas, formatUnits, truncateNumber } from 'src/util';
+import MintTitle from 'src/components/common/MintTitle';
 import { MAX_MINTING_FEE } from 'src/constants';
 import { useStore } from 'src/hooks';
 
@@ -29,7 +30,7 @@ export default observer(function AdjustTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, mintingFeeRatio, gasCompensation, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD } = store;
+    const { systemCCR, systemTCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, mintingFeeRatio, gasCompensation, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -205,26 +206,33 @@ export default observer(function AdjustTrove() {
 
     const crClasses = useMemo(() => {
         if (Number.isNaN(collateralRatio) || collateralRatio === 0) return [];
+
         const classes = [];
 
-        if (collateralRatio >= systemCCR) {
+        if (collateralRatio >= systemTCR) {
             classes.push(s.healthCR);
-        } else if (collateralRatio >= systemMCR) {
-            classes.push(s.warningCR);
-        } else {
-            classes.push(s.emergencyCR);
+            return classes;
         }
-        return classes;
-    }, [collateralRatio, systemMCR, systemCCR]);
+
+        if (collateralRatio >= systemCCR) {
+            classes.push(s.warningCR);
+
+            return classes;
+        }
+
+        return [s.emergencyCR];
+
+    }, [collateralRatio, systemTCR, systemCCR]);
 
     if (!userTrove) return null;
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Adjust</p>
+            <MintTitle title='Adjust' />
+            <p className={s.titleDesc}>Deposit collateral to mint {stableCoinName} stablecoin.</p>
             {validColls.length === 0 && (
                 <div className={s.warning}>
-                    You have no  support Collateral 😅 
+                    You have no  support Collateral. 😅
                 </div>
             )}
             {validColls.length > 0 &&
@@ -253,7 +261,9 @@ export default observer(function AdjustTrove() {
                                     <div className={s.help}>
                                         <p className={s.balance}>
                                             Your Balance{"\u00A0"}
-                                            {formatUnits(coll.balance, coll.tokenDecimals)}
+                                            <span>
+                                                {formatUnits(coll.balance, coll.tokenDecimals)}
+                                            </span>
                                         </p>
                                         <p className={s.max} onClick={() => setMax(coll.tokenAddr, coll.balance)}>Max</p>
                                     </div>

@@ -84,14 +84,16 @@ export default observer(function Repay() {
             </div>
             <div className={s.help}>
                 <p className={s.balance}>
-                    <span>Your Balance{'\u00A0'}</span>
-                    {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    Your Balance{'\u00A0'}
+                    <span>
+                        {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    </span>
                 </p>
                 <p className={s.max} onClick={setToMax}>Max</p>
             </div>
             {userStableCoinBalance < userTrove.debt && (
                 <div className={s.warning}>
-                    You do not have enough {stableCoinName} to pay back 😅
+                    You do not have enough {stableCoinName} to repay. 😅
                 </div>
             )}
             <FeeInfo
@@ -102,7 +104,7 @@ export default observer(function Repay() {
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartRepay}>Cancel</div>
                 <div
                     className={cx(s.btn, {
-                        [s.disable]: userStableCoinBalance < userTrove.debt || repayNum < +formatUnits(userTrove.debt, stableCoinDecimals),
+                        // [s.disable]: userStableCoinBalance < userTrove.debt || repayNum < +formatUnits(userTrove.debt, stableCoinDecimals),
                         [s.loading]: isProcessing
                     })}
                     onClick={handleConfirm}

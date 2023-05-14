@@ -1,15 +1,17 @@
 .wrap {
     width: 530px;
     padding: 30px;
-    border-radius: 32px;
-    background-color: #fff;
+    border-radius: 20px;
+    background: var(--adjust-trove-bg-color);
+    border: 1px solid var(--adjust-trove-border-color);
 }
 
-.title {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 40px;
-    color: #333;
+.titleDesc {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 133%;
+    color: var(--adjust-trove-title-desc-color);
 }
 
 .warning {
@@ -18,13 +20,13 @@
     padding: 16px;
     margin-top: 30px;
 
-    background: #FFF2F2;
-    border: 1px solid #FF7F63;
+    background: var(--adjust-trove-no-asset-warning-bg-color);
+    border: 1px solid var(--adjust-trove-no-asset-warning-border-color);
     border-radius: 16px;
 
     font-size: 14px;
     line-height: 19px;
-    color: #333;
+    color: var(--adjust-trove-no-asset-warning-text-color);
 }
 
 .inputWrap {
@@ -32,7 +34,7 @@
 
     margin-top: 20px;
 
-    border: 1px solid #D8E3F2;
+    border: 1px solid var(--adjust-trove-input-wrap-border-color);
     border-radius: 16px;
 }
 
@@ -43,11 +45,7 @@
     border-radius: 16px;
     border: none !important;
     box-shadow: none !important;
-
-    & > div {
-        border: none !important;
-        box-shadow: none !important;
-    }
+    background-color: var(--adjust-trove-input-bg-color);
 
     &:focus,
     &:hover {
@@ -55,14 +53,22 @@
         box-shadow: none !important;
     }
 
-    input {
-        height: 52px !important;
-        text-align: right !important;
+    :global {
+        div.ant-input-number-input-wrap {
+            border: none;
+            box-shadow: none;
+        }
 
-        font-size: 23px !important;
-        font-style: normal;
-        font-weight: 450;
-        font-family: CircularStd;
+        input.ant-input-number-input {
+            height: 52px;
+            text-align: right;
+    
+            font-size: 23px;
+            font-style: normal;
+            font-weight: 450;
+            font-family: CircularStd;
+            color: var(--adjust-trove-input-text-color);
+        }
     }
 }
 
@@ -70,7 +76,7 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #666;
+    color: var(--adjust-trove-input-before-color);
 
     img {
         width: 24px;
@@ -95,11 +101,11 @@
     font-weight: 450;
     font-size: 12px;
     line-height: 133%;
-    color: #333;
+    color: var(--adjust-trove-balance-text-color);
     text-indent: 16px;
 
     span {
-        color: #999;
+        color: var(--adjust-trove-balance-amount-color);
     }
 }
 
@@ -107,7 +113,7 @@
     margin-right: 20px;
     font-size: 12px;
     cursor: pointer;
-    color: var(--main-color);
+    color: var(--adjust-trove-balance-max-text-color);
 }
 
 .collRatioInfo {
@@ -127,7 +133,7 @@
         display: flex;
         align-items: center;
 
-        color: #999;
+        color: var(--adjust-trove-collRatio-div-text-color);
         font-size: 12px;
         line-height: 133%;
 
@@ -139,14 +145,18 @@
     }
 
     & > p {
+        color: var(--coll-ratio-value-base-color);
+
         &.emergencyCR {
-            color: #FF4646
+            color: var(--coll-ratio-value-emergency-color)
         }
+
         &.warningCR {
-            color: #FF8A00;
+            color: var(--coll-ratio-value-warning-color);
         }
+
         &.healthCR {
-            color: #47BE77;
+            color: var(--coll-ratio-value-health-color);
         }
     }
 }
@@ -162,7 +172,7 @@
     width: calc(25% - 3px);
     height: 6px;
     margin-right: 4px;
-    background: rgba(48, 131, 255, 0.2);
+    background: var(--fast-choose-step-basic-bg-color);
     border-radius: 22px;
     cursor: pointer;
 
@@ -171,7 +181,7 @@
     }
 
     &.active {
-        background-color: var(--main-color);
+        background: linear-gradient(26deg, var(--fast-choose-step-bg-from-color) 11.36%, var(--fast-choose-step-bg-to-color) 82.43%)
     }
 }
 
@@ -188,7 +198,7 @@
 
     font-size: 12px;
     line-height: 133%;
-    color: #999;
+    color: var(--adjust-trove-mint-number-tips-color);
 }
 
 .btnArea {
@@ -202,20 +212,23 @@
     width: 294px;
     height: 52px;
 
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 
     font-size: 16px;
-    border-radius: 63px;
-    color: #fff;
-    background-color: var(--main-color);
+    border-radius: 10px;
+    color: var(--adjust-trove-btn-text-color);
+    background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
+    opacity: 1;
+    transition: opacity .2s ease-in-out;
 
     &.disable {
-        color: #a6a6a6;
-        background: #C5C5C5;
+        border: 1px solid var(--disable-btn-border-color);
+        color: var(--disable-btn-text-color);
+        background: var(--disable-btn-bg-color);
         cursor: not-allowed;
     }
 
@@ -226,17 +239,22 @@
     &.cancel {
         width: 160px;
         margin-right: 20px;
-        color: #999;
-        border: 1px solid #999;
-        background-color: #fff;
+        flex: 0 0 auto;
+        color: var(--cancel-btn-text-color);
+        border: 1px solid var(--cancel-btn-border-color);
+        background: var(--cancel-btn-bg-color);
     }
 
     &.loading {
-        opacity: .65;
+        opacity: .7;
 
         & > span {
             margin-right: 5px;
         }
+    }
+
+    &:hover {
+        opacity: .7;
     }
 }
 
@@ -247,11 +265,6 @@
 
     .btn {
         width: 454px;
-        flex: 1 0 auto;
-
-        &.cancel {
-            flex: 0 0 auto;
-        }
     }
 }
 
@@ -259,6 +272,8 @@
     .wrap {
         width: 100%;
         padding: 0;
+        border: none;
+        background: transparent;
     }
 
     .title {

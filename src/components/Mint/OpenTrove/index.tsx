@@ -26,7 +26,7 @@ export default observer(function OpenTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD } = store;
+    const { systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -148,21 +148,24 @@ export default observer(function OpenTrove() {
         if (Number.isNaN(collateralRatio) || collateralRatio === 0) return [];
         const classes = [];
 
-        if (collateralRatio >= systemCCR) {
+        if (collateralRatio >= systemTCR) {
             classes.push(s.health);
-        } else if (collateralRatio >= systemMCR) {
-            classes.push(s.warning);
-        } else {
-            classes.push(s.emergency);
+            return classes;
         }
-    }, [collateralRatio, systemMCR, systemCCR]);
+
+        if (collateralRatio >= systemCCR) {
+            classes.push(s.warning);
+
+            return classes;
+        }
+
+        return [s.emergency];
+    }, [collateralRatio, systemTCR, systemCCR]);
 
     const handleConfirm = async () => {
         if (isProcessing) return;
         if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) {
-            return notification.error({
-                message: 'debt is less than minDebt.'
-            });
+            return;
         }
         if (collateralRatio < systemMCR) {
             return notification.error({
@@ -192,8 +195,8 @@ export default observer(function OpenTrove() {
         <div className={s.wrap}>
             <MintTitle />
             {validColls.length === 0 && (
-                <div className={s.warning}>
-                    You have no  support Collateral 😅 
+                <div className={s.collateralWarning}>
+                    Your collateral is insufficient. 😅 
                 </div>
             )}
             {validColls.length > 0 &&
@@ -222,7 +225,9 @@ export default observer(function OpenTrove() {
                                     <div className={s.help}>
                                         <p className={s.balance}>
                                             Your Balance{"\u00A0"}
-                                            {formatUnits(coll.balance, coll.tokenDecimals)}
+                                            <span>
+                                                {formatUnits(coll.balance, coll.tokenDecimals)}
+                                            </span>
                                         </p>
                                         <p className={s.max} onClick={() => setMax(coll.tokenAddr, coll.balance)}>Max</p>
                                     </div>

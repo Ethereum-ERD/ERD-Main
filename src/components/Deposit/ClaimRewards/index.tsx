@@ -31,6 +31,7 @@ function ClaimRewards({
             onCancel={onClose}
             className={s.modal}
             footer={null}
+            rootClassName={s.maskRoot}
         >
             <div className={s.content}>
                 <div className={s.modalHead}>
@@ -68,8 +69,8 @@ function ClaimRewards({
                         Move to trove
                         <Popover
                             title=''
-                            overlayClassName='test'
-                            content={<div className={s.tipsModal}>Re-stake all your rewards, which will increase your collateral amount, increase your mortgage rate and borrow amount.</div>}
+                            arrow={false}
+                            content={<div className={cx('tipsModal', s.tipsModal)}>Re-collateralize all of your earnings to increase your collateral amount and borrowing credit limit.</div>}
                         >
                             <div className={s.tips}>
                                 <CircleHelp />

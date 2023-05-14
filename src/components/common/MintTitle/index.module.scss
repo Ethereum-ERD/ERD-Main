@@ -10,7 +10,7 @@
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
-    color: #333;
+    color: var(--support-asset-title-color);
     text-align: left;
 }
 
@@ -18,11 +18,12 @@
     width: 42px;
     height: 42px;
     cursor: pointer;
-
-    svg {
-        width: 42px;
-        height: 42px;
-    }
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--support-asset-icon-wrap-color);
+    border-radius: 50%;
 }
 
 .popupWrap {

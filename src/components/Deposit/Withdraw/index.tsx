@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { observer } from "mobx-react";
-import { InputNumber, Popover, notification } from 'antd';
+import { InputNumber, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
-import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
 import { useStore } from "src/hooks";
 
@@ -64,13 +63,13 @@ function Withdraw() {
             <div className={s.overviewTop}>
                 <p className={s.title}>Withdraw</p>
             </div>
-            <div className={s.depositNumInputWrap}>
+            <div className={s.withdrawNumInputWrap}>
                 <InputNumber
                     stringMode
                     onChange={onChange}
                     value={withdrawNum}
                     controls={false}
-                    className={s.depositNumInput}
+                    className={s.withdrawNumInput}
                     addonAfter={<p>{stableCoinName}</p>}
                 />
             </div>
@@ -86,14 +85,7 @@ function Withdraw() {
                     </p>
                 </div>
                 <div className={s.poolShare}>
-                    <div>
-                        Pool Share
-                        <Popover title='' content={<div className={s.popOverWrap}>The ratio of your deposit to the stable pool.</div>}>
-                            <div style={{ cursor: 'help' }}>
-                                <CircleHelp />
-                            </div>
-                        </Popover>
-                    </div>
+                    <p>Pool Share</p>
                     <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
                 </div>
             </div>

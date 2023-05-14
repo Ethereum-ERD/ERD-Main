@@ -1,27 +1,32 @@
+.wrap {
+    width: 100%;
+}
+
 .container {
     width: 530px;
     padding: 30px;
     margin: 0 auto;
-    border-radius: 32px;
-    background-color: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--redeem-bg-border-color);
+    background: var(--redeem-bg-color);
 }
 
 .title {
     font-weight: 700;
     font-size: 32px;
     line-height: 40px;
-    color: #333;
+    color: var(--redeem-title-color);
 }
 
 .desc {
     margin-top: 10px;
     font-size: 14px;
     line-height: 133%;
-    color: #999;
+    color: var(--redeem-desc-color);
 }
 
 .highlight {
-    color: var(--main-color);
+    color: var(--redeem-highlight-color);
 }
 
 .coinName {
@@ -34,7 +39,7 @@
 
     margin-top: 30px;
 
-    border: 1px solid #D8E3F2;
+    border: 1px solid var(--redeem-input-wrap-border-color);
     border-radius: 16px;
 }
 
@@ -45,11 +50,7 @@
     border-radius: 16px;
     border: none !important;
     box-shadow: none !important;
-
-    & > div {
-        border: none !important;
-        box-shadow: none !important;
-    }
+    background-color: var(--redeem-input-bg-color);
 
     &:focus,
     &:hover {
@@ -57,14 +58,26 @@
         box-shadow: none !important;
     }
 
-    input {
-        height: 52px !important;
+    :global {
+        div.ant-input-number-input-wrap {
+            border: none !important;
+            box-shadow: none !important;
+        }
 
-        font-size: 23px !important;
-        font-style: normal;
-        font-weight: 450;
-        font-family: CircularStd;
+        input.ant-input-number-input {
+            height: 52px;
+            font-size: 23px;
+            font-style: normal;
+            font-weight: 450;
+            font-family: CircularStd;
+            color: var(--redeem-input-text-color);
+        }
+
+        div.ant-input-number-group-addon {
+            color: var(--redeem-input-after-color);
+        }
     }
+
 }
 
 .help {
@@ -79,17 +92,17 @@
     font-weight: 450;
     font-size: 12px;
     line-height: 133%;
-    color: #333;
+    color: var(--redeem-balance-text-color);
 
     span {
-        color: #999;
+        color: var(--redeem-balance-amount-color);
     }
 }
 
 .max {
     font-size: 12px;
     cursor: pointer;
-    color: var(--main-color);
+    color: var(--redeem-balance-max-text-color);
 }
 
 .redeemWarning {
@@ -117,9 +130,9 @@
     height: 80px;
     padding: 20px;
     margin-top: 20px;
-    background: #F8FAFE;
+    background: var(--redeem-fee-info-bg-color);
     border-radius: 16px;
-    color: #999;
+    color: var(--redeem-fee-info-text-color);
     font-size: 12px;
     line-height: 133%;
 }
@@ -130,20 +143,8 @@
 }
 
 .redeemFeeTips {
-    width: 267px;
+    max-width: 267px;
     padding: 16px 20px;
-
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 8px 21px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(8px);
-
-    font-style: normal;
-    font-weight: 450;
-    font-size: 14px;
-    line-height: 133%;
-    color: #666;
-
-    border-radius: 16px;
 }
 
 .tipsHelp {
@@ -153,8 +154,11 @@
 
 .feeAmount {
     margin-top: 5px;
+    font-size: 12px;
+
     span {
-        color: #333;
+        font-size: 14px;
+        color: var(--redeem-fee-amount-color);
     }
 }
 
@@ -163,23 +167,31 @@
     height: 52px;
     margin-top: 30px;
 
-    color: #fff;
+    color: var(--redeem-btn-text-color);
     font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 63px;
+    border-radius: 10px;
     cursor: pointer;
-    background-color: var(--main-color);
+    background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
+    opacity: 1;
+
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .7;
+    }
 
     &.disable {
-        color: #939393;
+        color: var(--disable-btn-text-color);
         cursor: not-allowed;
-        background-color: #C5C5C5;
+        background: var(--disable-btn-bg-color);
+        border: 1px solid var(--disable-btn-border-color);
     }
 
     &.loading {
-        opacity: .65;
+        opacity: .7;
 
         & > span {
             margin-right: 5px;
@@ -205,6 +217,8 @@
     .container {
         width: 100%;
         padding: 0;
+        border: none;
+        background: transparent;
     }
 
     .title {
@@ -223,10 +237,12 @@
     .redeemNumInput {
         height: 48px;
 
-        input {
-            height: 48px !important;
-    
-            font-size: 20px !important;
+        :global {
+
+            input.ant-input-number-input {
+                height: 48px;
+                font-size: 20px;
+            }
         }
     }
 

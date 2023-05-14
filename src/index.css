@@ -42,7 +42,7 @@ a:visited {
 html,
 body,
 #root {
-    background-color: #f8fafe;
+    background-color: var(--root-bg-color);
 }
 
 #root {
@@ -63,10 +63,23 @@ div.ant-popover-inner {
     padding: 0 !important;
     box-shadow: none !important;
     border-radius: 16px !important;
+    background-color: var(--popover-bg-color) !important;
 }
 
-@media screen and (max-width: 743px) {
-    #root {
-        background-color: #fff;
-    }
+.tipsModal {
+    max-width: 280px;
+    max-height: 146px;
+
+    padding: 16px 20px;
+
+    background: var(--tips-modal-bg-color);
+    backdrop-filter: blur(15px);
+
+    border-radius: 16px;
+    border: 1px solid var(--tips-modal-border-color);
+
+    font-size: 14px;
+    line-height: 133%;
+
+    color: var(--tips-modal-text-color);
 }

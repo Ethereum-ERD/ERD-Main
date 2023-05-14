@@ -1,8 +1,9 @@
 .wrap {
     width: 530px;
     padding: 30px;
-    border-radius: 32px;
-    background-color: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--deposit-over-view-border-color);
+    background: var(--deposit-over-view-bg-color);
 
     display: flex;
     flex-direction: column;
@@ -21,7 +22,7 @@
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
-    color: #333;
+    color: var(--deposit-over-view-title-color);
 }
 
 .claimBtn {
@@ -34,10 +35,10 @@
     cursor: pointer;
 
 
-    border: 1px solid #999;
+    border: 1px solid var(--deposit-over-view-claim-btn-border-color);
     border-radius: 63px;
 
-    color: #999;
+    color: var(--deposit-over-view-claim-btn-text-color);
     font-size: 16px;
 
     p {
@@ -52,7 +53,7 @@
     font-size: 12px;
     line-height: 133%;
     font-weight: 450;
-    color: #999;
+    color: var(--deposit-over-view-desc-color);
 }
 
 .depositInfo {
@@ -63,8 +64,8 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: #F8FAFE;
-    border-radius: 16px;
+    background-color: var(--deposit-over-view-deposit-info-bg-color);
+    border-radius: 10px;
 }
 
 .depositAmount,
@@ -77,13 +78,13 @@
 }
 
 .indexName {
-    color: #999;
+    color: var(--deposit-over-view-deposit-info-index-name-color);
     font-size: 14px;
     line-height: 133%;
 }
 
 .indexValue {
-    color: #333;
+    color: var(--deposit-over-view-deposit-info-index-value-color);
     font-size: 24px;
     line-height: 133%;
     font-weight: 500;
@@ -91,7 +92,7 @@
     span {
         margin-left: 5px;
 
-        color: #999;
+        color: var(--deposit-over-view-deposit-info-index-value-extra-color);
         font-size: 14px;
         display: inline-block;
     }
@@ -112,22 +113,30 @@
 .btn {
     width: 300px;
     height: 52px;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    color: #fff;
+    color: var(--deposit-over-view-btn-color);
     cursor: pointer;
-    border-radius: 63px;
-    background-color: var(--main-color);
+    border-radius: 10px;
+    background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
+    opacity: 1;
+
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .7;
+    }
 
     &.withdrawBtn {
         width: 150px;
         margin-right: 20px;
-        color: #999;
-        border: 1px solid #999;
-        background-color: #fff;
+        flex: 0 0 auto;
+        color: var(--cancel-btn-text-color);
+        border: 1px solid var(--cancel-btn-border-color);
+        background: var(--cancel-btn-bg-color);
     }
 }
 
@@ -138,11 +147,6 @@
 
     .btn {
         width: 454px;
-        flex: 1 0 auto;
-
-        &.withdrawBtn {
-            flex: 0 0 auto;
-        }
     }
 }
 
@@ -150,6 +154,8 @@
     .wrap {
         width: 100%;
         padding: 0;
+        border: none;
+        background: transparent;
     }
 
     .title {

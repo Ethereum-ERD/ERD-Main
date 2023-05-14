@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { observer } from "mobx-react";
-import { InputNumber, Popover, notification } from 'antd';
+import { InputNumber, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
-import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
 import { useStore } from "src/hooks";
 
@@ -83,11 +82,16 @@ function ReDeposit() {
             </div>
             <div className={s.help}>
                 <p className={s.balance}>
-                    <span>Your Balance{'\u00A0'}</span>
-                    {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    Your Balance{'\u00A0'}
+                    <span>
+                        {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    </span>
                 </p>
                 <p className={s.max} onClick={setToMax}>Max</p>
             </div>
+            {(+formatUnits(userStableCoinBalance, stableCoinDecimals) < (+depositNum)) && (
+                <div className={s.InsufficientToken}>You have no enough {stableCoinName} 😅</div>
+            )}
             <div className={s.depositInfo}>
                 <div className={s.depositAmount}>
                     <p>Your Deposit</p>
@@ -97,14 +101,7 @@ function ReDeposit() {
                     </p>
                 </div>
                 <div className={s.poolShare}>
-                    <div>
-                        Pool Share
-                        <Popover title='' content={<div className={s.popOverWrap}>The ratio of your deposit to the stable pool.</div>}>
-                            <div style={{ cursor: 'help' }}>
-                                <CircleHelp />
-                            </div>
-                        </Popover>
-                    </div>
+                    <p>Pool Share</p>
                     <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
                 </div>
             </div>

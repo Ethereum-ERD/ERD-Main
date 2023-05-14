@@ -4,29 +4,18 @@
     padding: 20px;
     margin-top: 30px;
 
-    background: #F8FAFE;
-    border-radius: 16px;
+    background: var(--fee-info-bg-color);
+    border-radius: 10px;
 
     display: flex;
     flex-wrap: wrap;
 }
 
-.tipsModal {
-    width: 280px;
-    height: 146px;
+div.tipsModal {
+    max-width: 280px;
+    max-height: 146px;
 
     padding: 16px 20px;
-
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 8px 21px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(8px);
-
-    border-radius: 16px;
-
-    font-size: 14px;
-    line-height: 133%;
-
-    color: #666;
 }
 
 .item {
@@ -42,7 +31,7 @@
     &>p:first-child {
         font-size: 12px;
         line-height: 133%;
-        color: #999;
+        color: var(--fee-info-item-first-p-text-color);
     }
 
     &>div:first-child {
@@ -51,7 +40,7 @@
 
         font-size: 12px;
         line-height: 133%;
-        color: #999;
+        color: var(--fee-info-item-first-div-text-color);
 
         & > div {
             margin-left: 5px;
@@ -66,10 +55,10 @@
         font-size: 14px;
         line-height: 133%;
 
-        color: #333;
+        color: var(--fee-info-item-last-p-text-color);
 
         span {
-            color: #999;
+            color: var(--fee-info-item-last-p-contain-span-text-color);
             font-size: 12px;
         }
     }

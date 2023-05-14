@@ -1,7 +1,7 @@
 .wrap {
     width: 100vw;
     height: 100px;
-    border-bottom: 1px solid rgba(35, 97, 255, 0.1);
+    border-bottom: 1px solid var(--banner-bottom-border-color);
 }
 
 .container {
@@ -9,7 +9,6 @@
     height: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(3px);
 
     display: flex;
@@ -34,7 +33,7 @@
 
 .tab {
     margin-right: 40px;
-    color: #999;
+    color: var(--banner-menu-text-color);
     font-size: 20px;
     cursor: pointer;
 }
@@ -44,7 +43,7 @@
 }
 
 .active {
-    color: var(--main-color);
+    color: var(--banner-menu-text-active-color);
 }
 
 .walletAddr {
@@ -52,12 +51,12 @@
     height: 50px;
 
     cursor: pointer;
-    border: 1px solid var(--main-color);
+    border: 1px solid var(--banner-wallet-border-color);
     border-radius: 97px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--main-color);
+    color: var(--banner-wallet-text-color);
     font-size: 20px;
     flex: 0 0 auto;
 }
@@ -65,6 +64,37 @@
 .mobileIcons {
     display: none;
     align-items: center;
+}
+
+.popMenuRoot {
+    width: 194px;
+    border: 1px solid #393B3F;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+
+    :global {
+        ul.ant-dropdown-menu {
+            width: 100%;
+            padding: 0;
+            border-radius: 16px;
+            box-shadow: none;
+            background: var(--banner-pop-menu-bg-color);
+        }
+        li.ant-dropdown-menu-item {
+            height: 50px;
+
+            &:hover,
+            &:active,
+            &:focus {
+                background: rgba(255, 255, 255, 0.1) !important;
+            }
+        }
+
+        span.ant-dropdown-menu-title-content > a {
+            color: rgba(255, 255, 255, .5) !important;
+        }
+    }
 }
 
 @media screen and (max-width: 1199px) {

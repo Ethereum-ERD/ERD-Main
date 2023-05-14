@@ -4,6 +4,7 @@ import { InputNumber, Popover, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
+import DepositTitle from 'src/components/common/DepositTitle';
 import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, addCommas } from 'src/util';
 import { useStore } from "src/hooks";
@@ -61,7 +62,7 @@ function NewDeposit() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Deposit-SP</p>
+            <DepositTitle />
             <div className={s.depositNumInputWrap}>
                 <InputNumber
                     stringMode
@@ -74,8 +75,10 @@ function NewDeposit() {
             </div>
             <div className={s.help}>
                 <p className={s.balance}>
-                    <span>Your Balance{'\u00A0'}</span>
-                    {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    Your Balance{'\u00A0'}
+                    <span>
+                        {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                    </span>
                 </p>
                 <p className={s.max} onClick={setToMax}>Max</p>
             </div>
@@ -85,10 +88,13 @@ function NewDeposit() {
             <div className={s.poolShare}>
                 <div className={s.poolShareTitle}>
                     Pool Share
-                    <Popover title='' content={
-                        <div className={s.popOverWrap}>
-                            The ratio of your deposit to the stable pool.
-                        </div>
+                    <Popover
+                        arrow={false}
+                        title=''
+                        content={
+                            <div className={cx('tipsModal', s.popOverWrap)}>
+                                The ratio of your deposit to the stable pool.
+                            </div>
                         }
                     >
                         <div style={{ cursor: 'help' }}>

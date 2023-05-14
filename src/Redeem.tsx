@@ -17,7 +17,7 @@ function Redeem() {
     const [redeemNum, setRedeemNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { userStableCoinBalance, stableCoinName, stableCoinDecimals, redeemFeeRatio, isNormalMode, systemMCR, systemTCR, redeem } = store;
+    const { userStableCoinBalance, stableCoinName, stableCoinDecimals, redeemFeeRatio, systemMCR, systemTCR, redeem } = store;
 
     const canRedeem = systemTCR > systemMCR;
 
@@ -85,25 +85,31 @@ function Redeem() {
                 </div>
                 <div className={s.help}>
                     <p className={s.balance}>
-                        <span>Your Balance{'\u00A0'}</span>
-                        {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                        Your Balance{'\u00A0'}
+                        <span>
+                            {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
+                        </span>
                     </p>
                     <p className={s.max} onClick={setToMax}>Max</p>
                 </div>
                 <div className={cx(s.redeemWarning, { [s.show]: !canRedeem })}>
-                    You can't redeem {stableCoinName} when the total collateral ratio is less than {(systemMCR * 100).toFixed(0)}% in { isNormalMode ? 'Normal Mode' : 'Recovery Mode' }.
+                    You can't redeem {stableCoinName} when the total collateral ratio is less than {(systemMCR * 100).toFixed(0)}% in Recovery Mode.
                 </div>
                 <div className={s.feeInfo}>
                     <div className={s.feeInfoTitle}>
                         Redemption Fee{'\u00A0'}
-                        <Popover title='' content={<div className={s.redeemFeeTips}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on eUSD redemption volumes and is 0.5% at minimum.</div>}>
+                        <Popover
+                            arrow={false}
+                            title=''
+                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on eUSD redemption volumes and is 0.5% at minimum.</div>}
+                        >
                             <div className={s.tipsHelp}>
                                 <CircleHelp />
                             </div>
                         </Popover>
                     </div>
                     <p className={s.feeAmount}>
-                        <span>{redeemFee}</span>
+                        <span>{(redeemFee).toFixed(2)}</span>
                         {'\u00A0'}{stableCoinName}
                         ({(redeemFeeRatio * 100).toFixed(2)}%)
                     </p>

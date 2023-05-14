@@ -27,6 +27,7 @@ export default observer(function MintTestAsset() {
     }, [supportAssets]);
 
     const handleConfirm = async () => {
+        if (isProcessing) return;
         setIsProcessing(true);
         const result = await mintTestAsset(asset);
         if (result) {
@@ -47,7 +48,11 @@ export default observer(function MintTestAsset() {
                 <p className={s.title}>Test</p>
                 <p className={s.desc}>Mint test assets to join protocol.</p>
                 <div className={s.optionList}>
-                    <Select value={asset} onChange={setAsset}>
+                    <Select
+                        value={asset}
+                        onChange={setAsset}
+                        popupClassName={s.options}
+                    >
                         {supportAssets
                             .filter(c => {
                                 return c.tokenAddr !== MOCK_ETH_ADDR

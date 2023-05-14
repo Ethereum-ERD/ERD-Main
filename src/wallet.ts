@@ -40,9 +40,15 @@ export function createBoard() {
         appMetadata: {
             name: 'ERD',
             icon: `
-            <svg width="88" height="80" viewBox="0 0 88 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M72.9819 52.5923L44.0277 11L14.9819 52.6103L44.1194 69L72.9819 52.5923ZM42.2135 37.2952L22.477 48.4367L42.2135 19.8487V37.2952ZM45.8786 19.8487L65.6151 48.4367L45.8786 37.2952V19.8487ZM61.0154 55.2613L43.9911 45.6603L40.4176 47.6844L57.442 57.2854L52.7873 59.9364L35.763 50.3354L31.7497 52.6103L48.774 62.2112L44.1194 64.8623L22.4037 52.6103L43.9728 40.3582L65.6701 52.6103L61.0154 55.2613Z" fill="#226CFF"/>
-            </svg>
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M56 40.1581L28.0442 0L0 40.1754L28.1327 56L56 40.1581ZM26.2926 25.3885L7.23665 36.1458L26.2926 8.54355V25.3885ZM29.8313 8.54355L48.8872 36.1458L29.8313 25.3885V8.54355ZM44.4461 42.735L28.0088 33.4651L24.5586 35.4194L40.9959 44.6893L36.5017 47.2489L20.0645 37.979L16.1896 40.1754L32.6269 49.4453L28.1327 52.0049L7.16588 40.1754L27.9912 28.3459L48.9403 40.1754L44.4461 42.735Z" fill="url(#paint0_linear_4255_13186)"/>
+                    <defs>
+                        <linearGradient id="paint0_linear_4255_13186" x1="13.4167" y1="53.0833" x2="36.75" y2="5.25" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#863CFF"/>
+                            <stop offset="1" stop-color="#FF7878"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
             `,
             description: 'Ethereum reserve dollar',
             recommendedInjectedWallets: [

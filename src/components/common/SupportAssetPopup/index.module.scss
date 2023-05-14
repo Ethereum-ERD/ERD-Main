@@ -2,12 +2,13 @@
     width: 414px;
     padding: 20px;
     border-radius: 24px;
-    background: #FFFFFF;
-    box-shadow: 0px 10px 24px rgba(32, 32, 32, 0.25);
+    border: 1px solid var(--support-asset-popup-wrap-border-color);
+    background: var(--support-asset-popup-wrap-bg-color);
+    box-shadow: 0px 10px 24px var(--support-asset-popup-wrap-box-shadow-color);
 }
 
 .title {
-    color: #333;
+    color: var(--support-asset-popup-title-color);
     font-size: 24px;
     line-height: 30px;
     font-weight: 500;
@@ -28,7 +29,7 @@
 .depositInfoTitle {
     font-size: 14px;
     line-height: 133%;
-    color: #999;
+    color: var(--support-asset-popup-column-title-color);
 }
 
 .assetNameTitle {
@@ -43,17 +44,20 @@
     width: 94px;
 }
 
+.assetList {
+    overflow: hidden;
+    border-radius: 10px;
+}
+
 .asset {
     width: 100%;
     padding: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 10px;
-}
+    background-color: var(--support-asset-popup-asset-item-bg-color);
 
-.asset:nth-child(odd) {
-    background-color: #fbfbfc;
+    color: var(--support-asset-popup-asset-item-text-color);
 }
 
 .assetName {
@@ -88,7 +92,6 @@
 .tokenContent,
 .depositContent {
     margin-top: 5px;
-    color: #333;
     font-size: 14px;
     line-height: 133%;
     font-weight: 450;

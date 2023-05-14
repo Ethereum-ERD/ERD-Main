@@ -151,13 +151,14 @@ function Liquidate() {
                                 [s.recoveryMode]: !isNormalMode,
                             })}
                         >
-                            {isNormalMode ? "Normal Mode" : "Recovery Mode"}
+                            <p>{isNormalMode ? "Normal Mode" : "Recovery Mode"}</p>
                             <Popover
                                 title=""
+                                arrow={false}
                                 content={
                                     <>
                                         {isNormalMode && (
-                                            <div className={s.tipsModal}>
+                                            <div className={cx('tipsModal', s.tipsModal)}>
                                                 Recovery Mode will be activated when
                                                 the Total Collateralization Ratio
                                                 (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
@@ -172,7 +173,7 @@ function Liquidate() {
                                             </div>
                                         )}
                                         {!isNormalMode && (
-                                            <div className={s.tipsModal}>
+                                            <div className={cx('tipsModal', s.tipsModal)}>
                                                 Recovery Mode will be activated when
                                                 the Total Collateralization Ratio
                                                 (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
@@ -218,7 +219,7 @@ function Liquidate() {
                         <p className={s.riskTrovesTitle}>Risk Troves</p>
                         <div className={s.inputContainer}>
                             <div className={s.helpText}>
-                                <Popover title="" content={<div className={s.tipsModal}>Enter the trove quantity you want to liquidate for batch liquidation. Liquidation is performed in order of mortgage ratio from low to high.</div>}>
+                                <Popover arrow={false} title="" content={<div className={cx('tipsModal', s.tipsModal)}>During the batch liquidating, please enter the number of troves you wish to liquidate. Liquidation will occur in order of collateral ratios, from lowest to highest.</div>}>
                                     <div>
                                         <svg
                                             width="15"

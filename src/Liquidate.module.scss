@@ -21,7 +21,7 @@
 
 .title {
     font-size: 32px;
-    color: #333;
+    color: var(--liquidate-title-color);
     font-weight: 700;
 }
 
@@ -35,8 +35,17 @@
     justify-content: center;
     border-radius: 61px;
     font-size: 16px;
-    background: rgba(48, 131, 255, 0.1);
-    color: var(--main-color);
+    background: var(--liquidate-system-mode-bg-color);
+
+    p {
+        display: inline-flex;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; 
+        -moz-background-clip: text;
+        -moz-text-fill-color: transparent;
+        background-color: transparent;
+        background-image: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
+    }
 
     div {
         margin-left: 6px;
@@ -45,8 +54,12 @@
     }
 
     &.recoveryMode {
-        color: #FF8A00;
-        background: rgba(255, 138, 0, 0.1);
+        p {
+            color: var(--liquidate-recovery-mode-text-color);
+            background-image: none;
+            -webkit-text-fill-color: var(--liquidate-recovery-mode-text-color); 
+            -moz-text-fill-color: var(--liquidate-recovery-mode-text-color);
+        }
     }
 }
 
@@ -55,21 +68,10 @@
     cursor: help;
 }
 
-.tipsModal {
-    width: 342px;
+div.tipsModal {
+    max-width: 342px;
+    max-height: 500px;
     padding: 16px 20px;
-
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 8px 21px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(8px);
-
-    font-style: normal;
-    font-weight: 450;
-    font-size: 14px;
-    line-height: 133%;
-    color: #666;
-
-    border-radius: 16px;
 }
 
 .topRight {
@@ -81,7 +83,7 @@
     font-size: 15px;
     font-weight: 500;
     line-height: 133%;
-    color: #333;
+    color: var(--liquidate-risk-trove-title-color);
     display: none;
 }
 
@@ -94,7 +96,7 @@
     display: flex;
     align-items: center;
     font-size: 20px;
-    color: #666;
+    color: var(--liquidate-help-text-color);
 
     div {
         display: flex;
@@ -113,7 +115,7 @@
     padding: 0 5px;
     margin-left: 16px;
 
-    border: 1px solid #D8E3F2;
+    border: 1px solid var(--liquidate-select-trove-border-color);
     border-radius: 58px;
 
     display: flex;
@@ -141,24 +143,26 @@
     box-shadow: none !important;
     background-color: transparent !important;
 
-    & > div {
-        border: none !important;
-        box-shadow: none !important;
-    }
-
     &:focus,
     &:hover {
         border: none !important;
         box-shadow: none !important;
     }
 
-    input {
-        height: 100% !important;
+    :global {
+        div.ant-input-number-wrapper {
+            border: none;
+            box-shadow: none;
+        }
 
-        font-size: 23px !important;
-        font-style: normal;
-        font-weight: 450;
-        font-family: CircularStd;
+        input.ant-input-number-input {
+            height: 100%;
+            font-size: 23px;
+            font-style: normal;
+            font-weight: 450;
+            font-family: CircularStd;
+            color: var(--liquidate-select-trove-input-color);
+        }
     }
 }
 
@@ -168,7 +172,7 @@
 
     &.disableBtn {
         cursor: not-allowed;
-        filter: brightness(0);
+        filter: brightness(0.5);
     }
 }
 
@@ -192,9 +196,10 @@
     align-items: center;
     justify-content: space-between;
 
-    background: #F4F8FF;
+    color: var(--liquidate-table-head-text-color);
+    background: var(--liquidate-table-head-bg-color);
 
-    border: 1px solid #DAE6F8;
+    border: 1px solid var(--liquidate-table-head-border-color);
     border-radius: 16px;
 }
 
@@ -238,11 +243,9 @@
     padding-left: 24px;
 }
 
-.tableHeadDebt {
-    span {
-        color: #999;
-        font-size: 14px;
-    }
+.tableHeadDebt span {
+    color: var(--liquidate-table-head-extra-text-color);
+    font-size: 14px;
 }
 
 .tableBody {
@@ -257,7 +260,7 @@
     display: flex;
     border-radius: 16px;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--liquidate-table-item-bg-color);
     user-select: none;
     cursor: pointer;
     justify-content: space-between;
@@ -295,7 +298,7 @@
     align-items: center;
 
     .owner {
-        color: #666;
+        color: var(--liquidate-table-item-owner-text-color);
         font-size: 20px;
         margin-right: 10px;
     }
@@ -323,17 +326,17 @@
 
 .collateralAmount {
     font-size: 20px;
-    color: #333;
+    color: var(--liquidate-table-item-collateral-amount-text-color);
 }
 
 .collateralName {
     margin-top: 5px;
     font-size: 12px;
-    color: #999;
+    color: var(--liquidate-table-item-collateral-name-text-color);
 }
 
 .tableItemDebt {
-    color: #666;
+    color: var(--liquidate-table-item-debt-text-color);
     font-size: 20px;
 }
 
@@ -364,23 +367,54 @@
 
 .tableItemCollRatioText {
     font-size: 20px;
+    color: var(--coll-ratio-value-base-color);
 
     &.emergency {
-        color: #FF4646
+        color: var(--coll-ratio-value-emergency-color)
     }
 
     &.waring {
-        color: #FF8A00;
+        color: var(--coll-ratio-value-warning-color);
     }
 
     &.health {
-        color: #47BE77;
+        color: var(--coll-ratio-value-health-color);
     }
 }
 
 .pageControl {
     margin-top: 20px;
     float: right;
+
+    :global {
+        button.ant-pagination-item-link {
+            color: var(--liquidate-page-control-normal-item-link-color) !important;
+        }
+
+        li.ant-pagination-disabled {
+            button.ant-pagination-item-link {
+                color: var(--liquidate-page-control-disable-item-link-color) !important;
+            }
+        }
+
+        li.ant-pagination-item a {
+            color: var(--liquidate-page-control-page-normal-color);
+        }
+
+        li.ant-pagination-item-active {
+            background-color: transparent;
+
+            a {
+                color: var(--liquidate-page-control-page-active-color);
+            }
+
+            &:hover {
+                a {
+                    color: var(--liquidate-page-control-page-active-color);
+                }
+            }
+        }
+    }
 }
 
 @media only screen and (min-width: 744px) and (max-width: 1199px) {
@@ -410,6 +444,20 @@
     .selectTroves {
         width: 124px;
         height: 32px;
+    }
+
+    .liquidateNumInput {
+        :global {
+            div.ant-input-number-wrapper {
+                border: none;
+                box-shadow: none;
+            }
+
+            input.ant-input-number-input {
+                height: 32px;
+                font-size: 14px;
+            }
+        }
     }
 
     .confirmBtn {
@@ -547,7 +595,7 @@
         margin-left: calc(50% - 50vw);
         padding: 0 20px;
         flex: 0 0 auto;
-        background-color: #F4F8FF;
+        background: var(--liquidate-top-right-on-mobile-bg-color);
     }
 
     .riskTrovesTitle {
@@ -636,7 +684,8 @@
     }
 
     .tableItem {
-        height: auto;
+        height: 40px;
+        border-radius: 5px;
     }
 
     .tableItemContainer {

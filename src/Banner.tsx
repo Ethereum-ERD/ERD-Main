@@ -62,10 +62,11 @@ function Banner() {
                         <img src={AssetIcon} alt="" />
                     </div>
                     <Dropdown
-                        arrow
+                        arrow={false}
                         menu={{ items }}
                         trigger={trigger}
                         placement="bottomRight"
+                        rootClassName={s.popMenuRoot}
                     >
                         <div>
                             <img src={MenuIcon} alt="" />

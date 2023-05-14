@@ -1,24 +1,41 @@
 .wrap {
     width: 530px;
     padding: 30px;
-    border-radius: 32px;
-    background-color: #fff;
+    border-radius: 20px;
+    background: var(--user-trove-show-bg-color);
+    border: 1px solid var(--user-trove-show-border-color);
+}
+
+.titleDesc {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 133%;
+    color: var(--user-trove-show-title-desc-color);
 }
 
 .info {
     width: 100%;
+    margin-top: 30px;
+    padding: 20px;
+    padding-top: 30px;
     display: flex;
     flex-wrap: wrap;
+    border-radius: 10px;
+    background: var(--user-trove-show-info-bg-color);
 }
 
 .item {
     width: 50%;
-    margin-top: 30px;
+
+    &:nth-child(n+3) {
+        margin-top: 30px;
+    }
 
     & > p:first-child {
         font-size: 14px;
         line-height: 133%;
-        color: #999;
+        color: var(--user-trove-show-info-item-title-color);
     }
 
     & > div:first-child {
@@ -26,7 +43,7 @@
         align-items: center;
         font-size: 14px;
         line-height: 133%;
-        color: #999;
+        color: var(--user-trove-show-info-item-title-color);
 
         svg {
             margin-right: 10px;
@@ -37,27 +54,28 @@
         margin-top: 10px;
         font-size: 20px;
         line-height: 30px;
-        color: #333;
+        color: var(--user-trove-show-info-item-value-color);
 
         span {
             margin-left: 5px;
             display: inline-block;
             font-size: 14px;
-            color: #999;
+            color: var(--user-trove-show-info-item-value-extra-color);
         }
     }
 
     & > p span.cr {
         font-size: 20px;
+        color: var(--coll-ratio-value-base-color);
 
         &.emergency {
-            color: #FF4646
+            color: var(--coll-ratio-value-emergency-color);
         }
-        &.waring {
-            color: #FF8A00;
+        &.warning {
+            color: var(--coll-ratio-value-warning-color);
         }
         &.health {
-            color: #47BE77;
+            color: var(--coll-ratio-value-health-color);
         }
     }
 }
@@ -79,27 +97,27 @@
         margin-right: 10px;
         border-radius: 50%;
     }
+}
 
-    p {
-        font-size: 14px;
-        line-height: 133%;
-        color: #999;
-    }
+.assetName {
+    font-size: 14px;
+    line-height: 133%;
+    color: var(--user-trove-show-info-coll-item-asset-name-color);
 }
 
 .collateralItemBody {
     margin-top: 10px;
     font-size: 20px;
     line-height: 30px;
-    color: #333;
+    color: var(--user-trove-show-info-coll-item-asset-value-color);
+}
 
-    span {
-        margin-left: 5px;
-        font-size: 14px;
-        line-height: 21px;
-        display: inline-block;
-        color: #999;
-    }
+.tokenName {
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 21px;
+    display: inline-block;
+    color: var(--user-trove-show-info-coll-item-asset-value-extra-color);
 }
 
 .btnArea {
@@ -113,30 +131,24 @@
     width: 294px;
     height: 52px;
 
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 
     font-size: 16px;
-    border-radius: 63px;
-    color: #fff;
-    background-color: var(--main-color);
-
-    &.disable {
-        width: 100%;
-        color: #a6a6a6;
-        background: #C5C5C5;
-        cursor: not-allowed;
-    }
+    border-radius: 10px;
+    color: var(--user-trove-show-btn-text-color);
+    background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
 
     &.repay {
         width: 160px;
         margin-right: 20px;
-        color: #999;
-        border: 1px solid #999;
-        background-color: #fff;
+        flex: 0 0 auto;
+        color: var(--user-trove-show-repay-btn-text-color);
+        border: 1px solid var(--user-trove-show-repay-btn-border-color);
+        background: var(--user-trove-show-repay-btn-bg-color);
     }
 }
 
@@ -147,11 +159,6 @@
 
     .btn {
         width: 454px;
-        flex: 1 0 auto;
-
-        &.repay {
-            flex: 0 0 auto;
-        }
     }
 }
 
@@ -160,6 +167,8 @@
         width: 100%;
         padding: 0;
         border-radius: 0;
+        border: none;
+        background: transparent;
     }
 
     .supportIcon {
@@ -168,26 +177,18 @@
 
     .info {
         margin-top: 20px;
-        padding: 0 20px 20px;
+        padding: 30px 20px 20px;
         border-radius: 16px;
-        background-color: #F8FAFE;
-    }
-
-    .item,
-    .collateralItem {
-        margin-top: 20px;
     }
 
     .btn {
         height: 50px;
         width: 120px;
-        flex: 1 0 auto;
         font-size: 14px;
 
         &.repay {
             width: 120px;
             margin-right: 10px;
-            flex: 0 0 auto;
         }
     }
 }
