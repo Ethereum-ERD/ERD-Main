@@ -20,7 +20,7 @@ export const clearWallet = () => {
 
 const injected = injectedModule();
 
-const walletConnect = walletConnectModule();
+const walletConnect = walletConnectModule({ version: 2, projectId: 'ebfcf0b28502acc374f2bbc59e2c8b22' });
 
 export function createBoard() {
     return Onboard({
@@ -55,10 +55,10 @@ export function createBoard() {
                 </svg>
             `,
             description: 'Ethereum reserve dollar',
-            recommendedInjectedWallets: [
-                { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
-                { name: "MetaMask", url: "https://metamask.io" }
-            ],
+            // recommendedInjectedWallets: [
+            //     { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
+            //     { name: "MetaMask", url: "https://metamask.io" }
+            // ],
         },
         accountCenter: {
             desktop: {
