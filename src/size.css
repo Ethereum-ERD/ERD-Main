@@ -1,0 +1,9 @@
+:root {
+    --onboard-modal-top: unset;
+}
+
+@media screen and (max-width: 743px) {
+    :root {
+        --onboard-modal-top: 60vw;
+    }
+}

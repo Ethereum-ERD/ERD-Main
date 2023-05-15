@@ -1,5 +1,6 @@
 import Onboard from '@web3-onboard/core';
 import injectedModule from '@web3-onboard/injected-wallets';
+import walletConnectModule from '@web3-onboard/walletconnect';
 
 import { MAIN_CHAIN_ID, GOERLI_CHAIN_ID, MAINNET_RPC_URL, GOERLI_RPC_URL } from 'src/constants';
 
@@ -19,9 +20,12 @@ export const clearWallet = () => {
 
 const injected = injectedModule();
 
+const walletConnect = walletConnectModule();
+
 export function createBoard() {
     return Onboard({
-        wallets: [injected],
+        wallets: [walletConnect, injected],
+        theme: 'system',
         chains: [
             {
                 id: `0x${(MAIN_CHAIN_ID).toString(16)}`,
@@ -52,6 +56,7 @@ export function createBoard() {
             `,
             description: 'Ethereum reserve dollar',
             recommendedInjectedWallets: [
+                { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
                 { name: "MetaMask", url: "https://metamask.io" }
             ],
         },
