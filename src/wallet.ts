@@ -1,4 +1,5 @@
 import Onboard from '@web3-onboard/core';
+import coinbaseWalletModule from '@web3-onboard/coinbase';
 import injectedModule from '@web3-onboard/injected-wallets';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
@@ -20,11 +21,13 @@ export const clearWallet = () => {
 
 const injected = injectedModule();
 
-const walletConnect = walletConnectModule({ version: 2, projectId: 'ebfcf0b28502acc374f2bbc59e2c8b22' });
+const coinbaseWalletSdk = coinbaseWalletModule();
+
+const walletConnect = walletConnectModule({ version: 1 });
 
 export function createBoard() {
     return Onboard({
-        wallets: [walletConnect, injected],
+        wallets: [injected, walletConnect, coinbaseWalletSdk],
         theme: 'system',
         chains: [
             {
@@ -55,10 +58,10 @@ export function createBoard() {
                 </svg>
             `,
             description: 'Ethereum reserve dollar',
-            // recommendedInjectedWallets: [
-            //     { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
-            //     { name: "MetaMask", url: "https://metamask.io" }
-            // ],
+            recommendedInjectedWallets: [
+                { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
+                { name: "MetaMask", url: "https://metamask.io" }
+            ],
         },
         accountCenter: {
             desktop: {
