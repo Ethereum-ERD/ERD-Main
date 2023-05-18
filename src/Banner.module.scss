@@ -1,6 +1,6 @@
 .wrap {
     width: 100vw;
-    height: 100px;
+    height: var(--banner-height);
     border-bottom: 1px solid var(--banner-bottom-border-color);
 }
 
@@ -105,10 +105,6 @@
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {
-    .wrap {
-        height: 50px;
-    }
-
     .container {
         width: 684px;
     }
@@ -125,10 +121,6 @@
 }
 
 @media screen and (max-width: 743px) {
-    .wrap {
-        height: 50px;
-    }
-
     .container {
         padding: 0 10px;
     }

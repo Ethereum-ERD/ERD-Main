@@ -280,12 +280,10 @@
     --liquidate-table-item-debt-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-table-item-collateral-amount-text-color: #fff;
     --liquidate-table-item-collateral-name-text-color: rgba(255, 255, 255, 0.5);
-    --liquidate-page-control-normal-item-link-color: rgba(255, 255, 255, .7);
-    --liquidate-page-control-disable-item-link-color: rgba(255, 255, 255, .4);
-    --liquidate-page-control-page-normal-color: #999;
-    --liquidate-page-control-page-active-color: #fff;
     --liquidate-risk-trove-title-color: rgba(255, 255, 255, 0.7);
     --liquidate-top-right-on-mobile-bg-color: #1E1F23;
+    --liquidate-empty-text-color: rgba(255, 255, 255, 0.7);
+    --liquidate-table-head-sticky-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 
 

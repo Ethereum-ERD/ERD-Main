@@ -28,7 +28,7 @@ const walletConnect = walletConnectModule({ version: 1 });
 export function createBoard() {
     return Onboard({
         wallets: [injected, walletConnect, coinbaseWalletSdk],
-        theme: 'system',
+        theme: 'dark',
         chains: [
             {
                 id: `0x${(MAIN_CHAIN_ID).toString(16)}`,

@@ -1,3 +1,4 @@
+@import "./z-index.css";
 @import "./color.css";
 @import "./font.css";
 @import "./size.css";
@@ -68,8 +69,8 @@ div.ant-popover-inner {
 }
 
 .tipsModal {
-    max-width: 280px;
-    max-height: 146px;
+    max-width: 342px;
+    max-height: 184px;
 
     padding: 16px 20px;
 

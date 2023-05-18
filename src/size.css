@@ -1,9 +1,22 @@
 :root {
     --onboard-modal-top: unset;
+    --banner-height: 100px;
+}
+
+@media screen and (max-width: 1199px) {
+    :root {
+        --banner-height: 50px;
+    }
 }
 
 @media screen and (max-width: 743px) {
     :root {
         --onboard-modal-top: 60vw;
+    }
+}
+
+@media screen and (max-height: 667px) {
+    :root {
+        --onboard-modal-top: 40vw;
     }
 }

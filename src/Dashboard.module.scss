@@ -76,21 +76,18 @@
 }
 
 .systemMode {
-    display: inline-flex;
+    display: inline;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; 
     -moz-background-clip: text;
     -moz-text-fill-color: transparent;
     background-color: transparent;
+    -webkit-box-decoration-break: clone;
     background-image: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
 }
 
-div.tipsModal {
-    max-width: 340px;
-}
-
 div.systemModal {
-    max-height: 500px;
+    max-height: 250px;
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {

@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { observer } from "mobx-react";
 import cx from "classnames";
 // @ts-ignore
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Popover, notification, Spin, InputNumber, Empty, Pagination } from "antd";
+import {
+    Popover,
+    notification,
+    InputNumber,
+    Empty,
+} from "antd";
+// @ts-ignore
+import { StickyContainer, Sticky } from "react-sticky";
 
+import Sentinel from "src/components/common/Sentinel";
 import { formatUnits, addCommas } from "src/util";
-import { ROW_PER_PAGE } from "src/constants";
 import { useStore } from "src/hooks";
 
 import s from "./Liquidate.module.scss";
@@ -52,8 +59,8 @@ function DeleteIcon() {
 }
 
 function Liquidate() {
-    const [page, setPage] = useState(0);
     const [selectTrove, setSelectTrove] = useState<string>("");
+    const [isFirstLoadData, setIsFirstLoadData] = useState(true);
     const [liquidateTroveAmount, setLiquidateTroveAmount] = useState(0);
 
     const { store } = useStore();
@@ -65,15 +72,15 @@ function Liquidate() {
         systemMCR,
         systemCCR,
         liquidate,
-        isPreLoadTroves,
-        collateralValueInfo,
         isLiquidateIng,
         supportAssets,
         stableCoinName,
         isLoadingTroves,
         stableCoinDecimals,
-        toggleIsLoadingTroves
+        collateralValueInfo,
     } = store;
+
+    const loadMore = useCallback(getTroves, [getTroves]);
 
     const ShowAlert = () => {
         notification.success({
@@ -118,25 +125,20 @@ function Liquidate() {
                 message: "transaction failed.",
             });
         }
-        setSelectTrove('');
+        setSelectTrove("");
     };
 
-    const onPageChange = (page: number) => {
-        setPage(page);
-        getTroves({ startingAt: page * ROW_PER_PAGE });
-    };
+    const collateralIsInit = useMemo(() => {
+        return Object.keys(collateralValueInfo).length > 0;
+    }, [collateralValueInfo]);
 
     useEffect(() => {
-        if (
-            Object.keys(collateralValueInfo).length < 1 ||
-            troveAmount < 1
-        ) {
-            toggleIsLoadingTroves();
-            return;
-        }
-        if (troveList.length > 0) return;
-        getTroves({ startingAt: 0 });
-    }, [troveAmount, troveList, toggleIsLoadingTroves, getTroves, collateralValueInfo]);
+        if (troveAmount < 1) return;
+        if (!collateralIsInit) return;
+        if (!isFirstLoadData) return;
+        setIsFirstLoadData(false);
+        getTroves();
+    }, [isFirstLoadData, troveAmount, isLoadingTroves, getTroves, collateralIsInit]);
 
     const canShowList = troveList.length > 0 && supportAssets.length > 0;
 
@@ -151,40 +153,58 @@ function Liquidate() {
                                 [s.recoveryMode]: !isNormalMode,
                             })}
                         >
-                            <p>{isNormalMode ? "Normal Mode" : "Recovery Mode"}</p>
+                            <p>
+                                {isNormalMode ? "Normal Mode" : "Recovery Mode"}
+                            </p>
                             <Popover
                                 title=""
                                 arrow={false}
                                 content={
                                     <>
                                         {isNormalMode && (
-                                            <div className={cx('tipsModal', s.tipsModal)}>
-                                                Recovery Mode will be activated when
-                                                the Total Collateralization Ratio
-                                                (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
-                                                activated, your Trove can be
-                                                liquidated if the collateralization
-                                                ratio of your Trove is lower than
-                                                TCR. The maximum collateral you can
-                                                lose in liquidation is capped at
-                                                {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
-                                                Manipulations that negatively affect
-                                                TCR are also restricted.
+                                            <div
+                                                className={cx(
+                                                    "tipsModal",
+                                                    s.tipsModal
+                                                )}
+                                            >
+                                                Recovery Mode will be activated
+                                                when the Total Collateralization
+                                                Ratio (TCR) falls below{" "}
+                                                {(systemCCR * 100).toFixed(0)}%.
+                                                When activated, your Trove can
+                                                be liquidated if the
+                                                collateralization ratio of your
+                                                Trove is lower than TCR. The
+                                                maximum collateral you can lose
+                                                in liquidation is capped at{" "}
+                                                {(systemMCR * 100).toFixed(0)}%
+                                                of your Trove debt.
+                                                Manipulations that negatively
+                                                affect TCR are also restricted.
                                             </div>
                                         )}
                                         {!isNormalMode && (
-                                            <div className={cx('tipsModal', s.tipsModal)}>
-                                                Recovery Mode will be activated when
-                                                the Total Collateralization Ratio
-                                                (TCR) falls below {(systemCCR * 100).toFixed(0)}%. When
-                                                activated, your Trove can be
-                                                liquidated if the collateralization
-                                                ratio of your Trove is lower than
-                                                TCR. The maximum collateral you can
-                                                lose in liquidation is capped at
-                                                {" "}{(systemMCR * 100).toFixed(0)}% of your Trove debt.
-                                                Manipulations that negatively affect
-                                                TCR are also restricted.
+                                            <div
+                                                className={cx(
+                                                    "tipsModal",
+                                                    s.tipsModal
+                                                )}
+                                            >
+                                                Recovery Mode will be activated
+                                                when the Total Collateralization
+                                                Ratio (TCR) falls below{" "}
+                                                {(systemCCR * 100).toFixed(0)}%.
+                                                When activated, your Trove can
+                                                be liquidated if the
+                                                collateralization ratio of your
+                                                Trove is lower than TCR. The
+                                                maximum collateral you can lose
+                                                in liquidation is capped at{" "}
+                                                {(systemMCR * 100).toFixed(0)}%
+                                                of your Trove debt.
+                                                Manipulations that negatively
+                                                affect TCR are also restricted.
                                             </div>
                                         )}
                                     </>
@@ -219,7 +239,24 @@ function Liquidate() {
                         <p className={s.riskTrovesTitle}>Risk Troves</p>
                         <div className={s.inputContainer}>
                             <div className={s.helpText}>
-                                <Popover arrow={false} title="" content={<div className={cx('tipsModal', s.tipsModal)}>During the batch liquidating, please enter the number of troves you wish to liquidate. Liquidation will occur in order of collateral ratios, from lowest to highest.</div>}>
+                                <Popover
+                                    arrow={false}
+                                    title=""
+                                    content={
+                                        <div
+                                            className={cx(
+                                                "tipsModal",
+                                                s.tipsModal
+                                            )}
+                                        >
+                                            During the batch liquidating, please
+                                            enter the number of troves you wish
+                                            to liquidate. Liquidation will occur
+                                            in order of collateral ratios, from
+                                            lowest to highest.
+                                        </div>
+                                    }
+                                >
                                     <div>
                                         <svg
                                             width="15"
@@ -260,7 +297,12 @@ function Liquidate() {
                                         precision={0}
                                     />
                                 </div>
-                                <div onClick={handleLiquidateN} className={cx(s.confirmBtn, { [s.disableBtn]: isLiquidateIng })}>
+                                <div
+                                    onClick={handleLiquidateN}
+                                    className={cx(s.confirmBtn, {
+                                        [s.disableBtn]: isLiquidateIng,
+                                    })}
+                                >
                                     <svg
                                         width="32"
                                         height="32"
@@ -293,221 +335,224 @@ function Liquidate() {
                         </div>
                     </div>
                 </div>
-                <div className={s.troveList}>
-                    <div className={s.tableHead}>
-                        <div className={s.tableHeadOfOwner}>Owner</div>
-                        <div className={s.tableHeadCollateral}>
-                            <p>Collateral</p>
-                            <div className={s.collateralIcons}>
-                                {supportAssets.map((asset) => {
-                                    return (
-                                        <img
-                                            key={asset.assetName}
-                                            src={asset.icon}
-                                            alt=""
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </div>
-                        <div className={s.tableHeadDebt}>
-                            Debt{"\u00A0"}
-                            <span>({stableCoinName})</span>
-                        </div>
-                        <div className={s.tableHeadCollRatio}>Coll.Ratio</div>
-                    </div>
-                    <div className={s.tableBody}>
-                        {(isLoadingTroves || isPreLoadTroves) && (
-                            <div className={s.emptyWrap}>
-                                <Spin />
-                            </div>
-                        )}
-                        {!isLoadingTroves && (
-                            <>
-                                {!canShowList && (
-                                    <div className={s.emptyWrap}>
-                                        <Empty />
-                                    </div>
-                                )}
-                                {canShowList &&
-                                    troveList
-                                        .slice(
-                                            page * ROW_PER_PAGE,
-                                            page * ROW_PER_PAGE + ROW_PER_PAGE
-                                        )
-                                        .map((row) => {
-                                            const { owner, collateral, debt, ICR } =
-                                                row;
-                                            const len = owner.length;
-
-                                            const tokens = collateral.map(
-                                                (t: any) => {
-                                                    const token =
-                                                        supportAssets.find(
-                                                            (asset) => {
-                                                                return (
-                                                                    asset.tokenAddr ===
-                                                                    t.tokenAddr
-                                                                );
+                <div className={s.troveList} style={{ maxHeight: 700, overflowY: 'auto' }}>
+                    <StickyContainer className={s.stickyContainer}>
+                        <Sticky relative topOffset={1}>
+                            {({ style, isSticky }: any) => {
+                                return (
+                                    <div
+                                        data-sticky={isSticky}
+                                        className={s.tableHead}
+                                        style={style}
+                                    >
+                                        <div className={s.tableHeadOfOwner}>
+                                            Owner
+                                        </div>
+                                        <div className={s.tableHeadCollateral}>
+                                            <p>Collateral</p>
+                                            <div className={s.collateralIcons}>
+                                                {supportAssets.map((asset) => {
+                                                    return (
+                                                        <img
+                                                            key={
+                                                                asset.assetName
                                                             }
-                                                        );
-                                                    return token;
-                                                }
-                                            );
+                                                            src={asset.icon}
+                                                            alt=""
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                        <div className={s.tableHeadDebt}>
+                                            Debt{"\u00A0"}
+                                            <span>({stableCoinName})</span>
+                                        </div>
+                                        <div className={s.tableHeadCollRatio}>
+                                            Coll.Ratio
+                                        </div>
+                                    </div>
+                                );
+                            }}
+                        </Sticky>
+                        <div className={s.tableBody}>
+                            {!canShowList && (
+                                <div className={s.emptyWrap}>
+                                    <Empty className={s.empty} />
+                                </div>
+                            )}
+                            {canShowList &&
+                                troveList.map((row) => {
+                                    const { owner, collateral, debt, ICR } =
+                                        row;
+                                    const len = owner.length;
 
-                                            const troveCollRatioClass = [
-                                                s.tableItemCollRatioText,
-                                            ];
-                                            if (ICR >= systemCCR) {
-                                                troveCollRatioClass.push(s.health);
-                                            } else if (ICR >= systemMCR) {
-                                                troveCollRatioClass.push(s.waring);
-                                            } else {
-                                                troveCollRatioClass.push(s.emergency);
+                                    const tokens = collateral.map((t: any) => {
+                                        const token = supportAssets.find(
+                                            (asset) => {
+                                                return (
+                                                    asset.tokenAddr ===
+                                                    t.tokenAddr
+                                                );
                                             }
+                                        );
+                                        return token;
+                                    });
 
-                                            return (
+                                    const troveCollRatioClass = [
+                                        s.tableItemCollRatioText,
+                                    ];
+                                    if (ICR >= systemCCR) {
+                                        troveCollRatioClass.push(s.health);
+                                    } else if (ICR >= systemMCR) {
+                                        troveCollRatioClass.push(s.waring);
+                                    } else {
+                                        troveCollRatioClass.push(s.emergency);
+                                    }
+
+                                    return (
+                                        <div
+                                            key={owner}
+                                            className={s.tableItem}
+                                            onClick={() =>
+                                                handleLiquidateOne(row.owner)
+                                            }
+                                        >
+                                            <div
+                                                className={s.tableItemContainer}
+                                            >
                                                 <div
-                                                    key={owner}
-                                                    className={s.tableItem}
-                                                    onClick={() =>
-                                                        handleLiquidateOne(
-                                                            row.owner
-                                                        )
+                                                    className={s.tableItemOwner}
+                                                >
+                                                    <p className={s.owner}>
+                                                        {owner.slice(0, 4) +
+                                                            "..." +
+                                                            owner.slice(
+                                                                len - 4
+                                                            )}
+                                                    </p>
+                                                    <p
+                                                        className={cx(
+                                                            s.owner,
+                                                            s.ownerOnMobile
+                                                        )}
+                                                    >
+                                                        {owner.slice(0, 4) +
+                                                            "..."}
+                                                    </p>
+                                                    <CopyToClipboard
+                                                        text={owner}
+                                                        onCopy={ShowAlert}
+                                                    >
+                                                        <div
+                                                            className={
+                                                                s.copyIcon
+                                                            }
+                                                            onClick={(
+                                                                e: any
+                                                            ) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                e.nativeEvent.stopImmediatePropagation();
+                                                            }}
+                                                        >
+                                                            <CopyIcon />
+                                                        </div>
+                                                    </CopyToClipboard>
+                                                </div>
+                                                <div
+                                                    className={
+                                                        s.tableItemCollateralAmountList
                                                     }
                                                 >
-                                                    <div className={s.tableItemContainer}>
-                                                        <div
-                                                            className={s.tableItemOwner}
-                                                        >
-                                                            <p className={s.owner}>
-                                                                {owner.slice(0, 4) +
-                                                                    "..." +
-                                                                    owner.slice(
-                                                                        len - 4
-                                                                    )}
-                                                            </p>
-                                                            <p className={cx(s.owner, s.ownerOnMobile)}>
-                                                                {owner.slice(0, 4) + "..."}
-                                                            </p>
-                                                            <CopyToClipboard
-                                                                text={owner}
-                                                                onCopy={ShowAlert}
-                                                            >
+                                                    {tokens.map(
+                                                        (
+                                                            token: any,
+                                                            index: number
+                                                        ) => {
+                                                            const amount =
+                                                                collateral[
+                                                                    index
+                                                                ].amount;
+                                                            return (
                                                                 <div
-                                                                    className={
-                                                                        s.copyIcon
+                                                                    key={
+                                                                        token?.tokenAddr ||
+                                                                        index
                                                                     }
-                                                                    onClick={(
-                                                                        e: any
-                                                                    ) => {
-                                                                        e.preventDefault();
-                                                                        e.stopPropagation();
-                                                                        e.nativeEvent.stopImmediatePropagation();
-                                                                    }}
+                                                                    className={
+                                                                        s.collateralCell
+                                                                    }
                                                                 >
-                                                                    <CopyIcon />
+                                                                    <p
+                                                                        className={
+                                                                            s.collateralAmount
+                                                                        }
+                                                                    >
+                                                                        {formatUnits(
+                                                                            +amount,
+                                                                            token?.tokenDecimals
+                                                                        )}
+                                                                    </p>
+                                                                    <p
+                                                                        className={
+                                                                            s.collateralName
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            token?.tokenName
+                                                                        }
+                                                                    </p>
                                                                 </div>
-                                                            </CopyToClipboard>
-                                                        </div>
-                                                        <div
-                                                            className={
-                                                                s.tableItemCollateralAmountList
-                                                            }
-                                                        >
-                                                            {tokens.map(
-                                                                (
-                                                                    token: any,
-                                                                    index: number
-                                                                ) => {
-                                                                    const amount =
-                                                                        collateral[
-                                                                            index
-                                                                        ].amount;
-                                                                    return (
-                                                                        <div
-                                                                            key={
-                                                                                token?.tokenAddr ||
-                                                                                index
-                                                                            }
-                                                                            className={
-                                                                                s.collateralCell
-                                                                            }
-                                                                        >
-                                                                            <p
-                                                                                className={
-                                                                                    s.collateralAmount
-                                                                                }
-                                                                            >
-                                                                                {formatUnits(
-                                                                                    +amount,
-                                                                                    token?.tokenDecimals
-                                                                                )}
-                                                                            </p>
-                                                                            <p
-                                                                                className={
-                                                                                    s.collateralName
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    token?.tokenName
-                                                                                }
-                                                                            </p>
-                                                                        </div>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </div>
-                                                        <p className={s.tableItemDebt}>
-                                                            {addCommas(
-                                                                formatUnits(
-                                                                    debt,
-                                                                    stableCoinDecimals
-                                                                )
-                                                            )}
-                                                        </p>
-                                                        <div
-                                                            className={
-                                                                s.tableItemRatio
-                                                            }
-                                                        >
-                                                            <p
-                                                                className={cx(
-                                                                    troveCollRatioClass
-                                                                )}
-                                                            >
-                                                                {(ICR * 100).toFixed(2)}
-                                                                %
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className={s.addonAfter}>
-                                                        <div
-                                                            className={cx(
-                                                                s.deleteIconWrap,
-                                                                {
-                                                                    [s.showDeleteIcon]:
-                                                                        selectTrove ===
-                                                                        owner,
-                                                                }
-                                                            )}
-                                                        >
-                                                            <DeleteIcon />
-                                                        </div>
-                                                    </div>
+                                                            );
+                                                        }
+                                                    )}
                                                 </div>
-                                            );
-                                        })}
-                            </>
-                        )}
-                    </div>
-                    <Pagination
-                        current={page + 1}
-                        className={s.pageControl}
-                        total={troveAmount}
-                        pageSize={ROW_PER_PAGE}
-                        onChange={onPageChange}
-                    />
+                                                <p className={s.tableItemDebt}>
+                                                    {addCommas(
+                                                        formatUnits(
+                                                            debt,
+                                                            stableCoinDecimals
+                                                        )
+                                                    )}
+                                                </p>
+                                                <div
+                                                    className={s.tableItemRatio}
+                                                >
+                                                    <p
+                                                        className={cx(
+                                                            troveCollRatioClass
+                                                        )}
+                                                    >
+                                                        {(ICR * 100).toFixed(2)}
+                                                        %
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className={s.addonAfter}>
+                                                <div
+                                                    className={cx(
+                                                        s.deleteIconWrap,
+                                                        {
+                                                            [s.showDeleteIcon]:
+                                                                selectTrove ===
+                                                                owner,
+                                                        }
+                                                    )}
+                                                >
+                                                    <DeleteIcon />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            <Sentinel
+                                key={troveList.length}
+                                onLoad={loadMore}
+                                rootMargin={"50px"}
+                            />
+                        </div>
+                    </StickyContainer>
                 </div>
             </div>
         </div>

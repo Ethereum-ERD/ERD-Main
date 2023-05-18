@@ -8,6 +8,18 @@
     margin: 0 auto;
 }
 
+.stickyContainer {
+    height: 700px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+}
+
+.stickyContainer::-webkit-scrollbar {
+    width: 0px;
+}
+
 .top {
     display: flex;
     align-items: center;
@@ -38,12 +50,13 @@
     background: var(--liquidate-system-mode-bg-color);
 
     p {
-        display: inline-flex;
+        display: inline;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent; 
         -moz-background-clip: text;
         -moz-text-fill-color: transparent;
         background-color: transparent;
+        -webkit-box-decoration-break: clone;
         background-image: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
     }
 
@@ -69,9 +82,7 @@
 }
 
 div.tipsModal {
-    max-width: 342px;
     max-height: 500px;
-    padding: 16px 20px;
 }
 
 .topRight {
@@ -182,6 +193,15 @@ div.tipsModal {
     display: flex;
     align-items: center;
     justify-content: center;
+
+}
+
+.empty {
+    :global {
+        .ant-empty-description {
+            color: var(--liquidate-empty-text-color);
+        }
+    }
 }
 
 .troveList {
@@ -192,6 +212,7 @@ div.tipsModal {
 .tableHead {
     width: 100%;
     height: 60px;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -201,6 +222,11 @@ div.tipsModal {
 
     border: 1px solid var(--liquidate-table-head-border-color);
     border-radius: 16px;
+
+    &[data-sticky=true] {
+        z-index: var(--sticky-z-index);
+        box-shadow: 0px 10px 16px var(--liquidate-table-head-sticky-box-shadow-color);
+    }
 }
 
 .tableHeadOfOwner,
@@ -379,41 +405,6 @@ div.tipsModal {
 
     &.health {
         color: var(--coll-ratio-value-health-color);
-    }
-}
-
-.pageControl {
-    margin-top: 20px;
-    float: right;
-
-    :global {
-        button.ant-pagination-item-link {
-            color: var(--liquidate-page-control-normal-item-link-color) !important;
-        }
-
-        li.ant-pagination-disabled {
-            button.ant-pagination-item-link {
-                color: var(--liquidate-page-control-disable-item-link-color) !important;
-            }
-        }
-
-        li.ant-pagination-item a {
-            color: var(--liquidate-page-control-page-normal-color);
-        }
-
-        li.ant-pagination-item-active {
-            background-color: transparent;
-
-            a {
-                color: var(--liquidate-page-control-page-active-color);
-            }
-
-            &:hover {
-                a {
-                    color: var(--liquidate-page-control-page-active-color);
-                }
-            }
-        }
     }
 }
 
@@ -628,14 +619,19 @@ div.tipsModal {
         }
     }
 
+    .stickyContainer {
+        height: 450px;
+    }
+
     .troveList {
         margin-top: 15px;
     }
 
     .tableHead {
-        height: auto;
-        background-color: transparent;
+        height: 40px;
+        border-radius: 0;
         border-color: transparent;
+        background: var(--root-bg-color);
     }
 
     .tableHeadOfOwner,
@@ -686,9 +682,11 @@ div.tipsModal {
     .tableItem {
         height: 40px;
         border-radius: 5px;
+        overflow: hidden;
     }
 
     .tableItemContainer {
+        height: 60px;
         overflow-x: scroll;
         scrollbar-width: none;
         -ms-overflow-style: none;
@@ -765,5 +763,11 @@ div.tipsModal {
     .deleteIconWrap > svg {
         width: 12px;
         height: 14px;
+    }
+}
+
+@media screen and (max-height: 667px) {
+    .stickyContainer {
+        height: 350px;
     }
 }

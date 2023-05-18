@@ -103,6 +103,8 @@ export default class Store {
     startAdjustTrove = false;
 
     /* trove list info */
+    currentPage = 0;
+
     troveAmount = 0;
 
     troveList: Array<UserTrove> = [];
@@ -113,8 +115,6 @@ export default class Store {
     spOwnStableCoinAmount = 0;
 
     /* system status control */
-    isPreLoadTroves = false;
-
     isLoadingTroves = false;
 
     isLiquidateIng = false;
@@ -591,12 +591,6 @@ export default class Store {
     toggleStartAdjustTrove() {
         runInAction(() => {
             this.startAdjustTrove = !this.startAdjustTrove;
-        });
-    }
-
-    toggleIsLoadingTroves() {
-        runInAction(() => {
-            this.isPreLoadTroves = !this.isPreLoadTroves;
         });
     }
 
@@ -1231,17 +1225,23 @@ export default class Store {
         }
     }
 
-    async getTroves(params: { startingAt?: number }) {
-        const { troveAmount, contractMap, isLoadingTroves } = this;
+    async getTroves() {
+        const { troveAmount, contractMap, isLoadingTroves, currentPage } = this;
         const { MultiTroveGetter } = contractMap;
-        if (!MultiTroveGetter || troveAmount < 1 || isLoadingTroves) return;
+        const startIndex = currentPage * ROW_PER_PAGE;
+        if (
+            startIndex > troveAmount ||
+            !MultiTroveGetter ||
+            troveAmount < 1 ||
+            isLoadingTroves
+        ) return;
+
         runInAction(() => {
-            this.isPreLoadTroves = false;
             this.isLoadingTroves = true;
         });
         try {
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
-                params.startingAt ?? 0,
+                startIndex,
                 ROW_PER_PAGE
             );
             const troves = this.mapBackendTroves(backendTroves);
@@ -1253,6 +1253,7 @@ export default class Store {
             });
 
             runInAction(() => {
+                this.currentPage = currentPage + 1;
                 // @ts-ignore
                 this.troveList = [
                     ...this.troveList,
