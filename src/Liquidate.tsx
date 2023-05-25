@@ -418,115 +418,131 @@ function Liquidate() {
                                                 handleLiquidateOne(row.owner)
                                             }
                                         >
-                                            <div
-                                                className={s.tableItemContainer}
-                                            >
+                                            <div className={cx(s.mobileDeleteIcon, { [s.showMobileDeleteIcon]: selectTrove === owner })}>
                                                 <div
-                                                    className={s.tableItemOwner}
-                                                >
-                                                    <p className={s.owner}>
-                                                        {owner.slice(0, 4) +
-                                                            "..." +
-                                                            owner.slice(
-                                                                len - 4
-                                                            )}
-                                                    </p>
-                                                    <p
-                                                        className={cx(
-                                                            s.owner,
-                                                            s.ownerOnMobile
-                                                        )}
-                                                    >
-                                                        {owner.slice(0, 4) +
-                                                            "..."}
-                                                    </p>
-                                                    <CopyToClipboard
-                                                        text={owner}
-                                                        onCopy={ShowAlert}
-                                                    >
-                                                        <div
-                                                            className={
-                                                                s.copyIcon
-                                                            }
-                                                            onClick={(
-                                                                e: any
-                                                            ) => {
-                                                                e.preventDefault();
-                                                                e.stopPropagation();
-                                                                e.nativeEvent.stopImmediatePropagation();
-                                                            }}
-                                                        >
-                                                            <CopyIcon />
-                                                        </div>
-                                                    </CopyToClipboard>
-                                                </div>
-                                                <div
-                                                    className={
-                                                        s.tableItemCollateralAmountList
-                                                    }
-                                                >
-                                                    {tokens.map(
-                                                        (
-                                                            token: any,
-                                                            index: number
-                                                        ) => {
-                                                            const amount =
-                                                                collateral[
-                                                                    index
-                                                                ].amount;
-                                                            return (
-                                                                <div
-                                                                    key={
-                                                                        token?.tokenAddr ||
-                                                                        index
-                                                                    }
-                                                                    className={
-                                                                        s.collateralCell
-                                                                    }
-                                                                >
-                                                                    <p
-                                                                        className={
-                                                                            s.collateralAmount
-                                                                        }
-                                                                    >
-                                                                        {formatUnits(
-                                                                            +amount,
-                                                                            token?.tokenDecimals
-                                                                        )}
-                                                                    </p>
-                                                                    <p
-                                                                        className={
-                                                                            s.collateralName
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            token?.tokenName
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            );
+                                                    className={cx(
+                                                        s.deleteIconWrap,
+                                                        {
+                                                            [s.showDeleteIcon]:
+                                                                selectTrove ===
+                                                                owner,
                                                         }
                                                     )}
-                                                </div>
-                                                <p className={s.tableItemDebt}>
-                                                    {addCommas(
-                                                        formatUnits(
-                                                            debt,
-                                                            stableCoinDecimals
-                                                        )
-                                                    )}
-                                                </p>
-                                                <div
-                                                    className={s.tableItemRatio}
                                                 >
-                                                    <p
-                                                        className={cx(
-                                                            troveCollRatioClass
-                                                        )}
+                                                    <DeleteIcon />
+                                                </div>
+                                            </div>
+                                            <div className={s.tableItemOuter}>
+                                                <div
+                                                    className={s.tableItemContainer}
+                                                >
+                                                    <div
+                                                        className={s.tableItemOwner}
                                                     >
-                                                        {(ICR * 100).toFixed(2)}
-                                                        %
+                                                        <p className={s.owner}>
+                                                            {owner.slice(0, 4) +
+                                                                "..." +
+                                                                owner.slice(
+                                                                    len - 4
+                                                                )}
+                                                        </p>
+                                                        <p
+                                                            className={cx(
+                                                                s.owner,
+                                                                s.ownerOnMobile
+                                                            )}
+                                                        >
+                                                            {owner.slice(0, 4) +
+                                                                "..."}
+                                                        </p>
+                                                        <CopyToClipboard
+                                                            text={owner}
+                                                            onCopy={ShowAlert}
+                                                        >
+                                                            <div
+                                                                className={
+                                                                    s.copyIcon
+                                                                }
+                                                                onClick={(
+                                                                    e: any
+                                                                ) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    e.nativeEvent.stopImmediatePropagation();
+                                                                }}
+                                                            >
+                                                                <CopyIcon />
+                                                            </div>
+                                                        </CopyToClipboard>
+                                                    </div>
+                                                    <div
+                                                        className={
+                                                            s.tableItemCollateralAmountList
+                                                        }
+                                                    >
+                                                        {tokens.map(
+                                                            (
+                                                                token: any,
+                                                                index: number
+                                                            ) => {
+                                                                const amount =
+                                                                    collateral[
+                                                                        index
+                                                                    ].amount;
+                                                                return (
+                                                                    <div
+                                                                        key={
+                                                                            token?.tokenAddr ||
+                                                                            index
+                                                                        }
+                                                                        className={
+                                                                            s.collateralCell
+                                                                        }
+                                                                    >
+                                                                        <p
+                                                                            className={
+                                                                                s.collateralAmount
+                                                                            }
+                                                                        >
+                                                                            {formatUnits(
+                                                                                +amount,
+                                                                                token?.tokenDecimals
+                                                                            )}
+                                                                        </p>
+                                                                        <p
+                                                                            className={
+                                                                                s.collateralName
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                token?.tokenName
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </div>
+                                                    <p className={s.tableItemDebt}>
+                                                        {addCommas(
+                                                            formatUnits(
+                                                                debt,
+                                                                stableCoinDecimals
+                                                            )
+                                                        )}
                                                     </p>
+                                                    <div
+                                                        className={s.tableItemRatio}
+                                                    >
+                                                        <p
+                                                            className={cx(
+                                                                troveCollRatioClass
+                                                            )}
+                                                        >
+                                                            {(ICR * 100).toFixed(2)}
+                                                            %
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className={s.addonAfter}>

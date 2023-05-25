@@ -104,7 +104,7 @@ export default observer(function Repay() {
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartRepay}>Cancel</div>
                 <div
                     className={cx(s.btn, {
-                        // [s.disable]: userStableCoinBalance < userTrove.debt || repayNum < +formatUnits(userTrove.debt, stableCoinDecimals),
+                        [s.disable]: userStableCoinBalance < userTrove.debt || repayNum < +formatUnits(userTrove.debt, stableCoinDecimals),
                         [s.loading]: isProcessing
                     })}
                     onClick={handleConfirm}

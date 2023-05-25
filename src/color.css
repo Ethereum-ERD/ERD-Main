@@ -7,13 +7,13 @@
 
 
 
-    --disable-btn-bg-color: #999;
-    --disable-btn-border-color: #999;
-    --disable-btn-text-color: #fff;
+    --disable-btn-bg-color: #C5C5C5;
+    --disable-btn-border-color: #C5C5C5;
+    --disable-btn-text-color: #999;
 
 
 
-    --cancel-btn-bg-color: #1E1F23;
+    --cancel-btn-bg-color: transparent;
     --cancel-btn-border-color: rgba(255, 255, 255, 0.5);
     --cancel-btn-text-color: rgba(255, 255, 255, 0.5);
 
@@ -33,16 +33,12 @@
 
 
     --tips-modal-bg-color: rgba(0, 0, 0, 0.5);
-    --tips-modal-border-color: #393B3F;
+    --tips-modal-border-color: #43454A;
     --tips-modal-text-color: rgba(255, 255, 255, 0.7);
 
 
 
-    --popover-bg-color: #25262B;
-
-
-
-    --fee-info-bg-color: #25262B;
+    --fee-info-bg-color: #303237;
     --fee-info-modal-bg-color: rgba(0, 0, 0, 0.5);
     --fee-info-item-first-p-text-color: rgba(255, 255, 255, 0.5);
     --fee-info-item-first-div-text-color: rgba(255, 255, 255, 0.5);
@@ -52,31 +48,32 @@
 
 
     --support-asset-title-color: #fff;
-    --support-asset-icon-wrap-color: #393B3F;
+    --support-asset-icon-wrap-color: #43454A;
     --support-asset-popup-wrap-bg-color: #2B2D35;
-    --support-asset-popup-wrap-border-color: #393B3F;
+    --support-asset-popup-wrap-border-color: #43454A;
     --support-asset-popup-wrap-box-shadow-color: rgba(32, 32, 32, 0.25);
     --support-asset-popup-title-color: #fff;
     --support-asset-popup-column-title-color: rgba(255, 255, 255, 0.5);
-    --support-asset-popup-asset-item-bg-color: #25262B;
+    --support-asset-popup-asset-item-bg-color: #303237;
     --support-asset-popup-asset-item-text-color: #fff;
 
 
 
-    --banner-bottom-border-color: #393B3F;
-    --banner-menu-text-color: #999;
+    --banner-bottom-border-color: #43454A;
+    --banner-menu-text-color: rgba(255, 255, 255, 0.5);
     --banner-menu-text-active-color: #fff;
-    --banner-wallet-border-color: #393B3F;
+    --banner-wallet-border-color: #43454A;
     --banner-wallet-text-color: #fff;
     --banner-pop-menu-bg-color: #2B2D35;
 
 
-    --new-user-for-open-trove-wrap-bg-color: #1E1F23;
+
+    --new-user-for-open-trove-wrap-bg-color: #292A30;
+    --new-user-for-open-trove-wrap-border-color: #43454A;
     --new-user-for-open-trove-title-desc-color: rgba(255, 255, 255, 0.5);
-    --new-user-for-open-trove-desc-color: #666;
-    --new-user-for-open-trove-tips-color: #999;
-    --new-user-for-open-trove-wrap-border-color: #393B3F;
-    --new-user-for-open-trove-balance-bg-color: #25262B;
+    --new-user-for-open-trove-desc-color: rgba(255, 255, 255, 0.7);
+    --new-user-for-open-trove-tips-color: rgba(255, 255, 255, 0.5);
+    --new-user-for-open-trove-balance-bg-color: #303237;
     --new-user-for-open-trove-balance-title-color: #fff;
     --new-user-for-open-trove-balance-asset-name-color: rgba(255, 255, 255, .5);
     --new-user-for-open-trove-balance-asset-amount-color: #fff;
@@ -85,15 +82,15 @@
 
 
 
-    --open-trove-wrap-bg-color: #1E1F23;
-    --open-trove-wrap-border-color: #393B3F;
+    --open-trove-wrap-bg-color: #292A30;
+    --open-trove-wrap-border-color: #43454A;
     --open-trove-no-asset-warning-bg-color: rgba(255, 120, 120, 0.1);
     --open-trove-no-asset-warning-border-color: #FF7878;
     --open-trove-no-asset-warning-text-color: #fff;
-    --open-trove-input-wrap-border-color: #393B3F;
+    --open-trove-input-wrap-border-color: #43454A;
     --open-trove-input-before-text-color: rgba(255, 255, 255, 0.7);
-    --open-trove-input-bg-color: #1E1F23;
-    --open-trove-input-text-color: rgba(255, 255, 255, 0.7);
+    --open-trove-input-bg-color: #292A30;
+    --open-trove-input-text-color: #fff;
     --open-trove-input-balance-text-color: #999;
     --open-trove-input-balance-amount-color: #fff;
     --open-trove-input-balance-max-text-color: #3083FF;
@@ -103,10 +100,10 @@
 
 
 
-    --user-trove-show-bg-color: #1E1F23;
-    --user-trove-show-border-color: #393B3F;
+    --user-trove-show-bg-color: #292A30;
+    --user-trove-show-border-color: #43454A;
     --user-trove-show-title-desc-color: rgba(255, 255, 255, 0.5);
-    --user-trove-show-info-bg-color: #25262B;
+    --user-trove-show-info-bg-color: #303237;
     --user-trove-show-info-item-title-color: rgba(255, 255, 255, 0.5);
     --user-trove-show-info-item-value-color: #fff;
     --user-trove-show-info-item-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -114,14 +111,11 @@
     --user-trove-show-info-coll-item-asset-value-color: #fff;
     --user-trove-show-info-coll-item-asset-value-extra-color: rgba(255, 255, 255, 0.5);
     --user-trove-show-btn-text-color: #fff;
-    --user-trove-show-repay-btn-bg-color: #1E1F23;
-    --user-trove-show-repay-btn-border-color: rgba(255, 255, 255, 0.5);
-    --user-trove-show-repay-btn-text-color: rgba(255, 255, 255, 0.5);
 
 
 
-    --adjust-trove-bg-color: #1E1F23;
-    --adjust-trove-border-color: #393B3F;
+    --adjust-trove-bg-color: #292A30;
+    --adjust-trove-border-color: #43454A;
     --adjust-trove-title-desc-color: rgba(255, 255, 255, 0.5);
     --adjust-trove-no-asset-warning-bg-color: rgba(255, 120, 120, 0.1);
     --adjust-trove-no-asset-warning-border-color: #FF7878;
@@ -129,9 +123,9 @@
     --adjust-trove-repay-bg-color: #1E1F23;
     --adjust-trove-repay-border-color: rgba(255, 255, 255, 0.5);
     --adjust-trove-repay-text-color: rgba(255, 255, 255, 0.5);
-    --adjust-trove-input-wrap-border-color: #393B3F;
-    --adjust-trove-input-bg-color: #1E1F23;
-    --adjust-trove-input-text-color: rgba(255, 255, 255, 0.7);
+    --adjust-trove-input-wrap-border-color: #43454A;
+    --adjust-trove-input-bg-color: #292A30;
+    --adjust-trove-input-text-color: #fff;
     --adjust-trove-input-before-color: rgba(255, 255, 255, 0.7);
     --adjust-trove-balance-text-color: #999;
     --adjust-trove-balance-amount-color: #fff;
@@ -142,12 +136,12 @@
 
 
 
-    --repay-bg-color: #1E1F23;
-    --repay-bg-border-color: #393B3F;
+    --repay-bg-color: #292A30;
+    --repay-bg-border-color: #43454A;
     --repay-title-color: #fff;
-    --repay-input-wrap-border-color: #393B3F;
-    --repay-input-bg-color: #1E1F23;
-    --repay-input-text-color: rgba(255, 255, 255, 0.7);
+    --repay-input-wrap-border-color: #43454A;
+    --repay-input-bg-color: #292A30;
+    --repay-input-text-color: #fff;
     --repay-input-before-color: rgba(255, 255, 255, 0.7);
     --repay-balance-text-color: #999;
     --repay-balance-amount-color: #fff;
@@ -164,11 +158,11 @@
 
 
 
-    --no-deposit-bg-color: #1E1F23;
-    --no-deposit-bg-border-color: #393B3F;
+    --no-deposit-bg-color: #292A30;
+    --no-deposit-bg-border-color: #43454A;
     --no-deposit-desc-color: rgba(255, 255, 255, 0.7);
     --no-deposit-tips-color: #999;
-    --no-deposit-balance-info-bg-color: #25262B;
+    --no-deposit-balance-info-bg-color: #303237;
     --no-deposit-balance-info-text-color: rgba(255, 255, 255, .5);
     --no-deposit-balance-amount-text-color: #fff;
     --no-deposit-balance-amount-extra-text-color: rgba(255, 255, 255, 0.5);
@@ -176,12 +170,12 @@
 
 
 
-    --new-deposit-bg-color: #1E1F23;
-    --new-deposit-bg-border-color: #393B3F;
+    --new-deposit-bg-color: #292A30;
+    --new-deposit-bg-border-color: #43454A;
     --new-deposit-desc-color: rgba(255, 255, 255, 0.5); 
-    --new-deposit-input-wrap-border-color: #393B3F;
-    --new-deposit-input-bg-color: #1E1F23;
-    --new-deposit-input-text-color: rgba(255, 255, 255, 0.7);
+    --new-deposit-input-wrap-border-color: #43454A;
+    --new-deposit-input-bg-color: #292A30;
+    --new-deposit-input-text-color: #fff;
     --new-deposit-input-after-color: rgba(255, 255, 255, 0.7);
     --new-deposit-input-balance-text-color: #999;
     --new-deposit-input-balance-extra-text-color: #fff;
@@ -189,20 +183,20 @@
     --new-deposit-balance-warning-bg-color: rgba(255, 120, 120, 0.1);
     --new-deposit-balance-warning-border-color: #FF7878;
     --new-deposit-balance-warning-text-color: #fff;
-    --new-deposit-pool-share-info-bg-color: #25262B;
+    --new-deposit-pool-share-info-bg-color: #303237;
     --new-deposit-pool-share-info-title-text-color: rgba(255, 255, 255, 0.5);
     --new-deposit-pool-share-info-value-text-color: #fff;
     --new-deposit-btn-text-color: #fff;
 
 
 
-    --deposit-over-view-bg-color: #1E1F23;
-    --deposit-over-view-border-color: #393B3F;
+    --deposit-over-view-bg-color: #292A30;
+    --deposit-over-view-border-color: #43454A;
     --deposit-over-view-title-color: #fff;
     --deposit-over-view-claim-btn-border-color: rgba(255, 255, 255, 0.5);
     --deposit-over-view-claim-btn-text-color: #999;
     --deposit-over-view-desc-color: rgba(255, 255, 255, 0.5); 
-    --deposit-over-view-deposit-info-bg-color: #25262B;
+    --deposit-over-view-deposit-info-bg-color: #303237;
     --deposit-over-view-deposit-info-index-name-color: rgba(255, 255, 255, .5);
     --deposit-over-view-deposit-info-index-value-color: #fff;
     --deposit-over-view-deposit-info-index-value-extra-color: rgba(255, 255, 255, .5);
@@ -210,16 +204,16 @@
 
 
 
-    --re-deposit-over-view-bg-color: #1E1F23;
-    --re-deposit-over-view-border-color: #393B3F;
+    --re-deposit-over-view-bg-color: #292A30;
+    --re-deposit-over-view-border-color: #43454A;
     --re-deposit-over-view-title-color: #fff;
     --re-deposit-over-view-claim-btn-border-color: rgba(255, 255, 255, 0.5);
     --re-deposit-over-view-claim-btn-text-color: #999;
     --re-deposit-over-view-desc-color: rgba(255, 255, 255, 0.5); 
-    --re-deposit-over-view-deposit-info-bg-color: #25262B;
-    --re-deposit-input-wrap-border-color: #393B3F;
-    --re-deposit-input-bg-color: #1E1F23;
-    --re-deposit-input-text-color: rgba(255, 255, 255, 0.7);
+    --re-deposit-over-view-deposit-info-bg-color: #303237;
+    --re-deposit-input-wrap-border-color: #43454A;
+    --re-deposit-input-bg-color: #292A30;
+    --re-deposit-input-text-color: #fff;
     --re-deposit-input-after-color: rgba(255, 255, 255, 0.7);
     --re-deposit-input-balance-text-color: #999;
     --re-deposit-input-balance-extra-text-color: #fff;
@@ -227,7 +221,7 @@
     --re-deposit-balance-warning-bg-color: rgba(255, 120, 120, 0.1);
     --re-deposit-balance-warning-border-color: #FF7878;
     --re-deposit-balance-warning-text-color: #fff;
-    --re-deposit-deposit-info-bg-color: #25262B;
+    --re-deposit-deposit-info-bg-color: #303237;
     --re-deposit-deposit-info-title-color: rgba(255, 255, 255, 0.5);
     --re-deposit-deposit-info-value-color: #fff;
     --re-deposit-deposit-info-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -235,17 +229,17 @@
 
 
 
-    --withdraw-bg-color: #1E1F23;
-    --withdraw-border-color: #393B3F;
+    --withdraw-bg-color: #292A30;
+    --withdraw-border-color: #43454A;
     --withdraw-title-color: #fff;
     --withdraw-claim-btn-border-color: rgba(255, 255, 255, 0.5);
     --withdraw-claim-btn-text-color: #999;
-    --withdraw-input-wrap-border-color: #393B3F;
-    --withdraw-input-bg-color: #1E1F23;
-    --withdraw-input-text-color: rgba(255, 255, 255, 0.7);
+    --withdraw-input-wrap-border-color: #43454A;
+    --withdraw-input-bg-color: #292A30;
+    --withdraw-input-text-color: #fff;
     --withdraw-input-after-color: rgba(255, 255, 255, 0.7);
     --withdraw-input-max-text-color: #3083FF;
-    --withdraw-deposit-info-bg-color: #25262B;
+    --withdraw-deposit-info-bg-color: #303237;
     --withdraw-deposit-info-title-color: rgba(255, 255, 255, 0.5);
     --withdraw-deposit-info-value-color: #fff;
     --withdraw-deposit-info-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -254,9 +248,9 @@
 
     
     --claim-reward-mask-bg-color: rgba(0, 0, 0, 0.3);
-    --claim-reward-modal-bg-color: #1E1F23;
+    --claim-reward-modal-bg-color: #292A30;
     --claim-reward-modal-title-color: #fff;
-    --claim-reward-modal-content-bg-color: #25262B;
+    --claim-reward-modal-content-bg-color: #303237;
     --claim-reward-modal-content-title-color: #fff;
     --claim-reward-modal-reward-title-color: rgba(255, 255, 255, 0.5);
     --claim-reward-modal-reward-value-color: #fff;
@@ -267,46 +261,46 @@
 
     --liquidate-title-color: #fff;
     --liquidate-system-mode-bg-color: rgba(255, 255, 255, 0.1);
-    --liquidate-recovery-mode-text-color: #FF8A00;
+    --liquidate-recovery-mode-text-color: #FF7878;
     --liquidate-help-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-select-trove-border-color: #393B3F; 
     --liquidate-select-trove-input-color: #fff;
-    --liquidate-table-head-bg-color: #1E1F23;
-    --liquidate-table-head-border-color: #393B3F;
+    --liquidate-table-head-bg-color: #292A30;
+    --liquidate-table-head-border-color: #43454A;
     --liquidate-table-head-text-color: #fff;
-    --liquidate-table-head-extra-text-color: #999;
-    --liquidate-table-item-bg-color: #1E1F23;
+    --liquidate-table-head-extra-text-color: rgba(255, 255, 255, 0.5);
+    --liquidate-table-item-bg-color: #292A30;
     --liquidate-table-item-owner-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-table-item-debt-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-table-item-collateral-amount-text-color: #fff;
     --liquidate-table-item-collateral-name-text-color: rgba(255, 255, 255, 0.5);
     --liquidate-risk-trove-title-color: rgba(255, 255, 255, 0.7);
-    --liquidate-top-right-on-mobile-bg-color: #1E1F23;
+    --liquidate-top-right-on-mobile-bg-color: #2B2D35;
     --liquidate-empty-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-table-head-sticky-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 
 
-    --redeem-bg-color: #1E1F23;
-    --redeem-bg-border-color: #393B3F;
+    --redeem-bg-color: #292A30;
+    --redeem-bg-border-color: #43454A;
     --redeem-title-color: #fff;
     --redeem-desc-color: rgba(255, 255, 255, 0.5);
     --redeem-highlight-color: #3083FF;
     --redeem-balance-text-color: #999;
     --redeem-balance-amount-color: #fff;
     --redeem-balance-max-text-color: #3083FF;
-    --redeem-input-wrap-border-color: #393B3F;
-    --redeem-input-bg-color: #1E1F23;
-    --redeem-input-text-color: rgba(255, 255, 255, 0.7);
+    --redeem-input-wrap-border-color: #43454A;
+    --redeem-input-bg-color: #292A30;
+    --redeem-input-text-color: #fff;
     --redeem-input-after-color: rgba(255, 255, 255, 0.7);
-    --redeem-fee-info-bg-color: #25262B;
+    --redeem-fee-info-bg-color: #303237;
     --redeem-fee-info-text-color: #999;
     --redeem-fee-amount-color: #fff;
     --redeem-btn-text-color: #fff;
 
 
 
-    --dashboard-bg-color: #1E1F23;
+    --dashboard-bg-color: #292A30;
     --dashboard-title-color: #fff;
     --dashboard-index-bottom-border-color: #393B3F;
     --dashboard-index-name-color: rgba(255, 255, 255, 0.7);
@@ -316,9 +310,10 @@
 
 
     --mobile-support-asset-popup-mask-color: rgba(0, 0, 0, 0.3);
-    --mobile-support-asset-popup-bg-color: #2B2D35;
+    --mobile-support-asset-popup-bg-color: #292A30;
     --mobile-support-asset-popup-title-color: #fff;
-    --mobile-support-asset-popup-asset-list-bg-color: #25262B;
+    --mobile-support-asset-popup-asset-list-bg-color: transparent;
+    --mobile-support-asset-popup-asset-bg-color: #2B2D35;
     --mobile-support-asset-popup-asset-name-text-color: #fff;
     --mobile-support-asset-popup-asset-index-name-color: rgba(255, 255, 255, 0.5);
     --mobile-support-asset-popup-asset-index-value-color: #fff;

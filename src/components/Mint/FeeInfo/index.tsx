@@ -21,7 +21,7 @@ export default observer(function FeeInfo({
     return (
         <div className={s.wrap}>
             <div className={s.item}>
-                <div id='fee-info-div'>
+                <div>
                     <p>Liquidation Reserve</p>
                     <Popover
                         title=''
