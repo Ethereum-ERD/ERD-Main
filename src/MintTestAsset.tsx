@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { MOCK_ETH_ADDR } from "src/constants";
+import MMIcon from 'src/asset/mm.webp';
 import { useStore } from "src/hooks";
 
 import s from "./MintTestAsset.module.scss";
@@ -16,7 +17,7 @@ export default observer(function MintTestAsset() {
     const [asset, setAsset] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { supportAssets, mintTestAsset } = store;
+    const { supportAssets, mintTestAsset, addTokenToWallet } = store;
 
     useEffect(() => {
         if (supportAssets.length < 1) return;
@@ -42,28 +43,41 @@ export default observer(function MintTestAsset() {
         setIsProcessing(false);
     };
 
+    const addToken = async () => {
+        await addTokenToWallet(asset);
+    };
+
     return (
         <div className={s.wrap}>
             <div className={s.container}>
                 <p className={s.title}>Test</p>
                 <p className={s.desc}>Mint test assets to join protocol.</p>
-                <div className={s.optionList}>
-                    <Select
-                        value={asset}
-                        onChange={setAsset}
-                        popupClassName={s.options}
+                <div className={s.list}>
+                    <div className={s.optionList}>
+                        <Select
+                            value={asset}
+                            onChange={setAsset}
+                            popupClassName={s.options}
+                        >
+                            {supportAssets
+                                .filter(c => {
+                                    return c.tokenAddr !== MOCK_ETH_ADDR
+                                })
+                                .map((c) => {
+                                    return <Option key={c.tokenAddr} value={c.tokenAddr}>
+                                        <p>{c.tokenName}</p>
+                                    </Option>
+                                })
+                            }
+                        </Select>
+                    </div>
+                    <div
+                        className={s.addTokenToWallet}
+                        onClick={addToken}
+                        title=' Add Token to MetaMask'
                     >
-                        {supportAssets
-                            .filter(c => {
-                                return c.tokenAddr !== MOCK_ETH_ADDR
-                            })
-                            .map((c) => {
-                                return <Option key={c.tokenAddr} value={c.tokenAddr}>
-                                    <p>{c.tokenName}</p>
-                                </Option>
-                            })
-                        }
-                    </Select>
+                        <img src={MMIcon} alt='metamask icon' />
+                    </div>
                 </div>
                 <div className={cx(s.btn, {
                             [s.disable]: isProcessing,

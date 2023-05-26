@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
+import { ProviderLabel } from '@web3-onboard/injected-wallets';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
 
-import { ROW_PER_PAGE, EmptyObject, EMPTYADDRESS, RANDOM_SEED,
+import {
+    ROW_PER_PAGE, EmptyObject, EMPTYADDRESS, RANDOM_SEED,
     GOERLI_CHAIN_ID, GOERLI_RPC_URL, WETH_ADDR, BN_ZERO,
     MOCK_ETH_ADDR, BN_ETHER
 } from 'src/constants';
@@ -14,7 +16,7 @@ import {
 
 import { formatUnits, toBN } from 'src/util';
 
-import { createBoard, getSaveWallet } from 'src/wallet';
+import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
 
@@ -191,6 +193,10 @@ export default class Store {
         return walletAddr.slice(0, 3) + '....' + walletAddr.slice(len - 4);
     }
 
+    @computed get isMetaMask() {
+        return this.walletLabel === ProviderLabel.MetaMask;
+    }
+
     init() {
         if (this.isInit) return;
         const onboard = createBoard();
@@ -222,8 +228,9 @@ export default class Store {
     async disConnectWallet() {
         if (!this.onboard || !this.walletAddr) return;
         try {
+            clearWallet();
             const [primaryWallet] = this.onboard.state.get().wallets;
-            await this.onboard.disconnectWallet({ label: primaryWallet.label })
+            await this.onboard.disconnectWallet({ label: primaryWallet.label });
         } catch {
             // do nothing
         }
@@ -447,7 +454,7 @@ export default class Store {
         const tokenList = tokenAddrList
             .map(c => c.toLowerCase())
             .map((c, i) => ({ tokenAddr: c, amount: amountInfo[i] }));
-        
+
         const protocolAssetsInfo: Array<ProtocolCollateralItem> = [];
 
         assetList.forEach(a => {
@@ -478,7 +485,7 @@ export default class Store {
     async queryUserDepositInfo() {
         const { walletAddr, contractMap } = this;
         const { StabilityPool } = contractMap;
-        if (!walletAddr || !StabilityPool ) return;
+        if (!walletAddr || !StabilityPool) return;
         const data = await StabilityPool.deposits(walletAddr);
         runInAction(() => {
             this.userDepositAmount = +data.initialValue;
@@ -514,7 +521,7 @@ export default class Store {
         const { PriceFeeds, BorrowerOperation } = this.contractMap;
         if (!PriceFeeds || !BorrowerOperation) return [0, 0];
         const ethPrice = await PriceFeeds.fetchPrice_view();
-        const [[,,systemCollTotalValue], systemTotalDebt] = await Promise.all([
+        const [[, , systemCollTotalValue], systemTotalDebt] = await Promise.all([
             BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
             BorrowerOperation.getEntireSystemDebt()
         ]);
@@ -628,7 +635,7 @@ export default class Store {
         const {
             0: upperHint,
             1: lowerHint
-          } = await SortTroves.findInsertPosition(
+        } = await SortTroves.findInsertPosition(
             newICR,
             approxfullListHint,
             approxfullListHint
@@ -652,14 +659,14 @@ export default class Store {
         const { TroveManager, HintHelpers, PriceFeeds, CollateralManager, TroveDebt } = contractMap;
         if (!TroveManager || !HintHelpers || !PriceFeeds || !CollateralManager || !walletAddr || !TroveDebt || supportAssets.length < 1) return;
 
-        try { 
+        try {
             const [
-                    [
-                        debt,
-                        collateralsAmount,
-                        ,
-                        ,
-                        collaterals
+                [
+                    debt,
+                    collateralsAmount,
+                    ,
+                    ,
+                    collaterals
                 ],
                 troveData,
                 baseDebtInfo,
@@ -682,17 +689,17 @@ export default class Store {
                     };
                 })
                 .filter((c: { token: string; amount: ethers.BigNumber }) => c.amount.gt(BN_ZERO));
-    
+
             const assetInfo: Array<SupportAssetsItem & { amount: ethers.BigNumber }> =
                 troveCollateralInfo
-                .map((c: any) => {
-                    const tokenAddr = c.token === WETH_ADDR ? MOCK_ETH_ADDR : c.token;
-                    const asset = supportAssets.find(asset => asset.tokenAddr === tokenAddr);
-                    return {
-                        ...asset!,
-                        amount: c.amount
-                    };
-                });
+                    .map((c: any) => {
+                        const tokenAddr = c.token === WETH_ADDR ? MOCK_ETH_ADDR : c.token;
+                        const asset = supportAssets.find(asset => asset.tokenAddr === tokenAddr);
+                        return {
+                            ...asset!,
+                            amount: c.amount
+                        };
+                    });
 
             const queryAssetList = assetInfo.map(asset => {
                 if (asset.tokenAddr === MOCK_ETH_ADDR) {
@@ -737,15 +744,15 @@ export default class Store {
                 status: troveData.status,
                 arrayIndex: +troveData.arrayIndex,
             };
-    
+
             if (setStore) {
                 runInAction(() => {
                     this.userTrove = trove;
                 });
             }
-    
+
             return trove;
-        } catch {}
+        } catch { }
     }
 
     async approve(
@@ -799,7 +806,7 @@ export default class Store {
                         token: c.token,
                         amount: toBN(c.amount * Math.pow(10, asset!.tokenDecimals))
                     };
-            });
+                });
 
             const tokenAddr = formatCollateral.map(c => c.token);
             const approveList = await Promise.all(
@@ -814,11 +821,11 @@ export default class Store {
                 formatCollateral,
                 debtAmount
             );
-            
+
             const override = { value: BN_ZERO };
 
             const ethCollateralIdx = formatCollateral.findIndex(c => c.token === MOCK_ETH_ADDR);
-            
+
             if (ethCollateralIdx !== -1) {
                 override.value = formatCollateral[ethCollateralIdx].amount;
             }
@@ -826,16 +833,16 @@ export default class Store {
             const pass2ContractCollateral = formatCollateral.filter((_, idx) => idx !== ethCollateralIdx);
 
             const { hash } = await BorrowerOperation
-                    .connect(web3Provider.getSigner())
-                    ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
-                        pass2ContractCollateral.map(c => c.token),
-                        pass2ContractCollateral.map(c => c.amount),
-                        maxFeePerAmount,
-                        debtAmount,
-                        lowerHint,
-                        upperHint,
-                        override
-                );
+                .connect(web3Provider.getSigner())
+            ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
+                pass2ContractCollateral.map(c => c.token),
+                pass2ContractCollateral.map(c => c.amount),
+                maxFeePerAmount,
+                debtAmount,
+                lowerHint,
+                upperHint,
+                override
+            );
             const result = await web3Provider.waitForTransaction(hash);
 
             if (result.status === 1) {
@@ -856,7 +863,7 @@ export default class Store {
             const { contractMap, walletAddr, supportAssets, web3Provider } = this;
             const { TroveManager, BorrowerOperation } = contractMap;
             if (!TroveManager || !BorrowerOperation) return false;
-    
+
             const [
                 debt,
                 collateralsAmount,
@@ -867,7 +874,7 @@ export default class Store {
 
             const maxFeePerAmount = toBN(maxFeePercentage);
             const newDebtAmount = toBN(newStableCoinAmount);
-    
+
             const oldTroveCollateralInfo: Array<{
                 token: string
                 amount: ethers.BigNumber
@@ -893,15 +900,15 @@ export default class Store {
                         token: c.token,
                         amount: toBN(c.amount * Math.pow(10, asset!.tokenDecimals))
                     };
-            });
+                });
 
             const isDebtIncrease = newDebtAmount.gt(debt);
-    
+
             const stableCoinChange = isDebtIncrease ? newDebtAmount.sub(debt) : debt.sub(newDebtAmount);
-    
+
             const collIn: Array<{ token: string; amount: ethers.BigNumber }> = [];
             const collOut: Array<{ token: string; amount: ethers.BigNumber }> = [];
-            
+
             const compareTarget = [
                 ...oldTroveCollateralInfo.map(c => ({ ...c, isOld: true, isNew: false })),
                 ...newTroveCollateralInfo.map(c => ({ ...c, isNew: true, isOld: false }))
@@ -996,19 +1003,19 @@ export default class Store {
             });
 
             const { hash } = await BorrowerOperation
-                    .connect(web3Provider.getSigner())
-                    .adjustTrove(
-                        pass2ContractCollateral.map(c => c.token),
-                        pass2ContractCollateral.map(c => c.amount),
-                        passOutContractCollateral.map(c => c.token),
-                        passOutContractCollateral.map(c => c.amount),
-                        maxFeePerAmount,
-                        stableCoinChange,
-                        isDebtIncrease,
-                        upperHint,
-                        lowerHint,
-                        override
-                    );
+                .connect(web3Provider.getSigner())
+                .adjustTrove(
+                    pass2ContractCollateral.map(c => c.token),
+                    pass2ContractCollateral.map(c => c.amount),
+                    passOutContractCollateral.map(c => c.token),
+                    passOutContractCollateral.map(c => c.amount),
+                    maxFeePerAmount,
+                    stableCoinChange,
+                    isDebtIncrease,
+                    upperHint,
+                    lowerHint,
+                    override
+                );
             const result = await web3Provider.waitForTransaction(hash);
             if (result.status === 1) {
                 this.getUserTroveInfo(true);
@@ -1025,14 +1032,14 @@ export default class Store {
         try {
             const { web3Provider } = this;
             const { hash } = await BorrowerOperation
-                    .connect(web3Provider.getSigner())
-                    .closeTrove();
+                .connect(web3Provider.getSigner())
+                .closeTrove();
             const result = await web3Provider.waitForTransaction(hash);
 
             if (result.status === 1) {
                 this.getUserTroveInfo(true);
             }
-            return result.status === 1; 
+            return result.status === 1;
         } catch {
             return false;
         }
@@ -1058,7 +1065,7 @@ export default class Store {
             const {
                 0: upperHint,
                 1: lowerHint
-              } = await SortTroves.findInsertPosition(
+            } = await SortTroves.findInsertPosition(
                 partialRedemptionHintICR,
                 approxfullListHint,
                 approxfullListHint
@@ -1343,7 +1350,37 @@ export default class Store {
                 .mint(walletAddr, 1 + '0'.repeat(21));
             const result = await web3Provider.waitForTransaction(hash);
 
+            if (result.status === 1) {
+                this.queryUserAssets();
+            }
+
             return result.status === 1;
+        } catch {
+            return false;
+        }
+    }
+
+    async addTokenToWallet(token: string) {
+        const { supportAssets, web3Provider, isMetaMask } = this;
+        // if (!isMetaMask) return false;
+        const tokenInfo = supportAssets.find(c => c.tokenAddr === token);
+        if (!tokenInfo) return false;
+        try {
+            // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+            const wasAdded = await web3Provider.provider.request!({
+                method: 'wallet_watchAsset',
+                params: {
+                    // @ts-ignore
+                    type: 'ERC20',
+                    options: {
+                        address: token,
+                        symbol: tokenInfo.tokenName,
+                        decimals: tokenInfo.tokenDecimals,
+                        image: '',
+                    },
+                },
+            });
+            return wasAdded;
         } catch {
             return false;
         }
