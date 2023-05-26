@@ -370,7 +370,8 @@ export default class Store {
             StableCoin.decimals()
         ]);
         runInAction(() => {
-            this.stableCoinName = symbol;
+            this.stableCoinName = 'USDE';
+            // this.stableCoinName = symbol;
             this.stableCoinDecimals = decimals;
         });
     }
@@ -1362,7 +1363,7 @@ export default class Store {
 
     async addTokenToWallet(token: string) {
         const { supportAssets, web3Provider, isMetaMask } = this;
-        // if (!isMetaMask) return false;
+        if (!isMetaMask) return false;
         const tokenInfo = supportAssets.find(c => c.tokenAddr === token);
         if (!tokenInfo) return false;
         try {
