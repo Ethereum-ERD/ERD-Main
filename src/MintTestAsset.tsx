@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { MOCK_ETH_ADDR } from "src/constants";
-import MMIcon from 'src/asset/mm.webp';
+import MMIcon from 'src/asset/mm.png';
 import { useStore } from "src/hooks";
 
 import s from "./MintTestAsset.module.scss";
