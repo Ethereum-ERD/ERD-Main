@@ -4,7 +4,6 @@ import { InputNumber, notification } from 'antd';
 import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import StableCoinIcon from 'src/components/common/StableCoinIcon';
 import { addCommas, formatUnits, truncateNumber } from 'src/util';
 import MintTitle from 'src/components/common/MintTitle';
 import { MAX_MINTING_FEE } from 'src/constants';
@@ -244,12 +243,7 @@ export default observer(function OpenTrove() {
                     onChange={onBorrowNumChange}
                     value={borrowNum}
                     className={s.input}
-                    addonBefore={
-                        <p className={s.inputBefore}>
-                            <StableCoinIcon />
-                            <span>{stableCoinName}</span>
-                        </p>
-                    }
+                    addonAfter={<span className={s.inputAfter}>{stableCoinName}</span>}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     // @ts-ignore
                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}

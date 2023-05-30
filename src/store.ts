@@ -1246,6 +1246,7 @@ export default class Store {
 
         runInAction(() => {
             this.isLoadingTroves = true;
+            this.currentPage = currentPage + 1;
         });
         try {
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
@@ -1261,12 +1262,15 @@ export default class Store {
             });
 
             runInAction(() => {
-                this.currentPage = currentPage + 1;
                 // @ts-ignore
                 this.troveList = [
                     ...this.troveList,
                     ...newTroves
                 ].sort((troveA, troveB) => troveA.ICR - troveB.ICR);
+            });
+        } catch {
+            runInAction(() => {
+                this.currentPage = currentPage;
             });
         } finally {
             runInAction(() => {

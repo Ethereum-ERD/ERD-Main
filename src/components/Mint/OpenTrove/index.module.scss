@@ -47,15 +47,14 @@
 
     :global {
         div.ant-input-number-input-wrap {
-            border: none !important;
-            box-shadow: none !important;
+            border: none;
+            box-shadow: none;
         }
 
         input.ant-input-number-input {
-            height: 52px !important;
-            text-align: right !important;
-    
-            font-size: 23px !important;
+            height: 52px;
+
+            font-size: 23px;
             font-style: normal;
             font-weight: 450;
             font-family: CircularStd;
@@ -64,7 +63,8 @@
     }
 }
 
-.inputBefore {
+.inputBefore,
+.inputAfter {
     display: flex;
     align-items: center;
     font-size: 14px;

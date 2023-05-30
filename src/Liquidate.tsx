@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { observer } from "mobx-react";
 import cx from "classnames";
 // @ts-ignore
@@ -7,7 +7,7 @@ import {
     Popover,
     notification,
     InputNumber,
-    Empty,
+    Spin
 } from "antd";
 // @ts-ignore
 import { StickyContainer, Sticky } from "react-sticky";
@@ -60,7 +60,6 @@ function DeleteIcon() {
 
 function Liquidate() {
     const [selectTrove, setSelectTrove] = useState<string>("");
-    const [isFirstLoadData, setIsFirstLoadData] = useState(true);
     const [liquidateTroveAmount, setLiquidateTroveAmount] = useState(0);
 
     const { store } = useStore();
@@ -75,7 +74,6 @@ function Liquidate() {
         isLiquidateIng,
         supportAssets,
         stableCoinName,
-        isLoadingTroves,
         stableCoinDecimals,
         collateralValueInfo,
     } = store;
@@ -128,17 +126,9 @@ function Liquidate() {
         setSelectTrove("");
     };
 
-    const collateralIsInit = useMemo(() => {
-        return Object.keys(collateralValueInfo).length > 0;
-    }, [collateralValueInfo]);
-
-    useEffect(() => {
-        if (troveAmount < 1) return;
-        if (!collateralIsInit) return;
-        if (!isFirstLoadData) return;
-        setIsFirstLoadData(false);
-        getTroves();
-    }, [isFirstLoadData, troveAmount, isLoadingTroves, getTroves, collateralIsInit]);
+    const isReady = useMemo(() => {
+        return Object.keys(collateralValueInfo).length > 0 && troveAmount > 0;
+    }, [collateralValueInfo, troveAmount]);
 
     const canShowList = troveList.length > 0 && supportAssets.length > 0;
 
@@ -335,7 +325,7 @@ function Liquidate() {
                         </div>
                     </div>
                 </div>
-                <div className={s.troveList} style={{ maxHeight: 700, overflowY: 'auto' }}>
+                <div className={s.troveList}>
                     <StickyContainer className={s.stickyContainer}>
                         <Sticky relative topOffset={1}>
                             {({ style, isSticky }: any) => {
@@ -378,7 +368,7 @@ function Liquidate() {
                         <div className={s.tableBody}>
                             {!canShowList && (
                                 <div className={s.emptyWrap}>
-                                    <Empty className={s.empty} />
+                                    <Spin tip={<span>Loading...</span>} />
                                 </div>
                             )}
                             {canShowList &&
@@ -561,12 +551,15 @@ function Liquidate() {
                                             </div>
                                         </div>
                                     );
-                                })}
-                            <Sentinel
-                                key={troveList.length}
-                                onLoad={loadMore}
-                                rootMargin={"50px"}
-                            />
+                                })
+                            }
+                            {isReady && (
+                                <Sentinel
+                                    key={troveList.length}
+                                    onLoad={loadMore}
+                                    rootMargin={"200px"}
+                                />
+                            )}
                         </div>
                     </StickyContainer>
                 </div>

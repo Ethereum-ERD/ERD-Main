@@ -21,7 +21,7 @@ function Sentinel({
                 io.disconnect();
             }
         }, {
-            rootMargin: rootMargin || '100px'
+            rootMargin: rootMargin || '50px'
         });
         io.observe(elRef.current!);
 

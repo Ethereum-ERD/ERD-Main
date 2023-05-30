@@ -61,7 +61,6 @@
 
         input.ant-input-number-input {
             height: 52px;
-            text-align: right;
     
             font-size: 23px;
             font-style: normal;
@@ -72,7 +71,8 @@
     }
 }
 
-.inputBefore {
+.inputBefore,
+.inputAfter {
     display: flex;
     align-items: center;
     font-size: 14px;
