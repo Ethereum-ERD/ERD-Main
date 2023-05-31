@@ -333,4 +333,11 @@
     --test-page-option-bg-color: transparent;
     --test-page-option-selected-bg-color: rgba(255, 255, 255, 0.1);
     --test-page-option-selected-text-color: #fff;
+
+
+
+    --not-found-page-bg-color: #292A30;
+    --not-found-page-border-color: #43454A;
+    --not-found-page-title-color: rgba(255, 255, 255, 0.7);
+    --not-found-page-tips-color: rgba(255, 255, 255, 0.5);
 }
