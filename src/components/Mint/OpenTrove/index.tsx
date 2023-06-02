@@ -5,9 +5,9 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { addCommas, formatUnits, truncateNumber } from 'src/util';
+import { BorrowItem, CollateralStatus } from 'src/types';
 import MintTitle from 'src/components/common/MintTitle';
 import { MAX_MINTING_FEE } from 'src/constants';
-import { BorrowItem } from 'src/types';
 import { useStore } from 'src/hooks';
 
 import FeeInfo from '../FeeInfo';
@@ -203,6 +203,7 @@ export default observer(function OpenTrove() {
                     {validColls
                         .map(coll => {
                             const v = borrowInfo.find(t => t.token === coll.tokenAddr);
+                            const isDisable = coll.status !== CollateralStatus.Active;
 
                             return (
                                 <div key={coll.tokenAddr}>
@@ -211,6 +212,7 @@ export default observer(function OpenTrove() {
                                             stringMode
                                             controls={false}
                                             className={s.input}
+                                            disabled={isDisable}
                                             onChange={(v) => onChange(coll.tokenAddr, v)}
                                             addonBefore={
                                                 <p className={s.inputBefore}>
@@ -228,7 +230,11 @@ export default observer(function OpenTrove() {
                                                 {formatUnits(coll.balance, coll.tokenDecimals)}
                                             </span>
                                         </p>
-                                        <p className={s.max} onClick={() => setMax(coll.tokenAddr, coll.balance)}>Max</p>
+                                        <p className={cx(s.max, { [s.disableMax]: isDisable })}
+                                            onClick={() => isDisable ? void 0 : setMax(coll.tokenAddr, coll.balance)}
+                                        >
+                                            Max
+                                        </p>
                                     </div>
                                 </div>
                             );

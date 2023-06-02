@@ -106,6 +106,11 @@
     font-size: 12px;
     cursor: pointer;
     color: var(--open-trove-input-balance-max-text-color);
+
+    &.disableMax {
+        color: var(--disable-btn-text-color);
+        cursor: not-allowed;
+    }
 }
 
 .collRatioInfo {

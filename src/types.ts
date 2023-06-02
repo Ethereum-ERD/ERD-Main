@@ -6,6 +6,12 @@ export type ExternalProvider = ethers.providers.Web3Provider;
 
 export type RPCProvider = ethers.providers.JsonRpcProvider;
 
+export enum CollateralStatus {
+    NotSupport = 0,
+    Active,
+    Pause
+}
+
 export enum CollRationLevel {
     Health = 1,
     Ordinary,
@@ -43,6 +49,7 @@ export interface SupportAssetsItem {
     tokenDecimals: number
     assetName: string
     tokenName: string
+    status: CollateralStatus
 }
 
 export interface BorrowItem {

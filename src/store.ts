@@ -381,15 +381,22 @@ export default class Store {
         if (!CollateralManager) return;
         const supportList: Array<string> = await CollateralManager.getCollateralSupport();
         const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
+        const statusList = await Promise
+            .all(
+                lowerCaseSupportList.map(c => CollateralManager.collateralParams(c))
+            );
 
-        const wethIdx = lowerCaseSupportList.findIndex(s => s === WETH_ADDR);
+        const collateralStatusList = statusList.map(c => c.status);
 
-        if (wethIdx !== -1) {
-            lowerCaseSupportList.splice(wethIdx, 1, MOCK_ETH_ADDR);
-        }
+        const displayList: Array<SupportAssetsItem> = [];
 
-        const displayList = SupportAssets.filter(asset => {
-            return lowerCaseSupportList.includes(asset.tokenAddr);
+        lowerCaseSupportList.forEach((addr, idx) => {
+            const status = collateralStatusList[idx];
+            const selectAddr = addr === WETH_ADDR ? MOCK_ETH_ADDR : addr;
+            const item = SupportAssets.find(asset => asset.tokenAddr === selectAddr);
+            if (item) {
+                displayList.push({ ...item, status });
+            }
         });
 
         runInAction(() => {
