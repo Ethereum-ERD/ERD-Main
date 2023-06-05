@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { Skeleton } from 'antd';
 
 import MintTitle from 'src/components/common/MintTitle';
 import { formatUnits } from 'src/util';
@@ -25,20 +26,22 @@ export default observer(function New() {
         <div className={s.balance}>
             <p className={s.balanceTitle}>Balance</p>
             <div className={s.userAssetList}>
-                {userCollateralInfo.map(asset => {
-                    return (
-                        <div key={asset.assetName} className={s.asset}>
-                            <div className={s.assetInfo}>
-                                <img src={asset.icon} alt={`${asset.assetName} icon`} />
-                                <p className={s.assetName}>{asset.assetName}</p>
+                <Skeleton active loading={userCollateralInfo.length < 1}>
+                    {userCollateralInfo.map(asset => {
+                        return (
+                            <div key={asset.assetName} className={s.asset}>
+                                <div className={s.assetInfo}>
+                                    <img src={asset.icon} alt={`${asset.assetName} icon`} />
+                                    <p className={s.assetName}>{asset.assetName}</p>
+                                </div>
+                                <div className={s.tokenInfo}>
+                                    <p className={s.assetAmount}>{formatUnits(asset.balance, asset.tokenDecimals)}</p>
+                                    <p className={s.assetTokenName}>{asset.tokenName}</p>
+                                </div>
                             </div>
-                            <div className={s.tokenInfo}>
-                                <p className={s.assetAmount}>{formatUnits(asset.balance, asset.tokenDecimals)}</p>
-                                <p className={s.assetTokenName}>{asset.tokenName}</p>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </Skeleton>
             </div>
         </div>
         <div className={s.btn} onClick={toggleStartBorrow}>Start</div>
