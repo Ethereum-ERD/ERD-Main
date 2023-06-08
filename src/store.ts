@@ -649,14 +649,11 @@ export default class Store {
             hintAddress: approxfullListHint
         } = await HintHelpers.getApproxHint(newICR, 5, RANDOM_SEED, ethPrice);
 
-        const [
-            lowerHint,
-            upperHint
-         ] = await SortTroves.findInsertPosition(
+        const { 0: upperHint, 1: lowerHint } = await SortTroves.findInsertPosition(
             newICR,
             approxfullListHint,
             approxfullListHint
-        )
+        );
 
         return [lowerHint, upperHint];
     }
@@ -901,7 +898,6 @@ export default class Store {
                 token: string
                 amount: ethers.BigNumber
             }> = collateralsAmount
-                .filter((c: ethers.BigNumber) => c.gt(BN_ZERO))
                 .map((c: string, index: number) => {
                     const tokenLowerCase = collaterals[index].toLowerCase();
                     const tokenAddr = tokenLowerCase === WETH_ADDR ? MOCK_ETH_ADDR : tokenLowerCase;
@@ -915,7 +911,6 @@ export default class Store {
                 token: string
                 amount: ethers.BigNumber
             }> = newCollateral
-                .filter(c => c.amount > 0)
                 .map(c => {
                     const asset = supportAssets.find(asset => asset.tokenAddr === c.token);
                     return {
@@ -991,12 +986,14 @@ export default class Store {
             const formatCollIn = Object.keys(CollInObject)
                 .map(key => {
                     return { token: key, amount: CollInObject[key] };
-                });
+                })
+                .filter(c => c.amount.gt(BN_ZERO));
 
             const formatCollOut = Object.keys(CollOutObject)
                 .map(key => {
                     return { token: key, amount: CollOutObject[key] };
-                });
+                })
+                .filter(c => c.amount.gt(BN_ZERO));
 
             const approveList = await Promise.all(
                 formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
@@ -1084,10 +1081,10 @@ export default class Store {
                 hintAddress: approxfullListHint
             } = await HintHelpers.getApproxHint(partialRedemptionHintICR, 5, RANDOM_SEED, ethPrice);
 
-            const [
-                upperHint,
-                lowerHint
-            ] = await SortTroves.findInsertPosition(
+            const {
+                0: upperHint,
+                1: lowerHint
+            } = await SortTroves.findInsertPosition(
                 partialRedemptionHintICR,
                 approxfullListHint,
                 approxfullListHint

@@ -106,7 +106,7 @@ export default observer(function AdjustTrove() {
         const borrowInfo = userTrove.collateral.map((coll) => {
             return {
                 token: coll.tokenAddr,
-                amount: +formatUnits(coll.amount, coll.tokenDecimals)
+                amount: +formatUnits(coll.amount, coll.tokenDecimals, coll.tokenDecimals)
             };
         });
 
