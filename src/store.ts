@@ -1126,7 +1126,9 @@ export default class Store {
                     exactPartialRedemptionHint[1],
                     partialRedemptionNewICR,
                     MAX_ITERATIONS,
-                    MAX_FEE
+                    MAX_FEE,
+                    // redeem cost too much gas, so we set 2_000_000
+                    { gasLimit: 2000000 }
             );
 
             const result = await web3Provider.waitForTransaction(hash);
