@@ -107,7 +107,7 @@ export default class Store {
     /* trove list info */
     currentPage = 0;
 
-    troveAmount = 0;
+    troveAmount = -1;
 
     troveList: Array<UserTrove> = [];
 
@@ -117,6 +117,10 @@ export default class Store {
     spOwnStableCoinAmount = 0;
 
     /* system status control */
+    isLoadingSupportAsset = false;
+
+    isLoadingTroveAmount = false;
+
     isLoadingTroves = false;
 
     isLiquidateIng = false;
@@ -379,6 +383,10 @@ export default class Store {
     async querySupportCollateral() {
         const { CollateralManager } = this.contractMap;
         if (!CollateralManager) return;
+        runInAction(() => {
+            this.isLoadingSupportAsset = true;
+        });
+
         const supportList: Array<string> = await CollateralManager.getCollateralSupport();
         const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
         const statusList = await Promise
@@ -401,6 +409,7 @@ export default class Store {
 
         runInAction(() => {
             this.supportAssets = displayList;
+            this.isLoadingSupportAsset = false;
         });
     }
 
@@ -640,10 +649,10 @@ export default class Store {
             hintAddress: approxfullListHint
         } = await HintHelpers.getApproxHint(newICR, 5, RANDOM_SEED, ethPrice);
 
-        const {
-            0: upperHint,
-            1: lowerHint
-        } = await SortTroves.findInsertPosition(
+        const [
+            lowerHint,
+            upperHint
+         ] = await SortTroves.findInsertPosition(
             newICR,
             approxfullListHint,
             approxfullListHint
@@ -656,9 +665,14 @@ export default class Store {
         const { contractMap } = this;
         const { SortTroves } = contractMap;
         if (!SortTroves) return;
+        runInAction(() => {
+            this.isLoadingTroveAmount = true;
+        });
+
         const troves = +(await SortTroves.getSize());
         runInAction(() => {
             this.troveAmount = troves;
+            this.isLoadingTroveAmount = false;
         });
     }
 
@@ -1070,10 +1084,10 @@ export default class Store {
                 hintAddress: approxfullListHint
             } = await HintHelpers.getApproxHint(partialRedemptionHintICR, 5, RANDOM_SEED, ethPrice);
 
-            const {
-                0: upperHint,
-                1: lowerHint
-            } = await SortTroves.findInsertPosition(
+            const [
+                upperHint,
+                lowerHint
+            ] = await SortTroves.findInsertPosition(
                 partialRedemptionHintICR,
                 approxfullListHint,
                 approxfullListHint
@@ -1255,6 +1269,7 @@ export default class Store {
             this.isLoadingTroves = true;
             this.currentPage = currentPage + 1;
         });
+
         try {
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
                 startIndex,

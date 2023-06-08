@@ -101,7 +101,7 @@ export default observer(function AdjustTrove() {
 
     useEffect(() => {
         if (!userTrove) return;
-        setBorrowNum(+formatUnits(userTrove.debt, stableCoinDecimals));
+        setBorrowNum(+formatUnits(userTrove.basicDebt, stableCoinDecimals));
 
         const borrowInfo = userTrove.collateral.map((coll) => {
             return {

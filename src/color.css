@@ -278,6 +278,8 @@
     --liquidate-top-right-on-mobile-bg-color: #2B2D35;
     --liquidate-empty-text-color: rgba(255, 255, 255, 0.7);
     --liquidate-table-head-sticky-box-shadow-color: rgba(0, 0, 0, 0.6);
+    --liquidate-load-more-text-color: rgba(255, 255, 255, 0.5);
+    --liquidate-no-data-tips-text-color: rgba(255, 255, 255, 0.5);
 
 
 

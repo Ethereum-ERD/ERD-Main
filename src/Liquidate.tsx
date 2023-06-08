@@ -71,11 +71,14 @@ function Liquidate() {
         systemMCR,
         systemCCR,
         liquidate,
+        isLoadingTroves,
         isLiquidateIng,
         supportAssets,
         stableCoinName,
         stableCoinDecimals,
         collateralValueInfo,
+        isLoadingTroveAmount,
+        isLoadingSupportAsset
     } = store;
 
     const loadMore = useCallback(getTroves, [getTroves]);
@@ -127,10 +130,13 @@ function Liquidate() {
     };
 
     const isReady = useMemo(() => {
-        return Object.keys(collateralValueInfo).length > 0 && troveAmount > 0;
+        return Object.keys(collateralValueInfo).length > 0 && troveAmount > -1;
     }, [collateralValueInfo, troveAmount]);
 
-    const canShowList = troveList.length > 0 && supportAssets.length > 0;
+    const NoTroves = troveAmount === 0;
+    const showTroveList = troveList.length > 0 && isReady;
+    const isLoadMoreTrove = isLoadingTroves && troveList.length > 0;
+    const isInitTroveList = troveAmount > 0 && isLoadingTroves && troveList.length === 0;
 
     return (
         <div className={s.wrap}>
@@ -366,12 +372,22 @@ function Liquidate() {
                             }}
                         </Sticky>
                         <div className={s.tableBody}>
-                            {!canShowList && (
+                            {(isLoadingTroveAmount || isLoadingSupportAsset) && (
+                                <div className={s.emptyWrap}>
+                                    <Spin tip={<span>Loading system information...</span>} />
+                                </div>
+                            )}
+                            {(NoTroves && !isLoadingTroveAmount && !isLoadingSupportAsset) && (
+                                <div className={s.emptyWrap}>
+                                    <p className={s.noDataTips}>No Data</p>
+                                </div>
+                            )}
+                            {isInitTroveList && (
                                 <div className={s.emptyWrap}>
                                     <Spin tip={<span>Loading...</span>} />
                                 </div>
                             )}
-                            {canShowList &&
+                            {showTroveList &&
                                 troveList.map((row) => {
                                     const { owner, collateral, debt, ICR } =
                                         row;
@@ -553,6 +569,9 @@ function Liquidate() {
                                     );
                                 })
                             }
+                            {isLoadMoreTrove && (
+                                <p className={s.loadMoreTips}>Loading more...</p>
+                            )}
                             {isReady && (
                                 <Sentinel
                                     key={troveList.length}

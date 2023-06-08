@@ -59,7 +59,7 @@ export default observer(function Dashboard() {
                                 </div>
                             </Popover>
                         </div>
-                        <p className={s.indexValue}>{troveAmount}</p>
+                        <p className={s.indexValue}>{troveAmount >= 0 ? troveAmount : 0}</p>
                     </div>
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
