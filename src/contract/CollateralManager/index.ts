@@ -233,6 +233,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -527,6 +533,12 @@ export default {
             }
           ],
           "name": "TroveUpdated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [],
+          "name": "Unpaused",
           "type": "event"
         },
         {
@@ -1017,6 +1029,30 @@ export default {
         {
           "inputs": [
             {
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_share",
+              "type": "uint256"
+            }
+          ],
+          "name": "getAmount",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
               "internalType": "address[]",
               "name": "_collaterals",
               "type": "address[]"
@@ -1474,6 +1510,30 @@ export default {
         {
           "inputs": [],
           "name": "getRedemptionFeeFloor",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "getShare",
           "outputs": [
             {
               "internalType": "uint256",
@@ -2104,7 +2164,7 @@ export default {
               "type": "bool"
             }
           ],
-          "stateMutability": "view",
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -2121,5 +2181,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0xef8d928bD9D7581A26D9b142BfCaB1B0ae246294'
+    addr: '0xD0031DC1Af13dcb81675DF46E7E127840100bD5B'
 }

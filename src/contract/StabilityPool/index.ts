@@ -415,6 +415,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -572,6 +578,12 @@ export default {
             }
           ],
           "name": "TroveManagerRedemptionsAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [],
+          "name": "Unpaused",
           "type": "event"
         },
         {
@@ -1446,6 +1458,19 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "val",
+              "type": "bool"
+            }
+          ],
+          "name": "setPause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "sortedTroves",
           "outputs": [
@@ -1533,5 +1558,5 @@ export default {
           "type": "receive"
         }
       ],
-    addr: '0x24D525a464B8e582396823A10e1F3Ca0282F9398'
+    addr: '0x1B872C1A8a06cD2B7F271f9827DF15f71b2bA141'
 }

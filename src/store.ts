@@ -5,7 +5,7 @@ import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
 import {
     ROW_PER_PAGE, EmptyObject, EMPTYADDRESS, RANDOM_SEED,
     GOERLI_CHAIN_ID, GOERLI_RPC_URL, WETH_ADDR, BN_ZERO,
-    MOCK_ETH_ADDR, BN_ETHER
+    MOCK_ETH_ADDR, BN_ETHER, MAX_FEE, MAX_ITERATIONS
 } from 'src/constants';
 
 import {
@@ -44,6 +44,8 @@ export default class Store {
     collateralValueInfo: {
         [key: string]: number
     } = EmptyObject;
+
+    latestRandomSeed = RANDOM_SEED;
 
     /* stable coin info */
     stableCoinName = '';
@@ -865,6 +867,7 @@ export default class Store {
             const result = await web3Provider.waitForTransaction(hash);
 
             if (result.status === 1) {
+                this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
             return result.status === 1;
@@ -1037,6 +1040,7 @@ export default class Store {
                 );
             const result = await web3Provider.waitForTransaction(hash);
             if (result.status === 1) {
+                this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
             return result.status === 1;
@@ -1064,43 +1068,67 @@ export default class Store {
         }
     }
 
+    async estimateEligible(EUSDAmount: ethers.BigNumber) {
+        const { TroveManagerRedemption, TroveManager } = this.contractMap;
+        const [
+            totalEUSDSupply,
+            decayedBaseRate
+        ] = await Promise.all([
+            TroveManagerRedemption.getEntireSystemDebt(),
+            TroveManager.calcDecayedBaseRate()
+        ]);
+        const squareTerm = toBN(this.dec(1005, 15)).add(decayedBaseRate); // BR + .5%
+        const sqrtTerm = squareTerm.mul(squareTerm); //.div(this.toBN(this.dec(1,18))) // Square term squared, over the precision
+        const sqrtTerm2 = ((toBN(this.dec(2, 0))).mul(EUSDAmount)).mul(toBN(this.dec(1, 36))).div(totalEUSDSupply);
+        const finalSqrtTerm = this.sqrt((sqrtTerm.add(sqrtTerm2)).mul(toBN(this.dec(1, 18)))); //.div(this.toBN(this.dec(1,9)))
+
+        const finalEUSDAmount = totalEUSDSupply.mul(finalSqrtTerm.sub(squareTerm.mul(toBN(this.dec(1, 9))))).div(toBN(this.dec(1, 27)));
+        return finalEUSDAmount;
+      }
+
     async redeem(amount: number) {
-        const { web3Provider, contractMap } = this;
+        const { web3Provider, contractMap, latestRandomSeed } = this;
         const { TroveManager, HintHelpers, PriceFeeds, SortTroves } = contractMap;
         if (!TroveManager || !HintHelpers || !PriceFeeds) return false;
         try {
             const ethPrice = await PriceFeeds.fetchPrice_view();
             const redeemAmountBN = toBN(amount);
 
-            const {
-                firstRedemptionHint,
-                partialRedemptionHintICR
-            } = await HintHelpers.getRedemptionHints(redeemAmountBN, ethPrice, 0);
+            let finalEUSDAmount = toBN(0);
+            finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
+
+            const redemptionhint = await HintHelpers.getRedemptionHints(finalEUSDAmount, ethPrice, 0);
+
+            const firstRedemptionHint = redemptionhint[0];
+            const partialRedemptionNewICR = redemptionhint[1];
 
             const {
-                hintAddress: approxfullListHint
-            } = await HintHelpers.getApproxHint(partialRedemptionHintICR, 5, RANDOM_SEED, ethPrice);
+                hintAddress: approxPartialRedemptionHint,
+                latestRandomSeed: nextSeed
+            } = await HintHelpers.getApproxHint(partialRedemptionNewICR, 50, latestRandomSeed, ethPrice);
 
-            const {
-                0: upperHint,
-                1: lowerHint
-            } = await SortTroves.findInsertPosition(
-                partialRedemptionHintICR,
-                approxfullListHint,
-                approxfullListHint
+            runInAction(() => {
+                this.latestRandomSeed = +nextSeed;
+            });
+
+            const exactPartialRedemptionHint = await SortTroves.findInsertPosition(
+                partialRedemptionNewICR,
+                approxPartialRedemptionHint,
+                approxPartialRedemptionHint
             );
 
             const { hash } = await TroveManager
                 .connect(web3Provider.getSigner())
                 .redeemCollateral(
-                    redeemAmountBN,
+                    finalEUSDAmount,
                     firstRedemptionHint,
-                    upperHint,
-                    lowerHint,
-                    partialRedemptionHintICR,
-                    BN_ETHER,
-                    BN_ETHER
-                );
+                    exactPartialRedemptionHint[0],
+                    exactPartialRedemptionHint[1],
+                    partialRedemptionNewICR,
+                    MAX_ITERATIONS,
+                    MAX_FEE
+            );
+
             const result = await web3Provider.waitForTransaction(hash);
             if (result.status === 1) {
                 this.queryUserTokenInfo();
@@ -1408,5 +1436,32 @@ export default class Store {
         } catch {
             return false;
         }
+    }
+
+    dec(val: number, scale: 'ether' | 'finney' | number) {
+        let zerosCount;
+    
+        if (scale === 'ether') {
+          zerosCount = 18;
+        } else if (scale === 'finney')
+          zerosCount = 15;
+        else {
+          zerosCount = scale;
+        }
+    
+        const strVal = val.toString()
+        const strZeros = ('0').repeat(zerosCount as number);
+    
+        return strVal.concat(strZeros)
+    }
+
+    sqrt(x: ethers.BigNumber) {
+        let z = (x.add(toBN(this.dec(1, 0)))).div(toBN(this.dec(2, 0)));
+        let y = x;
+        while (z.lt(y)) {
+          y = z;
+          z = ((x.div(z)).add(z)).div(toBN(this.dec(2, 0)));
+        }
+        return y;
     }
 }

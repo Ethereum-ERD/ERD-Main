@@ -66,11 +66,6 @@ export default {
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
             }
           ],
           "stateMutability": "view",
@@ -349,6 +344,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xcae5DC0dF0Ca4B14E5D50FD6CDD338d0dB80331c'
+      ],
+    addr: '0xdba2E82225FdB912D8993f31D36f73ecf168C34D'
 }

@@ -18,6 +18,10 @@ export const MOCK_ETH_ADDR = '0x' + '0'.repeat(40);
 
 export const MAX_MINTING_FEE = 0.05;
 
+export const MAX_ITERATIONS = 0;
+
+export const MAX_FEE = '1000000000000000000';
+
 export enum SORT_BY {
     DescCollateralRatio = 1,
     AscCollateralRatio

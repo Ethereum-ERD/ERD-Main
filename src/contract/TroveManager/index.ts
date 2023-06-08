@@ -233,6 +233,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -527,6 +533,12 @@ export default {
             }
           ],
           "name": "TroveUpdated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [],
+          "name": "Unpaused",
           "type": "event"
         },
         {
@@ -1430,17 +1442,7 @@ export default {
               "components": [
                 {
                   "internalType": "uint128",
-                  "name": "liquidityIndex",
-                  "type": "uint128"
-                },
-                {
-                  "internalType": "uint128",
                   "name": "borrowIndex",
-                  "type": "uint128"
-                },
-                {
-                  "internalType": "uint128",
-                  "name": "currentLiquidityRate",
                   "type": "uint128"
                 },
                 {
@@ -2000,6 +2002,19 @@ export default {
         {
           "inputs": [
             {
+              "internalType": "bool",
+              "name": "val",
+              "type": "bool"
+            }
+          ],
+          "name": "setPause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
               "internalType": "address",
               "name": "_borrower",
               "type": "address"
@@ -2200,5 +2215,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x1F00007F16Dc867Ab7124bca52Df3880973a15ef'
+    addr: '0x8CEbbB4C90495f866337520B8e27BB2fEd0fc0eF'
 }

@@ -131,6 +131,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -271,6 +277,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Unpaused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -298,19 +310,6 @@ export default {
         {
           "inputs": [],
           "name": "EUSD_GAS_COMPENSATION",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "MIN_NET_DEBT",
           "outputs": [
             {
               "internalType": "uint256",
@@ -862,6 +861,19 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "val",
+              "type": "bool"
+            }
+          ],
+          "name": "setPause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "sortedTroves",
           "outputs": [
@@ -983,5 +995,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x2Cbb77aED62d2724D075B43dC6384ABeeC5b03ea'
+    addr: '0xDC6925c962DFE7190a2Fe860e37E235B8c39c329'
 }

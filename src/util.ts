@@ -5,7 +5,10 @@ export function truncateNumber(num: number) {
     return Math.trunc(num);
 }
 
-export function toBN(num: number) {
+export function toBN(num: number | string) {
+    if (typeof num === 'string') {
+        return ethers.BigNumber.from(num);
+    }
     return ethers.BigNumber.from(fixNumber(num));
 }
 
@@ -69,4 +72,8 @@ export function translateUint(v: number) {
     }
 
     return [`${v}`, ''];
+}
+
+export function OpenNewTab(url: string) {
+    window.open(url, '_target');
 }
