@@ -45,7 +45,7 @@ export default class Store {
         [key: string]: number
     } = EmptyObject;
 
-    latestRandomSeed = RANDOM_SEED;
+    latestRandomSeed = toBN(RANDOM_SEED);
 
     /* stable coin info */
     stableCoinName = '';
@@ -1084,7 +1084,7 @@ export default class Store {
 
         const finalEUSDAmount = totalEUSDSupply.mul(finalSqrtTerm.sub(squareTerm.mul(toBN(this.dec(1, 9))))).div(toBN(this.dec(1, 27)));
         return finalEUSDAmount;
-      }
+    }
 
     async redeem(amount: number) {
         const { web3Provider, contractMap, latestRandomSeed } = this;
@@ -1108,7 +1108,7 @@ export default class Store {
             } = await HintHelpers.getApproxHint(partialRedemptionNewICR, 50, latestRandomSeed, ethPrice);
 
             runInAction(() => {
-                this.latestRandomSeed = +nextSeed;
+                this.latestRandomSeed = nextSeed;
             });
 
             const exactPartialRedemptionHint = await SortTroves.findInsertPosition(
@@ -1281,7 +1281,7 @@ export default class Store {
         }
     }
 
-    async waitForTransactionConfirmed(hash: string, block = 2) {
+    async waitForTransactionConfirmed(hash: string, block = 1) {
         const { web3Provider } = this;
         const result = await web3Provider.waitForTransaction(hash, block);
         return result;
@@ -1354,15 +1354,6 @@ export default class Store {
                 colls
             } = trove;
 
-            // const formatCollateral = collaterals.map((c, idx) => {
-            //     const token = c.toLowerCase() === WETH_ADDR ? MOCK_ETH_ADDR : c.toLowerCase();
-
-            //     const asset = supportAssets.find(asset => asset.tokenAddr === token);
-            //     return {
-            //         ...asset,
-            //         amount: colls[idx]
-            //     };
-            // });
             const formatCollateral = supportAssets.map(asset => {
                 const token = asset.tokenAddr === MOCK_ETH_ADDR ? WETH_ADDR : asset.tokenAddr;
                 const idx = collaterals.findIndex(c => c.toLowerCase() === token);
