@@ -4,7 +4,7 @@ import { InputNumber, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
-import { formatUnits, addCommas } from 'src/util';
+import { formatUnits, addCommas, OpenEtherScan } from 'src/util';
 import { useStore } from "src/hooks";
 
 import s from "./index.module.scss";
@@ -45,9 +45,10 @@ function Withdraw() {
         if (+withdrawNum > +formatUnits(userDepositAmount, stableCoinDecimals)) return;
         setIsProcessing(true);
         const result = await withdrawFromStabilityPool(+withdrawNum * Math.pow(10, stableCoinDecimals));
-        if (result) {
+        if (result.status) {
             notification.success({
-                message: 'transaction done.'
+                message: 'transaction done.',
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartWithdraw();
         } else {

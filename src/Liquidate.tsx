@@ -12,8 +12,8 @@ import {
 // @ts-ignore
 import { StickyContainer, Sticky } from "react-sticky";
 
+import { formatUnits, addCommas, OpenEtherScan } from "src/util";
 import Sentinel from "src/components/common/Sentinel";
-import { formatUnits, addCommas } from "src/util";
 import { useStore } from "src/hooks";
 
 import s from "./Liquidate.module.scss";
@@ -100,9 +100,10 @@ function Liquidate() {
             });
         }
         const result = await liquidate(liquidateTroveAmount);
-        if (result) {
+        if (result.status) {
             notification.success({
                 message: "transaction done.",
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
@@ -117,9 +118,10 @@ function Liquidate() {
         }
         setSelectTrove(addr);
         const result = await liquidate([addr]);
-        if (result) {
+        if (result.status) {
             notification.success({
                 message: "transaction done.",
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({

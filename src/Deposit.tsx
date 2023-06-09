@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import { notification } from 'antd';
 
+import { OpenEtherScan } from 'src/util';
 import { useStore } from "src/hooks";
 
 import DepositedOverView from "src/components/Deposit/DepositedOverView";
@@ -48,9 +49,10 @@ function Deposit() {
     const claimRewards = async () => {
         if (isClaimRewardIng) return;
         const result = await claimDepositReward();
-        if (result) {
+        if (result.status) {
             notification.success({
                 message: "transaction done.",
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
@@ -62,9 +64,10 @@ function Deposit() {
     const claimRewardsToTrove = async () => {
         if (isClaimRewardToTroveIng) return;
         const result = await claimRewardAndMoveToTrove();
-        if (result) {
+        if (result.status) {
             notification.success({
                 message: "transaction done.",
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({

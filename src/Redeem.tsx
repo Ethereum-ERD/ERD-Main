@@ -5,8 +5,8 @@ import cx from 'classnames';
 import { InputNumber, Popover, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { formatUnits, addCommas, OpenEtherScan } from 'src/util';
 import CircleHelp from 'src/components/common/CircleHelp';
-import { formatUnits, addCommas } from 'src/util';
 import { useStore } from "src/hooks";
 
 import s from "./Redeem.module.scss";
@@ -56,9 +56,10 @@ function Redeem() {
         if (+redeemNum < 1) return;
         setIsProcessing(true);
         const result = await redeem(+redeemNum * Math.pow(10, stableCoinDecimals));
-        if (result) {
+        if (result.status) {
             notification.success({
-                message: 'transaction done.'
+                message: 'transaction done.',
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({

@@ -4,7 +4,7 @@ import { InputNumber, notification } from 'antd';
 import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { addCommas, formatUnits, truncateNumber } from 'src/util';
+import { addCommas, formatUnits, truncateNumber, OpenEtherScan } from 'src/util';
 import { BorrowItem, CollateralStatus } from 'src/types';
 import MintTitle from 'src/components/common/MintTitle';
 import { MAX_MINTING_FEE } from 'src/constants';
@@ -177,9 +177,10 @@ export default observer(function OpenTrove() {
             borrowNum * Math.pow(10, stableCoinDecimals)
         );
 
-        if (result) {
+        if (result.status) {
             notification.success({
-                message: 'transaction done.'
+                message: 'transaction done.',
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartBorrow();
         } else {

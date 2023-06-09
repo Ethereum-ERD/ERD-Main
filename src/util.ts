@@ -74,6 +74,6 @@ export function translateUint(v: number) {
     return [`${v}`, ''];
 }
 
-export function OpenNewTab(url: string) {
+export function OpenEtherScan(url: string) {
     window.open(url, '_target');
 }

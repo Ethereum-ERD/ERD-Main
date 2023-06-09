@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import StableCoinIcon from 'src/components/common/StableCoinIcon';
-import { addCommas, formatUnits } from 'src/util';
+import { addCommas, formatUnits, OpenEtherScan } from 'src/util';
 import { useStore } from 'src/hooks';
 
 import s from './index.module.scss';
@@ -46,9 +46,10 @@ export default observer(function Repay() {
         if (isProcessing) return;
         setIsProcessing(true);
         const result = await closeTrove();
-        if (result) {
+        if (result.status) {
             notification.success({
-                message: 'transaction done.'
+                message: 'transaction done.',
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartRepay();
         } else {

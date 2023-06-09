@@ -4,9 +4,9 @@ import { InputNumber, Popover, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
+import { formatUnits, addCommas, OpenEtherScan } from 'src/util';
 import DepositTitle from 'src/components/common/DepositTitle';
 import CircleHelp from 'src/components/common/CircleHelp';
-import { formatUnits, addCommas } from 'src/util';
 import { useStore } from "src/hooks";
 
 import s from "./index.module.scss";
@@ -47,9 +47,10 @@ function NewDeposit() {
         if (+depositNum * Math.pow(10, stableCoinDecimals) > userStableCoinBalance) return;
         setIsProcessing(true);
         const result = await depositToStabilityPool(+depositNum * Math.pow(10, stableCoinDecimals));
-        if (result) {
+        if (result.status) {
             notification.success({
-                message: 'transaction done.'
+                message: 'transaction done.',
+                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({

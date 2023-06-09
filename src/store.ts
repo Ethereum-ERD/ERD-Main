@@ -835,7 +835,7 @@ export default class Store {
             );
 
             if (!approveList.every(x => x)) {
-                return;
+                return { status: false, hash: '' };
             }
 
             const [lowerHint, upperHint] = await this.getBorrowerOpsListHint(
@@ -864,15 +864,15 @@ export default class Store {
                 upperHint,
                 override
             );
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
@@ -884,7 +884,7 @@ export default class Store {
         try {
             const { contractMap, walletAddr, supportAssets, web3Provider } = this;
             const { TroveManager, BorrowerOperation } = contractMap;
-            if (!TroveManager || !BorrowerOperation) return false;
+            if (!TroveManager || !BorrowerOperation) return { status: false, hash: '' };
 
             const [
                 debt,
@@ -1002,7 +1002,7 @@ export default class Store {
                 formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
             );
 
-            if (!approveList.every(x => x)) return false;
+            if (!approveList.every(x => x)) return { status: false, hash: '' };
 
             const override = { value: BN_ZERO };
 
@@ -1038,33 +1038,33 @@ export default class Store {
                     lowerHint,
                     override
                 );
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
     async closeTrove() {
         const { BorrowerOperation } = this.contractMap;
-        if (!BorrowerOperation) return false;
+        if (!BorrowerOperation) return { status: false, hash: '' };
         try {
             const { web3Provider } = this;
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
                 .closeTrove();
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
                 this.getUserTroveInfo(true);
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
@@ -1089,7 +1089,7 @@ export default class Store {
     async redeem(amount: number) {
         const { web3Provider, contractMap, latestRandomSeed } = this;
         const { TroveManager, HintHelpers, PriceFeeds, SortTroves } = contractMap;
-        if (!TroveManager || !HintHelpers || !PriceFeeds) return false;
+        if (!TroveManager || !HintHelpers || !PriceFeeds) return { status: false, hash: '' };
         try {
             const ethPrice = await PriceFeeds.fetchPrice_view();
             const redeemAmountBN = toBN(amount);
@@ -1131,21 +1131,21 @@ export default class Store {
                     { gasLimit: 2000000 }
             );
 
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
     async liquidate(borrowerList: Array<string> | number) {
         const { web3Provider, contractMap, isLiquidateIng } = this;
         const { TroveManager } = contractMap;
-        if (!TroveManager || isLiquidateIng) return;
+        if (!TroveManager || isLiquidateIng) return { status: false, hash: '' };
         runInAction(() => {
             this.isLiquidateIng = true;
         });
@@ -1163,11 +1163,11 @@ export default class Store {
                 hash = res.hash;
             }
 
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         } finally {
             runInAction(() => {
                 this.isLiquidateIng = false;
@@ -1178,7 +1178,7 @@ export default class Store {
     async depositToStabilityPool(amount: number) {
         const { web3Provider, contractMap } = this;
         const { StabilityPool, StableCoin } = contractMap;
-        if (!StabilityPool) return false;
+        if (!StabilityPool) return { status: false, hash: '' };
         try {
             const amountBN = toBN(amount);
 
@@ -1188,7 +1188,7 @@ export default class Store {
                 amountBN
             );
 
-            if (!approved) return false;
+            if (!approved) return { status: false, hash: '' };
 
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
@@ -1196,23 +1196,23 @@ export default class Store {
                     amountBN,
                     EMPTYADDRESS
                 );
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
                 this.queryUserTokenInfo();
                 this.queryUserDepositInfo();
                 this.queryStabilityPoolTVL();
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
     async withdrawFromStabilityPool(amount: number) {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return false;
+        if (!StabilityPool) return { status: false, hash: '' };
         try {
             const amountBN = toBN(amount);
 
@@ -1220,22 +1220,22 @@ export default class Store {
                 .connect(web3Provider.getSigner())
                 .withdrawFromSP(amountBN);
 
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
                 this.queryStabilityPoolTVL();
                 this.queryUserDepositInfo();
                 this.queryUserTokenInfo();
             }
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         }
     }
 
     async claimDepositReward() {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return false;
+        if (!StabilityPool) return { status: false, hash: '' };
 
         runInAction(() => {
             this.isClaimRewardIng = true;
@@ -1245,11 +1245,11 @@ export default class Store {
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
                 .withdrawFromSP('0');
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         } finally {
             runInAction(() => {
                 this.isClaimRewardIng = false;
@@ -1260,7 +1260,7 @@ export default class Store {
     async claimRewardAndMoveToTrove() {
         const { contractMap, web3Provider } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return false;
+        if (!StabilityPool) return { status: false, hash: '' };
         runInAction(() => {
             this.isClaimRewardToTroveIng = true;
         });
@@ -1269,16 +1269,22 @@ export default class Store {
                 .connect(web3Provider.getSigner())
                 .withdrawCollateralGainToTrove(EMPTYADDRESS, EMPTYADDRESS);
 
-            const result = await web3Provider.waitForTransaction(hash);
+            const result = await this.waitForTransactionConfirmed(hash);
 
-            return result.status === 1;
+            return { status: result.status === 1, hash };
         } catch {
-            return false;
+            return { status: false, hash: '' };
         } finally {
             runInAction(() => {
                 this.isClaimRewardToTroveIng = false;
             });
         }
+    }
+
+    async waitForTransactionConfirmed(hash: string, block = 2) {
+        const { web3Provider } = this;
+        const result = await web3Provider.waitForTransaction(hash, block);
+        return result;
     }
 
     async getTroves() {
