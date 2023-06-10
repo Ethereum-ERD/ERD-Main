@@ -14,10 +14,10 @@ import {
     ProtocolCollateralItem, RPCProvider
 } from 'src/types';
 
-import { formatUnits, toBN } from 'src/util';
 
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
+import { formatUnits, toBN } from 'src/util';
 import ContractConfig from 'src/contract';
 
 export default class Store {
@@ -831,7 +831,7 @@ export default class Store {
 
             const tokenAddr = formatCollateral.map(c => c.token);
             const approveList = await Promise.all(
-                tokenAddr.map((token, idx) => this.approve(token, BorrowerOperation.address, formatCollateral[idx].amount))
+                tokenAddr.map((token, idx) => this.approve(token, BorrowerOperation.address, ethers.constants.MaxUint256))
             );
 
             if (!approveList.every(x => x)) {
@@ -999,7 +999,7 @@ export default class Store {
                 .filter(c => c.amount.gt(BN_ZERO));
 
             const approveList = await Promise.all(
-                formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, c.amount))
+                formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, ethers.constants.MaxUint256))
             );
 
             if (!approveList.every(x => x)) return { status: false, hash: '' };
@@ -1024,6 +1024,24 @@ export default class Store {
                 return c;
             });
 
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .adjustTrove(
+                    pass2ContractCollateral.map(c => c.token),
+                    pass2ContractCollateral.map(c => c.amount),
+                    passOutContractCollateral.map(c => c.token),
+                    passOutContractCollateral.map(c => c.amount),
+                    maxFeePerAmount,
+                    stableCoinChange,
+                    isDebtIncrease,
+                    upperHint,
+                    lowerHint,
+                    { ...override, }
+                );
+            
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
                 .adjustTrove(
@@ -1036,7 +1054,7 @@ export default class Store {
                     isDebtIncrease,
                     upperHint,
                     lowerHint,
-                    override
+                    { ...override, gasLimit: toBN(~~moreGasLimit) }
                 );
             const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
@@ -1044,7 +1062,8 @@ export default class Store {
                 this.getUserTroveInfo(true);
             }
             return { status: result.status === 1, hash };
-        } catch {
+        } catch (e) {
+            debugger
             return { status: false, hash: '' };
         }
     }
@@ -1185,7 +1204,7 @@ export default class Store {
             const approved = await this.approve(
                 StableCoin.address,
                 StabilityPool.address,
-                amountBN
+                ethers.constants.MaxUint256
             );
 
             if (!approved) return { status: false, hash: '' };
