@@ -75,5 +75,5 @@ export function translateUint(v: number) {
 }
 
 export function OpenEtherScan(url: string) {
-    window.open(url, '_target');
+    window.open(url, '_blank');
 }

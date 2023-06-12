@@ -1219,6 +1219,7 @@ export default class Store {
 
             if (result.status === 1) {
                 this.queryUserTokenInfo();
+                this.queryUserDepositGain();
                 this.queryUserDepositInfo();
                 this.queryStabilityPoolTVL();
             }
