@@ -1062,8 +1062,7 @@ export default class Store {
                 this.getUserTroveInfo(true);
             }
             return { status: result.status === 1, hash };
-        } catch (e) {
-            debugger
+        } catch {
             return { status: false, hash: '' };
         }
     }

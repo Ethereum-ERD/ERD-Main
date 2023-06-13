@@ -68,6 +68,7 @@ function Liquidate() {
         troveAmount,
         isNormalMode,
         troveList,
+        systemTCR,
         systemMCR,
         systemCCR,
         liquidate,
@@ -116,6 +117,28 @@ function Liquidate() {
         if (isLiquidateIng) {
             return;
         }
+        const trove = troveList.find(t => t.owner === addr);
+        if (!trove) {
+            return notification.error({
+                message: "bad operation.",
+            });
+        }
+
+        const ICR = trove.ICR;
+        let canBeLiquidated = false;
+
+        if (isNormalMode) {
+            canBeLiquidated = ICR < systemMCR;
+        } else {
+            canBeLiquidated = ICR < systemMCR || ICR < systemTCR;
+        }
+
+        if (!canBeLiquidated) {
+            return notification.warning({
+                message: `The trove cannot be liquidated now.`
+            });
+        }
+
         setSelectTrove(addr);
         const result = await liquidate([addr]);
         if (result.status) {
