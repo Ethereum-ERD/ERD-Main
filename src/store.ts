@@ -807,6 +807,25 @@ export default class Store {
         }
     }
 
+    async getApproveAmount(
+        tokenAddr: string,
+        spender: string,
+    ): Promise<ethers.BigNumber> {
+        try {
+            if (tokenAddr === MOCK_ETH_ADDR) return ethers.constants.MaxUint256;
+            const { ERC20 } = this.contractMap;
+            const allowance = await ERC20
+                .attach(tokenAddr)
+                .allowance(
+                    this.walletAddr,
+                    spender
+                );
+            return allowance;
+        } catch {
+            return BN_ZERO;
+        }
+    }
+
     async createdTrove(
         collateral: Array<{ token: string; amount: number }>,
         stableCoinAmount: number,
@@ -830,12 +849,28 @@ export default class Store {
                 });
 
             const tokenAddr = formatCollateral.map(c => c.token);
-            const approveList = await Promise.all(
-                tokenAddr.map((token, idx) => this.approve(token, BorrowerOperation.address, ethers.constants.MaxUint256))
+
+            const approveAmountList: Array<ethers.BigNumber> = await Promise.all(
+                tokenAddr.map(t => this.getApproveAmount(t, BorrowerOperation.address))
             );
 
-            if (!approveList.every(x => x)) {
-                return { status: false, hash: '' };
+            const needNewApproveList = approveAmountList.reduce((list, item, idx) => {
+                const collateral = formatCollateral[idx];
+                if (collateral.amount.gt(item)) {
+                    list.push(collateral.token);
+                }
+
+                return list;
+            }, [] as Array<string>);
+
+            if (needNewApproveList.length > 0) {
+                const approveList = await Promise.all(
+                    needNewApproveList.map((t) => this.approve(t, BorrowerOperation.address, ethers.constants.MaxUint256))
+                );
+
+                if (!approveList.every(x => x)) {
+                    return { status: false, hash: '' };
+                }
             }
 
             const [lowerHint, upperHint] = await this.getBorrowerOpsListHint(
@@ -853,17 +888,32 @@ export default class Store {
 
             const pass2ContractCollateral = formatCollateral.filter((_, idx) => idx !== ethCollateralIdx);
 
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
+                    pass2ContractCollateral.map(c => c.token),
+                    pass2ContractCollateral.map(c => c.amount),
+                    maxFeePerAmount,
+                    debtAmount,
+                    lowerHint,
+                    upperHint,
+                    override
+                );
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
-            ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
-                pass2ContractCollateral.map(c => c.token),
-                pass2ContractCollateral.map(c => c.amount),
-                maxFeePerAmount,
-                debtAmount,
-                lowerHint,
-                upperHint,
-                override
-            );
+                ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
+                    pass2ContractCollateral.map(c => c.token),
+                    pass2ContractCollateral.map(c => c.amount),
+                    maxFeePerAmount,
+                    debtAmount,
+                    lowerHint,
+                    upperHint,
+                    { ...override, gasLimit: toBN(~~moreGasLimit) }
+                );
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
@@ -997,12 +1047,29 @@ export default class Store {
                     return { token: key, amount: CollOutObject[key] };
                 })
                 .filter(c => c.amount.gt(BN_ZERO));
+            
+            if (formatCollIn.length > 0) {
+                const approveAmountList: Array<ethers.BigNumber> = await Promise.all(
+                    formatCollIn.map(t => this.getApproveAmount(t.token, BorrowerOperation.address))
+                );
 
-            const approveList = await Promise.all(
-                formatCollIn.map(c => this.approve(c.token, BorrowerOperation.address, ethers.constants.MaxUint256))
-            );
+                const needNewApproveList = approveAmountList.reduce((list, item, idx) => {
+                    const collateral = formatCollIn[idx];
+                    if (collateral.amount.gt(item)) {
+                        list.push(collateral.token);
+                    }
+    
+                    return list;
+                }, [] as Array<string>);
 
-            if (!approveList.every(x => x)) return { status: false, hash: '' };
+                if (needNewApproveList.length > 0) {
+                    const approveList = await Promise.all(
+                        needNewApproveList.map(c => this.approve(c, BorrowerOperation.address, ethers.constants.MaxUint256))
+                    );
+        
+                    if (!approveList.every(x => x)) return { status: false, hash: '' };
+                }
+            }
 
             const override = { value: BN_ZERO };
 
@@ -1072,9 +1139,17 @@ export default class Store {
         if (!BorrowerOperation) return { status: false, hash: '' };
         try {
             const { web3Provider } = this;
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .closeTrove();
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
-                .closeTrove();
+                .closeTrove({ gasLimit: toBN(~~moreGasLimit) });
+
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
@@ -1115,10 +1190,10 @@ export default class Store {
             let finalEUSDAmount = toBN(0);
             finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
 
-            const redemptionhint = await HintHelpers.getRedemptionHints(finalEUSDAmount, ethPrice, 0);
+            const redemptionHint = await HintHelpers.getRedemptionHints(finalEUSDAmount, ethPrice, 0);
 
-            const firstRedemptionHint = redemptionhint[0];
-            const partialRedemptionNewICR = redemptionhint[1];
+            const firstRedemptionHint = redemptionHint[0];
+            const partialRedemptionNewICR = redemptionHint[1];
 
             const {
                 hintAddress: approxPartialRedemptionHint,
@@ -1134,6 +1209,22 @@ export default class Store {
                 approxPartialRedemptionHint,
                 approxPartialRedemptionHint
             );
+            
+            const gasLimit = await TroveManager
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .redeemCollateral(
+                    finalEUSDAmount,
+                    firstRedemptionHint,
+                    exactPartialRedemptionHint[0],
+                    exactPartialRedemptionHint[1],
+                    partialRedemptionNewICR,
+                    MAX_ITERATIONS,
+                    MAX_FEE
+                );
+            
+
+            const moreGasLimit = +gasLimit * 1.5;
 
             const { hash } = await TroveManager
                 .connect(web3Provider.getSigner())
@@ -1145,8 +1236,7 @@ export default class Store {
                     partialRedemptionNewICR,
                     MAX_ITERATIONS,
                     MAX_FEE,
-                    // redeem cost too much gas, so we set 2_000_000
-                    { gasLimit: 2000000 }
+                    { gasLimit: toBN(~~moreGasLimit) }
             );
 
             const result = await this.waitForTransactionConfirmed(hash);
@@ -1200,13 +1290,17 @@ export default class Store {
         try {
             const amountBN = toBN(amount);
 
-            const approved = await this.approve(
-                StableCoin.address,
-                StabilityPool.address,
-                ethers.constants.MaxUint256
-            );
+            const approveAmount = await this.getApproveAmount(StableCoin.address, StabilityPool.address);
 
-            if (!approved) return { status: false, hash: '' };
+            if (approveAmount.lt(amountBN)) {
+                const approved = await this.approve(
+                    StableCoin.address,
+                    StabilityPool.address,
+                    ethers.constants.MaxUint256
+                );
+    
+                if (!approved) return { status: false, hash: '' };
+            }
 
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
