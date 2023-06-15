@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 
+import { addCommas, formatUint } from 'src/util';
 import { useStore } from "src/hooks";
-import { addCommas } from 'src/util';
 
 import s from './index.module.scss';
 
@@ -37,7 +37,7 @@ export default observer(function SupportAssetPopup() {
                             </div>
                             <div className={s.depositInfo}>
                                 <p className={s.depositContent}>
-                                    $ {addCommas(value)}
+                                    $ {addCommas(formatUint(value))}
                                 </p>
                             </div>
                         </div>

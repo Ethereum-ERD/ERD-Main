@@ -2,8 +2,8 @@ import { observer } from "mobx-react";
 
 import { Modal } from "antd";
 
+import { addCommas, formatUint } from 'src/util';
 import { useStore } from "src/hooks";
-import { addCommas } from 'src/util';
 
 import s from './SupportAsset.module.scss';
 
@@ -43,7 +43,7 @@ export default observer(function SupportAsset() {
                             <div className={s.depositInfo}>
                                 <p className={s.depositTitle}>Total Deposit</p>
                                 <p className={s.depositContent}>
-                                    $ {addCommas(value)}
+                                    $ {addCommas(formatUint(value))}
                                 </p>
                             </div>
                         </div>

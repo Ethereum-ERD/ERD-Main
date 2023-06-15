@@ -104,7 +104,7 @@ function NewDeposit() {
                     </Popover>
                 </div>
                 <p className={s.poolShareValue}>
-                    {(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%
+                    {(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%
                 </p>
             </div>
             <div className={s.btnArea}>

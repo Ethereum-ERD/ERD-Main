@@ -87,7 +87,7 @@ function Withdraw() {
                 </div>
                 <div className={s.poolShare}>
                     <p>Pool Share</p>
-                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(2)}%</p>
+                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

@@ -42,7 +42,7 @@ export const Routes = [
     },
     {
         path: '/redeem',
-        name: 'Redemption'
+        name: 'Redeem'
     },
     {
         path: '/statistics',

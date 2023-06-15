@@ -12,6 +12,19 @@ export function toBN(num: number | string) {
     return ethers.BigNumber.from(fixNumber(num));
 }
 
+export function formatUint(num: number) {
+    if (num < 1e4) {
+        return `${num}`;
+    }
+    if (num < 1e6) {
+        return `${parseInt((num / 1e3).toFixed(0))}K`;
+    }
+    if (num < 1e9) {
+        return `${parseInt((num / 1e6).toFixed(0))}M`;
+    }
+    return `${parseInt((num / 1e9).toFixed(0))}B`;
+}
+
 export function addCommas(num: number | string) {
     const nStr = num + '';
 
