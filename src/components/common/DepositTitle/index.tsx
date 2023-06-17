@@ -12,7 +12,7 @@ export default observer(function DepositTitle() {
     return (
         <div className={s.wrap}>
             <p className={s.title}>Deposit-SP</p>
-            <p className={s.titleDesc}>Deposit {stableCoinName} in the stable pool to earn liquidation income.</p>
+            <p className={s.titleDesc}>Deposit {stableCoinName} into the Stability Pool to earn liquidation income.</p>
         </div>
     );
 });

@@ -70,7 +70,7 @@ function ReDeposit() {
                     <p>Claim</p>
                 </div>
             </div>
-            <p className={s.titleDesc}>Deposit {stableCoinName} in the stable pool to earn liquidation income</p>
+            <p className={s.titleDesc}>Deposit {stableCoinName} into the Stability Pool to earn liquidation income</p>
             <div className={s.depositNumInputWrap}>
                 <InputNumber
                     stringMode

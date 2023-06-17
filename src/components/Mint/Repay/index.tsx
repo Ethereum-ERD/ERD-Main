@@ -94,7 +94,7 @@ export default observer(function Repay() {
             </div>
             {userStableCoinBalance < userTrove.debt && (
                 <div className={s.warning}>
-                    You do not have enough {stableCoinName} to repay. 😅
+                    You have insufficient {stableCoinName}. 😅
                 </div>
             )}
             <FeeInfo
