@@ -1,19 +1,12 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { observer } from "mobx-react";
 import cx from "classnames";
 // @ts-ignore
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import {
-    Popover,
-    notification,
-    InputNumber,
-    Spin
-} from "antd";
-// @ts-ignore
-import { StickyContainer, Sticky } from "react-sticky";
+import { Popover, notification, InputNumber, Pagination, Spin } from "antd";
 
 import { formatUnits, addCommas, OpenEtherScan } from "src/util";
-import Sentinel from "src/components/common/Sentinel";
+import { ROW_PER_PAGE } from "src/constants";
 import { useStore } from "src/hooks";
 
 import s from "./Liquidate.module.scss";
@@ -59,6 +52,7 @@ function DeleteIcon() {
 }
 
 function Liquidate() {
+    const [page, setPage] = useState(1);
     const [selectTrove, setSelectTrove] = useState<string>("");
     const [liquidateTroveAmount, setLiquidateTroveAmount] = useState(0);
 
@@ -79,10 +73,8 @@ function Liquidate() {
         stableCoinDecimals,
         collateralValueInfo,
         isLoadingTroveAmount,
-        isLoadingSupportAsset
+        isLoadingSupportAsset,
     } = store;
-
-    const loadMore = useCallback(getTroves, [getTroves]);
 
     const ShowAlert = () => {
         notification.success({
@@ -104,7 +96,10 @@ function Liquidate() {
         if (result.status) {
             notification.success({
                 message: "transaction done.",
-                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
+                onClick: () =>
+                    OpenEtherScan(
+                        `https://goerli.etherscan.io/tx/${result.hash}`
+                    ),
             });
         } else {
             notification.error({
@@ -117,7 +112,7 @@ function Liquidate() {
         if (isLiquidateIng) {
             return;
         }
-        const trove = troveList.find(t => t.owner === addr);
+        const trove = troveList.find((t) => t.owner === addr);
         if (!trove) {
             return notification.error({
                 message: "bad operation.",
@@ -135,7 +130,7 @@ function Liquidate() {
 
         if (!canBeLiquidated) {
             return notification.warning({
-                message: `The trove cannot be liquidated now.`
+                message: `The trove cannot be liquidated now.`,
             });
         }
 
@@ -144,7 +139,10 @@ function Liquidate() {
         if (result.status) {
             notification.success({
                 message: "transaction done.",
-                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
+                onClick: () =>
+                    OpenEtherScan(
+                        `https://goerli.etherscan.io/tx/${result.hash}`
+                    ),
             });
         } else {
             notification.error({
@@ -158,10 +156,19 @@ function Liquidate() {
         return Object.keys(collateralValueInfo).length > 0 && troveAmount > -1;
     }, [collateralValueInfo, troveAmount]);
 
+    useEffect(() => {
+        isReady && getTroves();
+    }, [isReady, getTroves]);
+
     const NoTroves = troveAmount === 0;
     const showTroveList = troveList.length > 0 && isReady;
-    const isLoadMoreTrove = isLoadingTroves && troveList.length > 0;
-    const isInitTroveList = troveAmount > 0 && isLoadingTroves && troveList.length === 0;
+    const isInitTroveList =
+        troveAmount > 0 && isLoadingTroves && troveList.length === 0;
+    const isLoadingSystemInfo = isLoadingTroveAmount || isLoadingSupportAsset;
+
+    const handleLoadMore = useCallback((page: number) => {
+        setPage(page);
+    }, []);
 
     return (
         <div className={s.wrap}>
@@ -357,67 +364,62 @@ function Liquidate() {
                     </div>
                 </div>
                 <div className={s.troveList}>
-                    <StickyContainer className={s.stickyContainer}>
-                        <Sticky relative topOffset={1}>
-                            {({ style, isSticky }: any) => {
-                                return (
-                                    <div
-                                        data-sticky={isSticky}
-                                        className={s.tableHead}
-                                        style={style}
-                                    >
-                                        <div className={s.tableHeadOfOwner}>
-                                            Owner
-                                        </div>
-                                        <div className={s.tableHeadCollateral}>
-                                            <p>Collateral</p>
-                                            <div className={s.collateralIcons}>
-                                                {supportAssets.map((asset) => {
-                                                    return (
-                                                        <img
-                                                            key={
-                                                                asset.assetName
-                                                            }
-                                                            src={asset.icon}
-                                                            alt=""
-                                                        />
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                        <div className={s.tableHeadDebt}>
-                                            Debt{"\u00A0"}
-                                            <span>({stableCoinName})</span>
-                                        </div>
-                                        <div className={s.tableHeadCollRatio}>
-                                            Coll.Ratio
-                                        </div>
-                                    </div>
-                                );
-                            }}
-                        </Sticky>
-                        <div className={s.tableBody}>
-                            {(isLoadingTroveAmount || isLoadingSupportAsset) && (
-                                <div className={s.emptyWrap}>
-                                    <Spin tip={<span>Loading system information...</span>} />
-                                </div>
-                            )}
-                            {(NoTroves && !isLoadingTroveAmount && !isLoadingSupportAsset) && (
-                                <div className={s.emptyWrap}>
-                                    <p className={s.noDataTips}>No Data</p>
-                                </div>
-                            )}
-                            {isInitTroveList && (
-                                <div className={s.emptyWrap}>
-                                    <Spin tip={<span>Loading...</span>} />
-                                </div>
-                            )}
-                            {showTroveList &&
-                                troveList.map((row) => {
+                    <div className={s.tableHead}>
+                        <div className={s.tableHeadOfOwner}>Owner</div>
+                        <div className={s.tableHeadCollateral}>
+                            <p>Collateral</p>
+                            <div className={s.collateralIcons}>
+                                {supportAssets.map((asset) => {
+                                    return (
+                                        <img
+                                            key={asset.assetName}
+                                            src={asset.icon}
+                                            alt=""
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className={s.tableHeadDebt}>
+                            Debt{"\u00A0"}
+                            <span>({stableCoinName})</span>
+                        </div>
+                        <div className={s.tableHeadCollRatio}>Coll.Ratio</div>
+                    </div>
+                    <div className={s.tableBody}>
+                        {isLoadingSystemInfo && (
+                            <div className={s.emptyWrap}>
+                                <Spin
+                                    tip={
+                                        <span>
+                                            Loading system information...
+                                        </span>
+                                    }
+                                />
+                            </div>
+                        )}
+                        {NoTroves && !isLoadingSystemInfo && (
+                            <div className={s.emptyWrap}>
+                                <p className={s.noDataTips}>No Data</p>
+                            </div>
+                        )}
+                        {isInitTroveList && (
+                            <div className={s.emptyWrap}>
+                                <Spin tip={<span>Loading...</span>} />
+                            </div>
+                        )}
+                        {!NoTroves && !isInitTroveList && !showTroveList && !isLoadingSystemInfo && (
+                            <div className={s.emptyWrap}>
+                                <Spin tip={<span>Loading...</span>} />
+                            </div>
+                        )}
+                        {showTroveList &&
+                            troveList
+                                .slice((page - 1) * ROW_PER_PAGE, page * ROW_PER_PAGE)
+                                .map((row) => {
                                     const { owner, collateral, debt, ICR } =
                                         row;
                                     const len = owner.length;
-
                                     const tokens = collateral.map((t: any) => {
                                         const token = supportAssets.find(
                                             (asset) => {
@@ -440,7 +442,6 @@ function Liquidate() {
                                     } else {
                                         troveCollRatioClass.push(s.emergency);
                                     }
-
                                     return (
                                         <div
                                             key={owner}
@@ -449,7 +450,16 @@ function Liquidate() {
                                                 handleLiquidateOne(row.owner)
                                             }
                                         >
-                                            <div className={cx(s.mobileDeleteIcon, { [s.showMobileDeleteIcon]: selectTrove === owner })}>
+                                            <div
+                                                className={cx(
+                                                    s.mobileDeleteIcon,
+                                                    {
+                                                        [s.showMobileDeleteIcon]:
+                                                            selectTrove ===
+                                                            owner,
+                                                    }
+                                                )}
+                                            >
                                                 <div
                                                     className={cx(
                                                         s.deleteIconWrap,
@@ -465,10 +475,14 @@ function Liquidate() {
                                             </div>
                                             <div className={s.tableItemOuter}>
                                                 <div
-                                                    className={s.tableItemContainer}
+                                                    className={
+                                                        s.tableItemContainer
+                                                    }
                                                 >
                                                     <div
-                                                        className={s.tableItemOwner}
+                                                        className={
+                                                            s.tableItemOwner
+                                                        }
                                                     >
                                                         <p className={s.owner}>
                                                             {owner.slice(0, 4) +
@@ -554,7 +568,11 @@ function Liquidate() {
                                                             }
                                                         )}
                                                     </div>
-                                                    <p className={s.tableItemDebt}>
+                                                    <p
+                                                        className={
+                                                            s.tableItemDebt
+                                                        }
+                                                    >
                                                         {addCommas(
                                                             formatUnits(
                                                                 debt,
@@ -563,14 +581,18 @@ function Liquidate() {
                                                         )}
                                                     </p>
                                                     <div
-                                                        className={s.tableItemRatio}
+                                                        className={
+                                                            s.tableItemRatio
+                                                        }
                                                     >
                                                         <p
                                                             className={cx(
                                                                 troveCollRatioClass
                                                             )}
                                                         >
-                                                            {(ICR * 100).toFixed(2)}
+                                                            {(
+                                                                ICR * 100
+                                                            ).toFixed(2)}
                                                             %
                                                         </p>
                                                     </div>
@@ -593,20 +615,17 @@ function Liquidate() {
                                         </div>
                                     );
                                 })
-                            }
-                            {isLoadMoreTrove && (
-                                <p className={s.loadMoreTips}>Loading more...</p>
-                            )}
-                            {isReady && (
-                                <Sentinel
-                                    key={troveList.length}
-                                    onLoad={loadMore}
-                                    rootMargin={"200px"}
-                                />
-                            )}
-                        </div>
-                    </StickyContainer>
+                        }
+                    </div>
                 </div>
+                <Pagination
+                    current={page}
+                    total={troveAmount}
+                    pageSize={ROW_PER_PAGE}
+                    className={s.pagination}
+                    onChange={handleLoadMore}
+                    showSizeChanger={false}
+                />
             </div>
         </div>
     );

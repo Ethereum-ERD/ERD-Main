@@ -3,7 +3,7 @@ import { ProviderLabel } from '@web3-onboard/injected-wallets';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
 
 import {
-    ROW_PER_PAGE, EmptyObject, EMPTYADDRESS, RANDOM_SEED,
+    EmptyObject, EMPTY_ADDRESS, RANDOM_SEED,
     GOERLI_CHAIN_ID, GOERLI_RPC_URL, WETH_ADDR, BN_ZERO,
     MOCK_ETH_ADDR, BN_ETHER, MAX_FEE, MAX_ITERATIONS
 } from 'src/constants';
@@ -107,7 +107,6 @@ export default class Store {
     startAdjustTrove = false;
 
     /* trove list info */
-    currentPage = 0;
 
     troveAmount = -1;
 
@@ -436,7 +435,7 @@ export default class Store {
 
         const prices = await Promise.all(
             oracles.map(o => {
-                if (o === EMPTYADDRESS) {
+                if (o === EMPTY_ADDRESS) {
                     return 0;
                 }
                 return PriceFeeds.attach(o).fetchPrice_view()
@@ -1306,7 +1305,7 @@ export default class Store {
                 .connect(web3Provider.getSigner())
                 .provideToSP(
                     amountBN,
-                    EMPTYADDRESS
+                    EMPTY_ADDRESS
                 );
             const result = await this.waitForTransactionConfirmed(hash);
 
@@ -1380,7 +1379,7 @@ export default class Store {
         try {
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
-                .withdrawCollateralGainToTrove(EMPTYADDRESS, EMPTYADDRESS);
+                .withdrawCollateralGainToTrove(EMPTY_ADDRESS, EMPTY_ADDRESS);
 
             const result = await this.waitForTransactionConfirmed(hash);
 
@@ -1401,11 +1400,10 @@ export default class Store {
     }
 
     async getTroves() {
-        const { troveAmount, contractMap, isLoadingTroves, currentPage } = this;
+        const { troveAmount, contractMap, isLoadingTroves, troveList } = this;
         const { MultiTroveGetter } = contractMap;
-        const startIndex = currentPage * ROW_PER_PAGE;
         if (
-            startIndex > troveAmount ||
+            troveList.length >= troveAmount ||
             !MultiTroveGetter ||
             troveAmount < 1 ||
             isLoadingTroves
@@ -1413,32 +1411,18 @@ export default class Store {
 
         runInAction(() => {
             this.isLoadingTroves = true;
-            this.currentPage = currentPage + 1;
         });
 
         try {
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
-                startIndex,
-                ROW_PER_PAGE
+                0,
+                troveAmount
             );
             const troves = this.mapBackendTroves(backendTroves);
 
-            const existTroves = this.troveList.map(t => t.owner);
-
-            const newTroves = troves.filter(t => {
-                return !existTroves.includes(t.owner);
-            });
-
             runInAction(() => {
                 // @ts-ignore
-                this.troveList = [
-                    ...this.troveList,
-                    ...newTroves
-                ].sort((troveA, troveB) => troveA.ICR - troveB.ICR);
-            });
-        } catch {
-            runInAction(() => {
-                this.currentPage = currentPage;
+                this.troveList = troves.sort((troveA, troveB) => troveA.ICR - troveB.ICR);
             });
         } finally {
             runInAction(() => {

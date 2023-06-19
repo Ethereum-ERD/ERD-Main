@@ -280,6 +280,9 @@
     --liquidate-table-head-sticky-box-shadow-color: rgba(0, 0, 0, 0.6);
     --liquidate-load-more-text-color: rgba(255, 255, 255, 0.5);
     --liquidate-no-data-tips-text-color: rgba(255, 255, 255, 0.5);
+    --liquidate-pagination-item-link-color: rgba(255, 255, 255, .5);
+    --liquidate-pagination-active-item-bg: #43454A;
+    --liquidate-pagination-active-item-text-color: #fff;
 
 
 

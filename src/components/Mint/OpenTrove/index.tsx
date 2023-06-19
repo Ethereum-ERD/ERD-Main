@@ -25,7 +25,7 @@ export default observer(function OpenTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD } = store;
+    const { systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD, collateralValueInfo } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -225,12 +225,18 @@ export default observer(function OpenTrove() {
                                         />
                                     </div>
                                     <div className={s.help}>
-                                        <p className={s.balance}>
-                                            Your Balance{"\u00A0"}
-                                            <span>
-                                                {formatUnits(coll.balance, coll.tokenDecimals)}
-                                            </span>
-                                        </p>
+                                        <div className={s.helpContainer}>
+                                            <p className={s.balance}>
+                                                Your Balance{"\u00A0"}
+                                                <span>
+                                                    {formatUnits(coll.balance, coll.tokenDecimals)}
+                                                </span>
+                                            </p>
+                                            <p className={s.price}>
+                                                Price{"\u00A0"}
+                                                <span>{(collateralValueInfo[coll.tokenAddr] || 0).toFixed(2)}</span>
+                                            </p>
+                                        </div>
                                         <p className={cx(s.max, { [s.disableMax]: isDisable })}
                                             onClick={() => isDisable ? void 0 : setMax(coll.tokenAddr, coll.balance)}
                                         >

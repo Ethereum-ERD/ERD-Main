@@ -89,7 +89,13 @@
     justify-content: space-between;
 }
 
-.balance {
+.helpContainer {
+    display: flex;
+    align-items: center;
+}
+
+.balance,
+.price {
     font-weight: 450;
     font-size: 12px;
     line-height: 133%;
@@ -99,6 +105,10 @@
     span {
         color: var(--open-trove-input-balance-amount-color);
     }
+}
+
+.price {
+    text-indent: 30px;
 }
 
 .max {

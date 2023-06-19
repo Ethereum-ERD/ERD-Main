@@ -56,7 +56,7 @@ export const Routes = [
 
 export const EmptyObject = Object.create(null);
 
-export const EMPTYADDRESS = ethers.constants.AddressZero;
+export const EMPTY_ADDRESS = ethers.constants.AddressZero;
 
 export type UserTroveStatus =
     | "nonExistent"

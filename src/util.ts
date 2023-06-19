@@ -14,7 +14,7 @@ export function toBN(num: number | string) {
 
 export function formatUint(num: number) {
     if (num < 1e4) {
-        return `${num}`;
+        return (num).toFixed(0);
     }
     if (num < 1e6) {
         return `${parseInt((num / 1e3).toFixed(0))}K`;

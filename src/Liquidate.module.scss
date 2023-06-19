@@ -1,23 +1,12 @@
 .wrap {
     width: 100%;
+    padding-bottom: 73px;
 }
 
 .container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.stickyContainer {
-    height: 700px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;
-}
-
-.stickyContainer::-webkit-scrollbar {
-    width: 0px;
 }
 
 .top {
@@ -207,9 +196,7 @@ div.tipsModal {
 
 .troveList {
     width: 100%;
-    max-height: 700px;
     margin-top: 30px;
-    overflow-y: auto;
 }
 
 .tableItemOuter {
@@ -435,6 +422,60 @@ div.tipsModal {
     color: var(--liquidate-load-more-text-color);
 }
 
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+
+    :global {
+        .ant-pagination-prev {
+            .ant-pagination-item-link {
+                color: var(--liquidate-pagination-item-link-color);
+            }
+        }
+
+        .ant-pagination-next {
+            .ant-pagination-item-link {
+                color: var(--liquidate-pagination-item-link-color);
+            }
+        }
+
+        .ant-pagination-item {
+            font-size: 14px;
+            a {
+                color: var(--liquidate-pagination-item-link-color);
+            }
+        }
+
+        .ant-pagination-item-active {
+            border-color: transparent;
+            background-color: var(--liquidate-pagination-active-item-bg);
+
+            a {
+                color: var(--liquidate-pagination-active-item-text-color);
+            }
+        }
+
+        .ant-pagination-jump-next {
+            a {
+                color: var(--liquidate-pagination-item-link-color);
+            }
+
+            .ant-pagination-item-container {
+                span.ant-pagination-item-link-icon {
+                    color: var(--liquidate-pagination-item-link-color);
+                }
+
+                span.ant-pagination-item-ellipsis {
+                    color: var(--liquidate-pagination-item-link-color);
+                }
+            }
+        }
+
+
+    }
+}
+
 @media only screen and (min-width: 744px) and (max-width: 1199px) {
     .container {
         width: 684px;
@@ -646,10 +687,6 @@ div.tipsModal {
         }
     }
 
-    .stickyContainer {
-        height: 450px;
-    }
-
     .troveList {
         margin-top: 15px;
     }
@@ -800,11 +837,5 @@ div.tipsModal {
             width: 12px;
             height: 14px;
         }
-    }
-}
-
-@media screen and (max-height: 667px) {
-    .stickyContainer {
-        height: 350px;
     }
 }
