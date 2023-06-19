@@ -89,9 +89,10 @@ export default observer(function AdjustTrove() {
 
     const setMax = (key: string, v: number) => {
         setFastStep(0);
+        const alreadyUsed = userTrove.collateral.find(i => i.tokenAddr === key);
         const item = userCollateralInfo.find(i => i.tokenAddr === key);
 
-        onChange(key, formatUnits(v, item!.tokenDecimals));
+        onChange(key, formatUnits(v + (alreadyUsed?.amount || 0), item!.tokenDecimals));
     };
 
     const onFastChoose = (v: number) => {

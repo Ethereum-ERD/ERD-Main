@@ -916,6 +916,7 @@ export default class Store {
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
+                this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
@@ -1124,6 +1125,7 @@ export default class Store {
                 );
             const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
+                this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
@@ -1152,6 +1154,8 @@ export default class Store {
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
+                this.queryUserAssets();
+                this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
             return { status: result.status === 1, hash };
@@ -1240,6 +1244,7 @@ export default class Store {
 
             const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
+                this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
@@ -1358,6 +1363,11 @@ export default class Store {
                 .connect(web3Provider.getSigner())
                 .withdrawFromSP('0');
             const result = await this.waitForTransactionConfirmed(hash);
+
+            if (result.status === 1) {
+                this.queryUserAssets();
+                this.queryStableCoinInfo();
+            }
 
             return { status: result.status === 1, hash };
         } catch {
