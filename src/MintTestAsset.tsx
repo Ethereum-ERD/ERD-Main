@@ -33,11 +33,11 @@ export default observer(function MintTestAsset() {
         const result = await mintTestAsset(asset);
         if (result) {
             notification.success({
-                message: 'transaction done.'
+                message: 'Transaction complete'
             });
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

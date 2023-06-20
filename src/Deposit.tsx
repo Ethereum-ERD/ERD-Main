@@ -51,12 +51,12 @@ function Deposit() {
         const result = await claimDepositReward();
         if (result.status) {
             notification.success({
-                message: "transaction done.",
+                message: "Transaction complete",
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
-                message: "transaction failed.",
+                message: "Transaction failed",
             });
         }
     };
@@ -66,12 +66,12 @@ function Deposit() {
         const result = await claimRewardAndMoveToTrove();
         if (result.status) {
             notification.success({
-                message: "transaction done.",
+                message: "Transaction complete",
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
-                message: "transaction failed.",
+                message: "Transaction failed",
             });
         }
     };

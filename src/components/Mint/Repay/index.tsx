@@ -48,13 +48,13 @@ export default observer(function Repay() {
         const result = await closeTrove();
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartRepay();
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

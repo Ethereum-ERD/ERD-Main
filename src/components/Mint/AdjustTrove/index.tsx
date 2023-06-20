@@ -166,13 +166,13 @@ export default observer(function AdjustTrove() {
 
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartAdjustTrove();
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

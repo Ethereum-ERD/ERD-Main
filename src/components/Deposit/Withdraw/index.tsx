@@ -47,13 +47,13 @@ function Withdraw() {
         const result = await withdrawFromStabilityPool(+withdrawNum * Math.pow(10, stableCoinDecimals));
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartWithdraw();
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

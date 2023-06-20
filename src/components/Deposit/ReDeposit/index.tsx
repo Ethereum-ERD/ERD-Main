@@ -47,12 +47,12 @@ function ReDeposit() {
         const result = await depositToStabilityPool(+depositNum * Math.pow(10, stableCoinDecimals));
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

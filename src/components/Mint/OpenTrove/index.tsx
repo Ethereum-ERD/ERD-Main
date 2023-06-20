@@ -179,13 +179,13 @@ export default observer(function OpenTrove() {
 
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
             toggleStartBorrow();
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);

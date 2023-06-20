@@ -58,12 +58,12 @@ function Redeem() {
         const result = await redeem(+redeemNum * Math.pow(10, stableCoinDecimals));
         if (result.status) {
             notification.success({
-                message: 'transaction done.',
+                message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
         } else {
             notification.error({
-                message: 'transaction failed.'
+                message: 'Transaction failed'
             });
         }
         setIsProcessing(false);
@@ -73,7 +73,7 @@ function Redeem() {
         <div className={s.wrap}>
             <div className={s.container}>
                 <p className={s.title}>Redeem</p>
-                <p className={s.desc}>Redemption is not for repaying your loan. To repay your loan, adjust your Trove on the <span className={s.highlight}><Link to='/'>Borrow</Link></span>.</p>
+                <p className={s.desc}>Redemption is not for repaying your loan. To repay your loan, adjust your Trove on the <span className={s.highlight}><Link to='/'>Mint</Link></span>.</p>
                 <div className={s.redeemNumInputWrap}>
                     <InputNumber
                         stringMode
@@ -111,7 +111,7 @@ function Redeem() {
                     </div>
                     <p className={s.feeAmount}>
                         <span>{(redeemFee).toFixed(2)}</span>
-                        {'\u00A0'}{stableCoinName}
+                        {'\u00A0'}{stableCoinName}{'\u00A0'}
                         ({(redeemFeeRatio * 100).toFixed(2)}%)
                     </p>
                 </div>

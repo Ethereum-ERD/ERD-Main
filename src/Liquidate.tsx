@@ -95,7 +95,7 @@ function Liquidate() {
         const result = await liquidate(liquidateTroveAmount);
         if (result.status) {
             notification.success({
-                message: "transaction done.",
+                message: "Transaction complete",
                 onClick: () =>
                     OpenEtherScan(
                         `https://goerli.etherscan.io/tx/${result.hash}`
@@ -103,7 +103,7 @@ function Liquidate() {
             });
         } else {
             notification.error({
-                message: "transaction failed.",
+                message: "Transaction failed",
             });
         }
     };
@@ -138,7 +138,7 @@ function Liquidate() {
         const result = await liquidate([addr]);
         if (result.status) {
             notification.success({
-                message: "transaction done.",
+                message: "Transaction complete",
                 onClick: () =>
                     OpenEtherScan(
                         `https://goerli.etherscan.io/tx/${result.hash}`
@@ -146,7 +146,7 @@ function Liquidate() {
             });
         } else {
             notification.error({
-                message: "transaction failed.",
+                message: "Transaction failed",
             });
         }
         setSelectTrove("");
@@ -384,7 +384,7 @@ function Liquidate() {
                             Debt{"\u00A0"}
                             <span>({stableCoinName})</span>
                         </div>
-                        <div className={s.tableHeadCollRatio}>Coll.Ratio</div>
+                        <div className={s.tableHeadCollRatio}>Coll.{'\u00A0'}Ratio</div>
                     </div>
                     <div className={s.tableBody}>
                         {isLoadingSystemInfo && (
