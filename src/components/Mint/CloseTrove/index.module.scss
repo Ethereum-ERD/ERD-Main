@@ -1,0 +1,168 @@
+.wrap {
+    width: 530px;
+    padding: 30px;
+    border-radius: 20px;
+    background: var(--close-trove-bg-color);
+    border: 1px solid var(--close-trove-bg-border-color);
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    color: var(--close-trove-title-color);
+}
+
+.subTitle {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 133%;
+    font-weight: 450;
+    color: var(--close-trove-sub-title-color);
+}
+
+.infoWrap {
+    width: 100%;
+    padding: 20px;
+    margin-top: 30px;
+    background: var(--fee-info-bg-color);
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    &:nth-child(n+3) {
+        margin-top: 20px;
+    }
+
+    &>p:first-child {
+        font-size: 12px;
+        line-height: 133%;
+        color: var(--fee-info-item-first-p-text-color);
+    }
+
+    &>div:first-child {
+        display: flex;
+        align-items: center;
+
+        font-size: 12px;
+        line-height: 133%;
+        color: var(--fee-info-item-first-div-text-color);
+
+        & > div {
+            margin-left: 5px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    & > p:last-child {
+        margin-top: 5px;
+
+        font-size: 14px;
+        line-height: 133%;
+
+        color: var(--fee-info-item-last-p-text-color);
+
+        span {
+            color: var(--fee-info-item-last-p-contain-span-text-color);
+            font-size: 12px;
+        }
+    }
+}
+
+.btnArea {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 294px;
+    height: 52px;
+
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    font-size: 16px;
+    border-radius: 10px;
+    color: var(--close-trove-btn-text-color);
+    background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
+    opacity: 1;
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .7;
+    }
+
+    &.disable {
+        color: var(--disable-btn-text-color);
+        background: var(--disable-btn-bg-color);
+        border: 1px solid var(--disable-btn-border-color);
+        cursor: not-allowed;
+    }
+
+    &.cancel {
+        width: 160px;
+        margin-right: 20px;
+        flex: 0 0 auto;
+        color: var(--cancel-btn-text-color);
+        border: 1px solid var(--cancel-btn-border-color);
+        background: var(--cancel-btn-bg-color);
+    }
+
+    &.loading {
+        opacity: .7;
+
+        & > span {
+            margin-right: 5px;
+        }
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: 100%;
+    }
+
+    .btn {
+        width: 454px;
+
+        &.cancel {
+            flex: 0 0 auto;
+        }
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+
+    .title {
+        font-size: 25px;
+    }
+
+    .btn {
+        width: 220px;
+        font-size: 14px;
+
+        &.cancel {
+            width: 120px;
+            margin-right: 10px;
+        }
+    }
+}

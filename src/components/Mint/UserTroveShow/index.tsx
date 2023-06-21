@@ -84,7 +84,7 @@ export default observer(function UserTroveShow() {
                 })}
             </div>
             <div className={s.btnArea}>
-                <div className={cx(s.btn, s.repay)} onClick={toggleStartRepay}>Repay</div>
+                <div className={cx(s.btn, s.repay)} onClick={toggleStartRepay}>Close</div>
                 <div className={s.btn} onClick={toggleStartAdjustTrove}>Adjust</div>
             </div>
         </div>

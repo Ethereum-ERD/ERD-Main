@@ -136,20 +136,11 @@
 
 
 
-    --repay-bg-color: #292A30;
-    --repay-bg-border-color: #43454A;
-    --repay-title-color: #fff;
-    --repay-input-wrap-border-color: #43454A;
-    --repay-input-bg-color: #292A30;
-    --repay-input-text-color: #fff;
-    --repay-input-before-color: rgba(255, 255, 255, 0.7);
-    --repay-balance-text-color: #999;
-    --repay-balance-amount-color: #fff;
-    --repay-balance-max-text-color: #3083FF;
-    --repay-balance-warning-bg-color: rgba(255, 120, 120, 0.1);
-    --repay-balance-warning-border-color: #FF7878;
-    --repay-balance-warning-text-color: #fff;
-    --repay-btn-text-color: #fff;
+    --close-trove-bg-color: #292A30;
+    --close-trove-bg-border-color: #43454A;
+    --close-trove-title-color: #fff;
+    --close-trove-sub-title-color: rgba(255, 255, 255, 0.5);
+    --close-trove-btn-text-color: #fff;
 
 
 

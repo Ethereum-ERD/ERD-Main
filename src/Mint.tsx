@@ -2,8 +2,8 @@ import { observer } from "mobx-react";
 
 import UserTroveShow from "src/components/Mint/UserTroveShow";
 import AdjustTrove from "src/components/Mint/AdjustTrove";
+import CloseTrove from "src/components/Mint/CloseTrove";
 import OpenTrove from "src/components/Mint/OpenTrove";
-import Repay from "src/components/Mint/Repay";
 import NewUser from 'src/components/Mint/New';
 
 import { useStore } from "src/hooks";
@@ -19,7 +19,7 @@ const RightUI = observer(function RightUI() {
     }
 
     if (startRepayStablecoin) {
-        return <Repay />;
+        return <CloseTrove />;
     }
 
     if (startBorrowStableCoin) {
