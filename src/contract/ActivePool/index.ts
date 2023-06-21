@@ -684,5 +684,5 @@ export default {
           "type": "receive"
         }
       ],
-    addr: '0x4441A74a13d4B32f2EF79Ff1fF6d6F57DEd37f61'
+    addr: '0x57F2506c7176dEf5026DA4D196025102535DB609'
 }

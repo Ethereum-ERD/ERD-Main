@@ -2215,5 +2215,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x8CEbbB4C90495f866337520B8e27BB2fEd0fc0eF'
+    addr: '0xECE68dB933BC49D08a3Cd093AB93c6E8096F538D'
 }
