@@ -124,5 +124,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0x67d375d48e6c20E7b70221C3009E6FB355fdC4ed'
+    addr: '0xe7a1A79d0B5a7E39e7244F1CDFCfbe6ecF41015C'
 }
