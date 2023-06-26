@@ -750,15 +750,13 @@ export default class Store {
             const trove: UserTrove = {
                 interest,
                 debt: +debt,
-                shares: [],
-                stakes: [],
                 owner: walletAddr,
                 basicDebt: +baseDebtInfo,
                 ICR: assetValue / +debt,
                 collateral: assetInfo.map(x => {
                     return {
                         ...x,
-                        amount: +x.amount
+                        amount: x.amount
                     };
                 }),
                 status: troveData.status,
@@ -1081,15 +1079,27 @@ export default class Store {
 
             const pass2ContractCollateral = formatCollIn.filter((_, idx) => idx !== ethCollateralIdx);
 
-            const passOutContractCollateral = formatCollOut.map(c => {
-                if (c.token === MOCK_ETH_ADDR) {
-                    return {
-                        ...c,
-                        token: WETH_ADDR
-                    };
-                }
-                return c;
-            });
+            const passOutContractCollateral = formatCollOut
+                .map((c) => {
+                    if (c.token === MOCK_ETH_ADDR) {
+                        return {
+                            ...c,
+                            token: WETH_ADDR
+                        };
+                    }
+                    const collAtOutListIdx = oldTroveCollateralInfo.findIndex(i => i.token.toLowerCase() === c.token);
+                    const collAtNew = newCollateral.find(i => i.token.toLowerCase() === c.token);
+
+                    if (collAtOutListIdx > -1 && collAtNew?.amount === 0) {
+                        const idx = oldTroveCollateralInfo.findIndex(i => i.token.toLowerCase() === c.token);
+                        return {
+                            ...c,
+                            amount: oldTroveCollateralInfo[idx].amount
+                        };
+                    }
+                    return c;
+                })
+                .filter(c => c.amount.gt(BN_ZERO));
 
             const gasLimit = await BorrowerOperation
                 .connect(web3Provider.getSigner())
