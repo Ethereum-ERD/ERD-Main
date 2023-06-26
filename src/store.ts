@@ -1101,23 +1101,23 @@ export default class Store {
                 })
                 .filter(c => c.amount.gt(BN_ZERO));
 
-            // const gasLimit = await BorrowerOperation
-            //     .connect(web3Provider.getSigner())
-            //     .estimateGas
-            //     .adjustTrove(
-            //         pass2ContractCollateral.map(c => c.token),
-            //         pass2ContractCollateral.map(c => c.amount),
-            //         passOutContractCollateral.map(c => c.token),
-            //         passOutContractCollateral.map(c => c.amount),
-            //         maxFeePerAmount,
-            //         stableCoinChange,
-            //         isDebtIncrease,
-            //         upperHint,
-            //         lowerHint,
-            //         { ...override, }
-            //     );
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .adjustTrove(
+                    pass2ContractCollateral.map(c => c.token),
+                    pass2ContractCollateral.map(c => c.amount),
+                    passOutContractCollateral.map(c => c.token),
+                    passOutContractCollateral.map(c => c.amount),
+                    maxFeePerAmount,
+                    stableCoinChange,
+                    isDebtIncrease,
+                    upperHint,
+                    lowerHint,
+                    { ...override, }
+                );
             
-            // const moreGasLimit = +gasLimit * 1.5;
+            const moreGasLimit = +gasLimit * 1.5;
 
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
@@ -1131,7 +1131,7 @@ export default class Store {
                     isDebtIncrease,
                     upperHint,
                     lowerHint,
-                    { ...override, gasLimit: '2' + '0'.repeat(7) }
+                    { ...override, gasLimit: toBN(~~moreGasLimit) }
                 );
             const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
