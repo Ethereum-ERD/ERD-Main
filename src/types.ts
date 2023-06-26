@@ -26,9 +26,7 @@ export type UserTrove = {
     basicDebt: number
     arrayIndex: number
     status: UserTroveStatus
-    shares: Array<{ token: string; amount: number }>
-    stakes: Array<{ token: string; amount: number }>
-    collateral: Array<SupportAssetsItem & { amount: number }>
+    collateral: Array<SupportAssetsItem & { amount: ethers.BigNumber }>
 }; 
 
 export interface ProtocolCollateralItem extends SupportAssetsItem {

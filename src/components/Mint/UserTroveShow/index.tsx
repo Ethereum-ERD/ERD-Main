@@ -76,7 +76,7 @@ export default observer(function UserTroveShow() {
                                 <p className={s.assetName}>{coll.assetName}</p>
                             </div>
                             <div className={s.collateralItemBody}>
-                                {formatUnits(coll.amount, coll.tokenDecimals)}
+                                {formatUnits(+coll.amount, coll.tokenDecimals)}
                                 <span className={s.tokenName}>{coll.tokenName}</span>
                             </div>
                         </div>

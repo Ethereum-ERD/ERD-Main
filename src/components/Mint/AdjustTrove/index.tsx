@@ -92,7 +92,7 @@ export default observer(function AdjustTrove() {
         const alreadyUsed = userTrove.collateral.find(i => i.tokenAddr === key);
         const item = userCollateralInfo.find(i => i.tokenAddr === key);
 
-        onChange(key, formatUnits(v + (alreadyUsed?.amount || 0), item!.tokenDecimals));
+        onChange(key, formatUnits(v + (+(alreadyUsed?.amount || 0)), item!.tokenDecimals));
     };
 
     const onFastChoose = (v: number) => {
@@ -107,7 +107,7 @@ export default observer(function AdjustTrove() {
         const borrowInfo = userTrove.collateral.map((coll) => {
             return {
                 token: coll.tokenAddr,
-                amount: +formatUnits(coll.amount, coll.tokenDecimals, coll.tokenDecimals)
+                amount: +formatUnits(+coll.amount, coll.tokenDecimals)
             };
         });
 
