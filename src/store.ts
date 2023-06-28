@@ -208,6 +208,12 @@ export default class Store {
         return Number.isFinite(share) ? share * 100 : 0;
     }
 
+    @computed get userCanClaimDepositRewards() {
+        const { userDepositRewardsInfo } = this;
+
+        return userDepositRewardsInfo.some(c => +c.rewards > 0);
+    }
+
     init() {
         if (this.isInit) return;
         const onboard = createBoard();

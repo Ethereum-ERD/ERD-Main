@@ -43,11 +43,12 @@ function Deposit() {
         isClaimRewardIng,
         isClaimRewardToTroveIng,
         claimDepositReward,
-        claimRewardAndMoveToTrove
+        claimRewardAndMoveToTrove,
+        userCanClaimDepositRewards
     } = store;
 
     const claimRewards = async () => {
-        if (isClaimRewardIng) return;
+        if (isClaimRewardIng || !userCanClaimDepositRewards) return;
         const result = await claimDepositReward();
         if (result.status) {
             notification.success({
@@ -62,7 +63,7 @@ function Deposit() {
     };
 
     const claimRewardsToTrove = async () => {
-        if (isClaimRewardToTroveIng) return;
+        if (isClaimRewardToTroveIng || !userCanClaimDepositRewards) return;
         const result = await claimRewardAndMoveToTrove();
         if (result.status) {
             notification.success({

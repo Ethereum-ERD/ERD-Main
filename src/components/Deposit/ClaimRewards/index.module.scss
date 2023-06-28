@@ -139,6 +139,7 @@
     color: var(--claim-reward-modal-btn-color);
     font-size: 16px;
     cursor: pointer;
+    font-weight: 450;
     background: linear-gradient(26deg, var(--linear-gradient-btn-from-color) 11.36%, var(--linear-gradient-btn-to-color) 82.43%);
     opacity: 1;
     transition: opacity .2s ease-in-out;
@@ -152,6 +153,13 @@
         color: var(--cancel-btn-text-color);
         border: 1px solid var(--cancel-btn-border-color);
         background: var(--cancel-btn-bg-color);
+    }
+
+    &.disable {
+        border: 1px solid var(--disable-btn-border-color);
+        color: var(--disable-btn-text-color);
+        background: var(--disable-btn-bg-color);
+        cursor: not-allowed;
     }
 }
 
