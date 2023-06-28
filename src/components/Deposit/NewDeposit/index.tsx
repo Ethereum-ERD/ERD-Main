@@ -17,7 +17,7 @@ function NewDeposit() {
     const [depositNum, setDepositNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, depositToStabilityPool, userDepositAmount, spTVL } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, depositToStabilityPool, userDepositAmount, spTVL } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -104,7 +104,7 @@ function NewDeposit() {
                     </Popover>
                 </div>
                 <p className={s.poolShareValue}>
-                    {(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%
+                    {(userPoolShare).toFixed(6)}%
                 </p>
             </div>
             <div className={s.btnArea}>

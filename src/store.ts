@@ -202,6 +202,12 @@ export default class Store {
         return this.walletLabel === ProviderLabel.MetaMask;
     }
 
+    @computed get userPoolShare() {
+        const { userDepositAmount, spTVL } = this;
+        const share = userDepositAmount / spTVL;
+        return Number.isFinite(share) ? share * 100 : 0;
+    }
+
     init() {
         if (this.isInit) return;
         const onboard = createBoard();

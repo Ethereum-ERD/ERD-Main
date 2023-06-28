@@ -15,7 +15,7 @@ function Withdraw() {
     const [withdrawNum, setWithdrawNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { stableCoinName, stableCoinDecimals, userDepositAmount, toggleStartWithdraw, spTVL, withdrawFromStabilityPool } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userDepositAmount, toggleStartWithdraw, spTVL, withdrawFromStabilityPool } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -57,7 +57,7 @@ function Withdraw() {
             });
         }
         setIsProcessing(false);
-    }
+    } 
 
     return (
         <div className={s.wrap}>
@@ -87,7 +87,7 @@ function Withdraw() {
                 </div>
                 <div className={s.poolShare}>
                     <p>Pool Share</p>
-                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%</p>
+                    <p>{(userPoolShare).toFixed(6)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

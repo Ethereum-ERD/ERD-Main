@@ -10,7 +10,7 @@ import s from "./index.module.scss";
 function DepositedOverView() {
 
     const { store } = useStore();
-    const { userDepositAmount, stableCoinName, stableCoinDecimals, spTVL, toggleStartDeposit, toggleStartWithdraw, toggleStartClaimRewards } = store;
+    const { userPoolShare, userDepositAmount, stableCoinName, stableCoinDecimals, spTVL, toggleStartDeposit, toggleStartWithdraw, toggleStartClaimRewards } = store;
 
     return (
         <div className={s.wrap}>
@@ -35,7 +35,7 @@ function DepositedOverView() {
                 </div>
                 <div className={s.poolShare}>
                     <p className={s.indexName}>Pool Share</p>
-                    <p className={s.indexValue}>{(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%</p>
+                    <p className={s.indexValue}>{(userPoolShare).toFixed(6)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

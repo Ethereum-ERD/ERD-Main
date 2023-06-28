@@ -15,7 +15,7 @@ function ReDeposit() {
     const [depositNum, setDepositNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool, spTVL } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool, spTVL } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -103,7 +103,7 @@ function ReDeposit() {
                 </div>
                 <div className={s.poolShare}>
                     <p>Pool Share</p>
-                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(6)}%</p>
+                    <p>{(userPoolShare).toFixed(6)}%</p>
                 </div>
             </div>
             <div className={s.btnArea}>

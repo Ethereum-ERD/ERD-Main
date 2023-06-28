@@ -10,7 +10,7 @@ import s from './index.module.scss';
 
 export default observer(function UserTroveShow() {
     const { store } = useStore();
-    const { userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, spTVL, userDepositAmount, gasCompensation, systemCCR, systemMCR } = store;
+    const { userPoolShare, userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, spTVL, userDepositAmount, gasCompensation, systemCCR, systemMCR } = store;
 
     const crClasses = useMemo(() => {
         const classes = [];
@@ -66,7 +66,7 @@ export default observer(function UserTroveShow() {
                 </div>
                 <div className={s.item}>
                     <p>Stability Pool Share</p>
-                    <p>{(userDepositAmount/spTVL * 100 || 0).toFixed(6)}<span>%</span></p>
+                    <p>{(userPoolShare).toFixed(6)}<span>%</span></p>
                 </div>
                 {userTrove.collateral.map(coll => {
                     return (
