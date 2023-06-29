@@ -23,7 +23,16 @@ const injected = injectedModule();
 
 const coinbaseWalletSdk = coinbaseWalletModule();
 
-const walletConnect = walletConnectModule({ version: 1 });
+// const walletConnect = walletConnectModule({ version: 1 });
+const walletConnect = walletConnectModule({
+    version: 2,
+    requiredChains: [MAIN_CHAIN_ID],
+    handleUri: (uri: string) => {
+        console.log(uri);
+        return Promise.resolve(uri);
+    },
+    projectId: '713e3f7b3e63b09197a8bf045a9471f9',
+});
 
 export function createBoard() {
     return Onboard({
