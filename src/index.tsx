@@ -9,10 +9,6 @@ import App from "src/App";
 
 import "./index.css";
 
-// @ts-ignore
-// just for walletConnect wallet v1 version
-// window.Buffer = window.Buffer || Buffer;
-
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
