@@ -34,7 +34,6 @@ const walletConnect = walletConnectModule({
 
 export function createBoard() {
     return Onboard({
-        apiKey: '15d6eba8-9857-479b-92a7-fe701866e138',
         // @ts-ignore
         wallets: [injected, walletConnect, coinbaseWalletSdk],
         theme: 'dark',
