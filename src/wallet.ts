@@ -1,6 +1,6 @@
 import Onboard from '@web3-onboard/core';
 import coinbaseWalletModule from '@web3-onboard/coinbase';
-import injectedModule from '@web3-onboard/injected-wallets';
+import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from '@web3-onboard/walletconnect';
 
 import { MAIN_CHAIN_ID, GOERLI_CHAIN_ID, MAINNET_RPC_URL, GOERLI_RPC_URL } from 'src/constants';
@@ -27,11 +27,12 @@ const coinbaseWalletSdk = coinbaseWalletModule();
 const walletConnect = walletConnectModule({
     version: 2,
     requiredChains: [MAIN_CHAIN_ID],
-    projectId: '713e3f7b3e63b09197a8bf045a9471f9',
+    projectId: '2a2a5978a58aad734d13a2d194ec469a',
 });
 
 export function createBoard() {
     return Onboard({
+        // @ts-ignore
         wallets: [injected, walletConnect, coinbaseWalletSdk],
         theme: 'dark',
         chains: [

@@ -1426,7 +1426,7 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
-"@ethersproject/abi@5.7.0", "@ethersproject/abi@^5.0.1", "@ethersproject/abi@^5.5.0", "@ethersproject/abi@^5.7.0":
+"@ethersproject/abi@5.7.0", "@ethersproject/abi@^5.5.0", "@ethersproject/abi@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.7.0.tgz#b3f3e045bbbeed1af3947335c247ad625a44e449"
   integrity sha512-351ktp42TiRcYB3H1OP8yajPeAQstMW/yCFokj/AthP9bLHzQFPlOrxOcwYEDkUAICmOHljvN4K39OMTMUa9RA==
@@ -3619,17 +3619,6 @@
     "@typescript-eslint/types" "5.54.0"
     eslint-visitor-keys "^3.3.0"
 
-"@unstoppabledomains/resolution@^8.0":
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/@unstoppabledomains/resolution/-/resolution-8.5.0.tgz#7f65146fb3bc69bfae8699c4ed1c61f3d6f0096c"
-  integrity sha512-csqExbiK8F5mRKoHlDZjGuIEuvi63O8PSyhUcGhnTi76Il5fCREAGNVdTiRxagPPYoxCO+Xmf6kThwtmiws1Ow==
-  dependencies:
-    "@ethersproject/abi" "^5.0.1"
-    bn.js "^4.4.0"
-    cross-fetch "^3.1.4"
-    crypto-js "^4.1.1"
-    elliptic "^6.5.4"
-
 "@walletconnect/browser-utils@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser-utils/-/browser-utils-1.8.0.tgz#33c10e777aa6be86c713095b5206d63d32df0951"
@@ -4030,15 +4019,6 @@
     "@coinbase/wallet-sdk" "^3.6.0"
     "@web3-onboard/common" "^2.3.2"
 
-"@web3-onboard/common@^2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/common/-/common-2.2.3.tgz#fc0841186d84cf017f4cf0368dcd349e6ed8dc8b"
-  integrity sha512-ZI0XuCpxtuL9XGgeWglXR6rhgLP261EMEstjonxy8ptuOKLlTJcgvL7wSx2MjNDO3i/qmb/PGQpInvxYx5klSA==
-  dependencies:
-    bignumber.js "^9.1.0"
-    ethers "5.5.4"
-    joi "^17.6.1"
-
 "@web3-onboard/common@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@web3-onboard/common/-/common-2.3.2.tgz#bf2868e3a093a20a1390eea596e82922c2af8cd8"
@@ -4057,19 +4037,18 @@
     ethers "5.5.4"
     joi "17.9.1"
 
-"@web3-onboard/core@^2.15.4":
-  version "2.15.4"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/core/-/core-2.15.4.tgz#120608663b4e99a1a6bcce368e2e24e142f0e438"
-  integrity sha512-+PJZNwDuYJmZaLTVWvsnPteNwHslBKD2QgKuDWOArvfWF0v10AwzHbjbdt1AvcHjJZNGuFwMbVRpfcuntV/mbA==
+"@web3-onboard/core@^2.20.3":
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/core/-/core-2.20.3.tgz#e123979f9360057cd184d715fdedc9f0bbf45941"
+  integrity sha512-2fm8kJ4T4DXvPNU7rjWCAxFFEZXx2Xz7LiUCg+qXvhiHzJBBxGOBbL81HwZk9hR3eZzWwQt9tLmbFx0G2uREow==
   dependencies:
-    "@unstoppabledomains/resolution" "^8.0"
-    "@web3-onboard/common" "^2.2.3"
+    "@web3-onboard/common" "^2.3.3"
     bignumber.js "^9.0.0"
     bnc-sdk "^4.6.7"
     bowser "^2.11.0"
     ethers "5.5.3"
     eventemitter3 "^4.0.7"
-    joi "^17.6.1"
+    joi "17.9.1"
     lodash.merge "^4.6.2"
     lodash.partition "^4.6.0"
     nanoid "^4.0.0"
@@ -4077,16 +4056,16 @@
     svelte "^3.49.0"
     svelte-i18n "^3.3.13"
 
-"@web3-onboard/injected-wallets@^2.8.1":
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/@web3-onboard/injected-wallets/-/injected-wallets-2.8.1.tgz#106ff2ebbf8ff15397c2430ed8880f95b13b8c7e"
-  integrity sha512-8iEhBfAO5M7e0nYIqQPGTHTQvQug/usO4L/Qg47yhQ32Y9vHJDee3STA1T3kQZkGF6B0e43LzjyQ4MMpgHI6tQ==
+"@web3-onboard/injected-wallets@^2.10.1":
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/injected-wallets/-/injected-wallets-2.10.1.tgz#d4a45ba897c578819544805399761c61b8173166"
+  integrity sha512-PhmMI+RNeGowL2cfmp7/v3atrJ8KsjKXgXs6CofwMzDxQXfu1DwXdIh+Hd2Py/ZeRgOEeAehf63gftaVvfn/9g==
   dependencies:
-    "@web3-onboard/common" "^2.2.3"
-    joi "^17.6.1"
+    "@web3-onboard/common" "^2.3.3"
+    joi "17.9.1"
     lodash.uniqby "^4.7.0"
 
-"@web3-onboard/walletconnect@2":
+"@web3-onboard/walletconnect@^2.3.9":
   version "2.3.9"
   resolved "https://registry.yarnpkg.com/@web3-onboard/walletconnect/-/walletconnect-2.3.9.tgz#a569db39db61c927fee70744c5fcf015dad47042"
   integrity sha512-0n1UesJLNNU33j/I0X4QHVL8AhFb6Oyo/ZU3EEYeDBev2Cis1A6Bvl38BfmeBBMdBOZBxeTOC2kNeRjvvvpzhA==
@@ -4875,7 +4854,7 @@ bn.js@4.11.8:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
 
-bn.js@^4.11.9, bn.js@^4.4.0:
+bn.js@^4.11.9:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.12.0.tgz#775b3f278efbb9718eec7361f483fb36fbbfea88"
   integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
@@ -5469,11 +5448,6 @@ crypto-es@^1.2.2:
   resolved "https://registry.yarnpkg.com/crypto-es/-/crypto-es-1.2.7.tgz#754a6d52319a94fb4eb1f119297f17196b360f88"
   integrity sha512-UUqiVJ2gUuZFmbFsKmud3uuLcNP2+Opt+5ysmljycFCyhA0+T16XJmo1ev/t5kMChMqWh7IEvURNCqsg+SjZGQ==
 
-crypto-js@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
-  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
-
 crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
@@ -6028,7 +6002,7 @@ electron-to-chromium@^1.4.284:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.314.tgz#33e4ad7a2ca2ddbe2e113874cc0c0e2a00cb46bf"
   integrity sha512-+3RmNVx9hZLlc0gW//4yep0K5SYKmIvB5DXg1Yg6varsuAHlHwTeqeygfS8DWwLCsNOWrgj+p9qgM5WYjw1lXQ==
 
-elliptic@6.5.4, elliptic@^6.5.4:
+elliptic@6.5.4:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
   integrity sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==
@@ -8505,17 +8479,6 @@ joi@17.9.1:
   version "17.9.1"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.9.1.tgz#74899b9fa3646904afa984a11df648eca66c9018"
   integrity sha512-FariIi9j6QODKATGBrEX7HZcja8Bsh3rfdGYy/Sb65sGlZWK/QWesU1ghk7aJWDj95knjXlQfSmzFSPPkLVsfw==
-  dependencies:
-    "@hapi/hoek" "^9.0.0"
-    "@hapi/topo" "^5.0.0"
-    "@sideway/address" "^4.1.3"
-    "@sideway/formula" "^3.0.1"
-    "@sideway/pinpoint" "^2.0.0"
-
-joi@^17.6.1:
-  version "17.8.3"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-17.8.3.tgz#d772fe27a87a5cda21aace5cf11eee8671ca7e6f"
-  integrity sha512-q5Fn6Tj/jR8PfrLrx4fpGH4v9qM6o+vDUfD4/3vxxyg34OmKcNqYZ1qn2mpLza96S8tL0p0rIw2gOZX+/cTg9w==
   dependencies:
     "@hapi/hoek" "^9.0.0"
     "@hapi/topo" "^5.0.0"
