@@ -519,9 +519,9 @@ export default class Store {
         const { walletAddr, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!walletAddr || !StabilityPool) return;
-        const data = await StabilityPool.deposits(walletAddr);
+        const value = await StabilityPool.getCompoundedEUSDDeposit(walletAddr);
         runInAction(() => {
-            this.userDepositAmount = +data.initialValue;
+            this.userDepositAmount = +value;
         });
     }
 
