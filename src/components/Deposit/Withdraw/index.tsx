@@ -53,7 +53,7 @@ function Withdraw() {
             toggleStartWithdraw();
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);

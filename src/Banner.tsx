@@ -72,7 +72,7 @@ function Banner() {
                             <img src={MenuIcon} alt="" />
                         </div>
                     </Dropdown>
-                    <div>
+                    <div onClick={connectWallet}>
                         <img src={WalletIcon} alt="" />
                     </div>
                 </div>

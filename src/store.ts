@@ -226,7 +226,10 @@ export default class Store {
     }
 
     async connectWallet() {
-        if (!this.onboard || this.walletAddr) return;
+        if (!this.onboard) return;
+        if (this.walletAddr) {
+            return this.disConnectWallet();
+        }
         try {
             const wallet = getSaveWallet();
             if (wallet) {
@@ -1351,7 +1354,7 @@ export default class Store {
     async withdrawFromStabilityPool(amount: number) {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return { status: false, hash: '' };
+        if (!StabilityPool) return { status: false, hash: '', msg: '' };
         try {
             const amountBN = toBN(amount);
 
@@ -1365,9 +1368,10 @@ export default class Store {
                 this.queryUserDepositInfo();
                 this.queryUserTokenInfo();
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            return { status: false, hash: '', msg: e?.reason || e?.message };
         }
     }
 
