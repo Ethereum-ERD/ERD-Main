@@ -1210,7 +1210,7 @@ export default class Store {
     async redeem(amount: number) {
         const { web3Provider, contractMap, latestRandomSeed } = this;
         const { TroveManager, HintHelpers, PriceFeeds, SortTroves } = contractMap;
-        if (!TroveManager || !HintHelpers || !PriceFeeds) return { status: false, hash: '' };
+        if (!TroveManager || !HintHelpers || !PriceFeeds) return { status: false, hash: '', msg: '' };
         try {
             const ethPrice = await PriceFeeds.fetchPrice_view();
             const redeemAmountBN = toBN(amount);
@@ -1273,9 +1273,10 @@ export default class Store {
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            return { status: false, hash: '', msg: e?.reason || e?.message };
         }
     }
 
