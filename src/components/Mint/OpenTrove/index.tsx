@@ -233,7 +233,7 @@ export default observer(function OpenTrove() {
                                                 </span>
                                             </p>
                                             <p className={s.price}>
-                                                Price{"\u00A0"}
+                                                {coll.tokenName}/USD:{"\u00A0"}
                                                 <span>{(collateralValueInfo[coll.tokenAddr] || 0).toFixed(2)}</span>
                                             </p>
                                         </div>

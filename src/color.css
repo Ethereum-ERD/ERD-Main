@@ -316,6 +316,13 @@
 
 
 
+    --risk-bg-color: #292A30;
+    --risk-border-color: #43454A;
+    --risk-title-color: #fff;
+    --risk-content-color: rgba(255, 255, 255, .5);
+
+
+
     --test-page-bg-color: #1E1F23;
     --test-page-title-color: #fff;
     --test-page-desc-color: rgba(255, 255, 255, 0.5);

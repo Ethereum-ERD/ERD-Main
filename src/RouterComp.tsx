@@ -8,6 +8,7 @@ import NotMatch from 'src/NotMatch';
 import Deposit from "src/Deposit";
 import Redeem from "src/Redeem";
 import Mint from "src/Mint";
+import Risk from "src/Risk";
 
 export default observer(function RouterComp() {
     return (
@@ -18,6 +19,7 @@ export default observer(function RouterComp() {
             <Route path='/redeem' element={<Redeem />} />
             <Route path='/statistics' element={<Dashboard />} />
             <Route path='/test' element={<MintTestAsset />} />
+            <Route path='/risk-disclaimer' element={<Risk />} />
             <Route path='*' element={<NotMatch />} />
         </Routes>
     );
