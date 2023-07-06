@@ -1,6 +1,16 @@
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
+const TermsSavedKey = "DidYouAgreeERDTerms";
+
+export const getAgreedTerms = () => {
+    return window.sessionStorage.getItem(TermsSavedKey) || "";
+};
+
+export const saveAgreeTerms = (wallet: string) => {
+    window.sessionStorage.setItem(TermsSavedKey, wallet);
+};
+
 export function truncateNumber(num: number) {
     return Math.trunc(num);
 }

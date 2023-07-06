@@ -1,18 +1,32 @@
+.outWrap {
+    :global {
+        div.ant-modal {
+            width: auto !important;
+        }
+
+        div.ant-modal-content {
+            padding: 0;
+            border-radius: 32px;
+            background-color: transparent;
+        }
+    }
+}
+
 .wrap {
-    width: 530px;
-    padding: 30px;
+    width: 773px;
+    padding: 40px;
     margin: 0 auto;
-    border-radius: 20px;
-    color: rgba(255, 255, 255, .5);
+    border-radius: 32px;
+    color: var(--risk-content-color);
     background: var(--risk-bg-color);
     border: 1px solid var(--risk-border-color);
 
-    p {
-        margin: 16px 0;
-    }
+    box-shadow: 0px 10px 24px 0px var(--risk-wrap-box-shadow);
+    font-family: CircularStd;
+    font-weight: 450;
 
     ol {
-        padding-left: 17px;
+        padding-left: 22px;
     }
     
     li {
@@ -22,7 +36,17 @@
 
 .title {
     color: var(--risk-title-color);
-    font-size: 30px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.content {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 450;
+    line-height: 133%;
 }
 
 .first > ol > li {
@@ -31,22 +55,85 @@
     list-style-position: revert;
 }
 
+.termsArea {
+    margin: 30px 0 0;
+}
+
+.terms {
+    margin-top: 14px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+
+    p {
+        margin-left: 10px;
+    }
+}
+
+.btn {
+    width: 100%;
+    height: 52px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: var(--risk-btn-normal-bg-color);
+    color: var(--risk-btn-text-color);
+    cursor: pointer;
+
+    &.disable {
+        cursor: not-allowed;
+        color: var(--disable-btn-text-color);
+        background: var(--disable-btn-border-color);
+    }
+}
+
+.audits {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+        color: var(--risk-audit-link-color) !important;
+        opacity: 1;
+
+        transition: opacity .3s ease-in-out;
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+}
+
 @media screen and (min-width: 744px) and (max-width: 1199px) {
     .wrap {
-        width: 100%;
+        width: 644px;
+    }
+
+    .terms {
+        align-items: flex-start;
     }
 }
 
 @media screen and (max-width: 743px) {
     .wrap {
-        width: 100%;
-        padding: 0;
-        border: none;
-        background: transparent;
+        width: 301px;
+        padding: 20px;
+
+        ol {
+            padding-left: 25px;
+        }
     }
 
-    .title {
-        font-size: 25px;
+    .content {
+        max-height: 224px;
+        overflow-y: auto;
+    }
+
+    .terms {
+        align-items: flex-start;
     }
 }
-

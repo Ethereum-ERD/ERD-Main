@@ -97,6 +97,17 @@
     }
 }
 
+.item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, .5);
+
+    img {
+        margin-right: 10px;
+    }
+}
+
 @media screen and (max-width: 1199px) {
     .leftWrap img {
         width: 28px;

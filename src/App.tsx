@@ -7,6 +7,7 @@ import WatchConnect from "src/WatchConnect";
 import WatchWallet from "src/WatchWallet";
 import RouterComp from 'src/RouterComp';
 import { useStore } from "src/hooks";
+import Risk from "src/Risk";
 
 import WatchRoute from 'src/WatchRoute';
 import Banner from "src/Banner";
@@ -35,6 +36,7 @@ function App() {
             <WatchRoute />
             <WatchWallet />
             <WatchConnect />
+            <Risk />
             <SupportAsset />
         </div>
     );

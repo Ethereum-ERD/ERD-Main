@@ -319,7 +319,11 @@
     --risk-bg-color: #292A30;
     --risk-border-color: #43454A;
     --risk-title-color: #fff;
-    --risk-content-color: rgba(255, 255, 255, .5);
+    --risk-content-color: rgba(255, 255, 255, .7);
+    --risk-wrap-box-shadow: rgba(0, 0, 0, 0.50);
+    --risk-btn-normal-bg-color: #fff;
+    --risk-btn-text-color: #000;
+    --risk-audit-link-color: #3083FF;
 
 
 
