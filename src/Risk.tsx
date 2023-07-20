@@ -80,7 +80,7 @@ export default observer(function Risk() {
                         className={cx(s.btn, { [s.disable]: !termsA || !termsB })}
                         onClick={handleAgree}
                     >
-                        Yes,I understand the risk.
+                        Yes,I understand the risks.
                     </div>
                 </div>
                 <div className={s.audits}>
