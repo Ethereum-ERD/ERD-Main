@@ -140,8 +140,6 @@ export default class Store {
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
 
-        this.getWeeklyQuota();
-
         reaction(() => {
             return [
                 this.walletAddr,
@@ -175,6 +173,12 @@ export default class Store {
         });
 
         reaction(() => this.contractMap, this.initSystemKeyInfo);
+
+        reaction(() => this.chainId, this.getWeeklyQuota);
+    }
+
+    @computed get isMainNet() {
+        return this.chainId === 1;
     }
 
     @computed get protocolValInETH() {
@@ -231,6 +235,7 @@ export default class Store {
     }
 
     async getWeeklyQuota() {
+        if (!this.isMainNet) return;
         try {
             const res = await axios.get('/api/amount_limit');
             const data = res.data;
@@ -1646,6 +1651,7 @@ export default class Store {
     }
 
     logOperation(amount: string, type: any) {
+        if (!this.isMainNet) return;
         axios.post('/api/record', {
             addr: this.walletAddr,
             amount,
