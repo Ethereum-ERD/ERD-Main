@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { ProviderLabel } from '@web3-onboard/injected-wallets';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
+import axios from 'axios';
 
 import {
     EmptyObject, EMPTY_ADDRESS, RANDOM_SEED,
@@ -11,13 +12,13 @@ import {
 import {
     ExternalProvider, UserTrove, SupportAssetsItem,
     UserCollateralItem, UserDepositRewardsItem,
-    ProtocolCollateralItem, RPCProvider
+    ProtocolCollateralItem, RPCProvider, Operation
 } from 'src/types';
 
 
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
+import { formatUnits, toBN, fixNumber } from 'src/util';
 import { SupportAssets } from 'src/AssetsHelp';
-import { formatUnits, toBN } from 'src/util';
 import ContractConfig from 'src/contract';
 
 export default class Store {
@@ -134,6 +135,8 @@ export default class Store {
 
     showSupportAsset = false;
 
+    weekQuota = 0;
+
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
 
@@ -170,6 +173,12 @@ export default class Store {
         });
 
         reaction(() => this.contractMap, this.initSystemKeyInfo);
+
+        reaction(() => this.chainId, this.getWeeklyQuota);
+    }
+
+    @computed get isMainNet() {
+        return this.chainId === 1;
     }
 
     @computed get protocolValInETH() {
@@ -223,6 +232,17 @@ export default class Store {
         });
         this.initContract();
         this.querySystemTotalValueAndDebt();
+    }
+
+    async getWeeklyQuota() {
+        if (!this.isMainNet) return;
+        try {
+            const res = await axios.get('/api/amount_limit');
+            const data = res.data;
+            runInAction(() => {
+                this.weekQuota = data.amount;
+            });
+        } catch {}
     }
 
     async connectWallet() {
@@ -932,6 +952,7 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
+                this.logOperation(fixNumber(stableCoinAmount), Operation.OpenTrove);
             }
             return { status: result.status === 1, hash };
         } catch {
@@ -1153,6 +1174,7 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
+                this.logOperation(fixNumber(newStableCoinAmount), Operation.AdjustTrove);
             }
             return { status: result.status === 1, hash };
         } catch {
@@ -1272,6 +1294,10 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
+                this.logOperation(
+                    '0',
+                    Operation.Redeem
+                );
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1302,6 +1328,13 @@ export default class Store {
             }
 
             const result = await this.waitForTransactionConfirmed(hash);
+
+            if (result.status === 1) {
+                this.logOperation(
+                    '0',
+                    Operation.Liquidate
+                );
+            }
 
             return { status: result.status === 1, hash };
         } catch {
@@ -1345,6 +1378,10 @@ export default class Store {
                 this.queryUserDepositGain();
                 this.queryUserDepositInfo();
                 this.queryStabilityPoolTVL();
+                this.logOperation(
+                    fixNumber(amount),
+                    Operation.DepositToSP
+                );
             }
             return { status: result.status === 1, hash };
         } catch {
@@ -1368,6 +1405,10 @@ export default class Store {
                 this.queryStabilityPoolTVL();
                 this.queryUserDepositInfo();
                 this.queryUserTokenInfo();
+                this.logOperation(
+                    fixNumber(amount),
+                    Operation.WithdrawFromSP
+                );
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1394,6 +1435,10 @@ export default class Store {
             if (result.status === 1) {
                 this.queryUserAssets();
                 this.queryStableCoinInfo();
+                this.logOperation(
+                    '0',
+                    Operation.WithdrawsRewards
+                );
             }
 
             return { status: result.status === 1, hash };
@@ -1419,6 +1464,13 @@ export default class Store {
                 .withdrawCollateralGainToTrove(EMPTY_ADDRESS, EMPTY_ADDRESS);
 
             const result = await this.waitForTransactionConfirmed(hash);
+
+            if (result.status === 1) {
+                this.logOperation(
+                    '0',
+                    Operation.WithdrawsRewardsToTrove
+                );
+            }
 
             return { status: result.status === 1, hash };
         } catch {
@@ -1596,5 +1648,14 @@ export default class Store {
           z = ((x.div(z)).add(z)).div(toBN(this.dec(2, 0)));
         }
         return y;
+    }
+
+    logOperation(amount: string, type: any) {
+        if (!this.isMainNet) return;
+        axios.post('/api/record', {
+            addr: this.walletAddr,
+            amount,
+            type
+        }).catch(() => null)
     }
 }
