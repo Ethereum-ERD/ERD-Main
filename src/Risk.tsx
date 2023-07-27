@@ -70,11 +70,11 @@ export default observer(function Risk() {
                 <div className={s.termsArea}>
                     <div className={s.terms}>
                         <Checkbox checked={termsA} onChange={(e) => setTermsA(e.target.checked)} />
-                        <p>I confirm that I have read, understand and accept the Terms of Use and the Risks Statement</p>
+                        <p onClick={() => setTermsA(c => !c)}>I confirm that I have read, understand and accept the Terms of Use and the Risks Statement</p>
                     </div>
                     <div className={s.terms}>
                         <Checkbox checked={termsB} onChange={(e) => setTermsB(e.target.checked)} />
-                        <p>I confirm that I do not fall under any of these exclusions</p>
+                        <p onClick={() => setTermsB(c => !c)}>I confirm that I do not fall under any of these exclusions</p>
                     </div>
                     <div
                         className={cx(s.btn, { [s.disable]: !termsA || !termsB })}
