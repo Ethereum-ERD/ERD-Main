@@ -80,7 +80,7 @@ export default observer(function Risk() {
                         className={cx(s.btn, { [s.disable]: !termsA || !termsB })}
                         onClick={handleAgree}
                     >
-                        Yes,I understand the risks.
+                        Yes, I understand the risks.
                     </div>
                 </div>
                 <div className={s.audits}>
@@ -92,7 +92,7 @@ export default observer(function Risk() {
                     >
                         PeckShield
                     </a>
-                    {"\u00A0"}
+                    ,
                     <a
                         href='https://github.com/Ethereum-ERD/ERD-Audits/blob/main/ERD_Ethereum_Reserve_Dollar_Smart_Contract_Security_Assessment_Report_Halborn_Final.pdf'
                         rel="noreferrer noopenner"
