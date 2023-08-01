@@ -861,6 +861,7 @@ export default class Store {
     async createdTrove(
         collateral: Array<{ token: string; amount: number }>,
         stableCoinAmount: number,
+        refer: string,
         maxFeePercentage = 1e18
     ) {
         try {
@@ -923,13 +924,14 @@ export default class Store {
             const gasLimit = await BorrowerOperation
                 .connect(web3Provider.getSigner())
                 .estimateGas
-                ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
+                ['openTrove(address[],uint256[],uint256,uint256,address,address,address)'](
                     pass2ContractCollateral.map(c => c.token),
                     pass2ContractCollateral.map(c => c.amount),
                     maxFeePerAmount,
                     debtAmount,
-                    lowerHint,
                     upperHint,
+                    lowerHint,
+                    refer,
                     override
                 );
 
@@ -937,13 +939,14 @@ export default class Store {
 
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
-                ['openTrove(address[],uint256[],uint256,uint256,address,address)'](
+                ['openTrove(address[],uint256[],uint256,uint256,address,address,address)'](
                     pass2ContractCollateral.map(c => c.token),
                     pass2ContractCollateral.map(c => c.amount),
                     maxFeePerAmount,
                     debtAmount,
-                    lowerHint,
                     upperHint,
+                    lowerHint,
+                    refer,
                     { ...override, gasLimit: toBN(~~moreGasLimit) }
                 );
             const result = await this.waitForTransactionConfirmed(hash);

@@ -3,6 +3,10 @@ import { format } from 'mathjs';
 
 import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY } from 'src/constants';
 
+export const checkSumAddr = (addr: string) => {
+    return ethers.utils.isAddress(addr);
+}
+
 export const getUserAgreeTerms = () => {
     return window.sessionStorage.getItem(TERMS_SAVED_KEY) || "";
 };

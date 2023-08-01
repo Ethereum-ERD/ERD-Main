@@ -152,6 +152,43 @@ export default {
           "anonymous": false,
           "inputs": [
             {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_referrer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_referee",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address[]",
+              "name": "_colls",
+              "type": "address[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_compositeDebt",
+              "type": "uint256"
+            }
+          ],
+          "name": "Referrer",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
               "indexed": false,
               "internalType": "address",
               "name": "_sortedTrovesAddress",
@@ -267,7 +304,7 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "enum IBorrowerOperations.BorrowerOperation",
+              "internalType": "enum IBorrowerOperationsV2.BorrowerOperation",
               "name": "operation",
               "type": "uint8"
             }
@@ -739,6 +776,11 @@ export default {
               "internalType": "address",
               "name": "_lowerHint",
               "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_referrer",
+              "type": "address"
             }
           ],
           "name": "openTrove",
@@ -936,6 +978,19 @@ export default {
             }
           ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "version",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "pure",
           "type": "function"
         },
         {
