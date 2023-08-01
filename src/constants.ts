@@ -79,3 +79,7 @@ export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerC
 // export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
 
 export const BN_ETHER = ethers.BigNumber.from(1 + '0'.repeat(18));
+
+export const TERMS_SAVED_KEY = "DidYouAgreeERDTerms";
+
+export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';

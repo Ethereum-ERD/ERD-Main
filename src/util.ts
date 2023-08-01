@@ -1,14 +1,26 @@
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
-const TermsSavedKey = "DidYouAgreeERDTerms";
+import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY } from 'src/constants';
 
-export const getAgreedTerms = () => {
-    return window.sessionStorage.getItem(TermsSavedKey) || "";
+export const getUserAgreeTerms = () => {
+    return window.sessionStorage.getItem(TERMS_SAVED_KEY) || "";
 };
 
-export const saveAgreeTerms = (wallet: string) => {
-    window.sessionStorage.setItem(TermsSavedKey, wallet);
+export const setUserAgreeTerms = (v: string) => {
+    window.sessionStorage.setItem(TERMS_SAVED_KEY, v);
+};
+
+export const getDoNotShowAgain = () => {
+    return window.localStorage.getItem(DO_NOT_SHOW_AGAIN_KEY) || "";
+};
+
+export const setDoNotShowAgain = (v: string) => {
+    window.localStorage.setItem(DO_NOT_SHOW_AGAIN_KEY, v);
+};
+
+export const clearDoNotShowAgain = () => {
+    window.localStorage.removeItem(DO_NOT_SHOW_AGAIN_KEY);
 };
 
 export function truncateNumber(num: number) {

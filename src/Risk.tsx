@@ -3,24 +3,44 @@ import { observer } from 'mobx-react';
 import { Modal, Checkbox } from 'antd';
 import cx from 'classnames';
 
-import { getAgreedTerms, saveAgreeTerms } from 'src/util';
+import {
+    getUserAgreeTerms,
+    setUserAgreeTerms,
+    getDoNotShowAgain,
+    setDoNotShowAgain,
+    clearDoNotShowAgain
+} from 'src/util';
 
 import s from './Risk.module.scss';
 
 export default observer(function Risk() {
     const [termsA, setTermsA] = useState(false);
     const [termsB, setTermsB] = useState(false);
+    const [neverShow, setNeverShow] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
-        const didAgreeTerms = getAgreedTerms();
+        const neverShow = getDoNotShowAgain();
+        if (!!neverShow) {
+            return setShowAlert(false);
+        }
+        const didAgreeTerms = getUserAgreeTerms();
         setShowAlert(!didAgreeTerms);
     }, []);
 
     const handleAgree = () => {
         if (!termsA || !termsB) return;
-        saveAgreeTerms('Yes');
+        setUserAgreeTerms('Yes');
         setShowAlert(false);
+    };
+
+    const handleToggleDoNotShowAgain = (v: boolean) => {
+        setNeverShow(v);
+        if (v) {
+            setDoNotShowAgain('true');
+        } else {
+            clearDoNotShowAgain();
+        }
     };
 
     return (
@@ -75,6 +95,10 @@ export default observer(function Risk() {
                     <div className={s.terms}>
                         <Checkbox checked={termsB} onChange={(e) => setTermsB(e.target.checked)} />
                         <p onClick={() => setTermsB(c => !c)}>I confirm that I do not fall under any of these exclusions</p>
+                    </div>
+                    <div className={s.terms}>
+                        <Checkbox checked={neverShow} onChange={(e) => handleToggleDoNotShowAgain(e.target.checked)} />
+                        <p onClick={() => handleToggleDoNotShowAgain(!neverShow)}>Don't show again</p>
                     </div>
                     <div
                         className={cx(s.btn, { [s.disable]: !termsA || !termsB })}
