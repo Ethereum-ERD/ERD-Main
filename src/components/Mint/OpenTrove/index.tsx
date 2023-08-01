@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { observer } from 'mobx-react';
-import { InputNumber, notification } from 'antd';
+import { InputNumber, notification, Input } from 'antd';
 import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { addCommas, formatUnits, truncateNumber, OpenEtherScan } from 'src/util';
+import { addCommas, formatUnits, truncateNumber, OpenEtherScan, checkSumAddr } from 'src/util';
+import { MAX_MINTING_FEE } from 'src/constants';
 import { BorrowItem, CollateralStatus } from 'src/types';
 import MintTitle from 'src/components/common/MintTitle';
-import { MAX_MINTING_FEE } from 'src/constants';
 import { useStore } from 'src/hooks';
 
 import FeeInfo from '../FeeInfo';
@@ -19,13 +19,15 @@ const Steps = [25, 50, 75, 100];
 export default observer(function OpenTrove() {
     const { store } = useStore();
     const [fastStep, setFastStep] = useState(0);
+    const [referAddr, setRefAddr] = useState('');
     const [borrowNum, setBorrowNum] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
     const [maxBorrowNum, setMaxBorrowNum] = useState(0);
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD, collateralValueInfo } = store;
+    const { web3Provider, systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD, collateralValueInfo } = store;
+    const refEl = useRef<HTMLDivElement>(null);
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -80,6 +82,10 @@ export default observer(function OpenTrove() {
         }
 
         setBorrowNum(+val);
+    };
+
+    const onReferAddrChange = (v: any) => {
+        setRefAddr(v.target.value);
     };
 
     const setMax = (key: string, v: number) => {
@@ -166,6 +172,33 @@ export default observer(function OpenTrove() {
         if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) {
             return;
         }
+        if (`${referAddr}`.length !== 42) {
+            if (refEl.current) {
+                refEl.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            }
+            return notification.error({
+                message: 'Bad referral address.'
+            });
+        }
+        const isValidAddr = checkSumAddr(referAddr);
+        if (!isValidAddr) {
+            return notification.error({
+                message: 'Bad referral address.'
+            });
+        }
+        let isEOAAddr = false;
+        try {
+            const code = await web3Provider.getCode(referAddr);
+            isEOAAddr = code === '0x';
+        } catch {}
+        if (!isEOAAddr) {
+            if (refEl.current) {
+                refEl.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            }
+            return notification.error({
+                message: 'Referral address is not an EOA account.'
+            });
+        }
         if (collateralRatio < systemMCR) {
             return notification.error({
                 message: 'ICR less than MCR is not permitted.'
@@ -174,7 +207,8 @@ export default observer(function OpenTrove() {
         setIsProcessing(true);
         const result = await createdTrove(
             borrowInfo,
-            borrowNum * Math.pow(10, stableCoinDecimals)
+            borrowNum * Math.pow(10, stableCoinDecimals),
+            referAddr
         );
 
         if (result.status) {
@@ -260,6 +294,17 @@ export default observer(function OpenTrove() {
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     // @ts-ignore
                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                />
+            </div>
+            <div className={s.referInputWrap} ref={refEl}>
+                <Input
+                    onChange={onReferAddrChange}
+                    className={s.referInput}
+                    placeholder='0x...'
+                    addonBefore={'Referral'}
+                    defaultValue={referAddr}
+                    maxLength={42}
+                    minLength={42}
                 />
             </div>
             <div className={s.collRatioInfo}>
