@@ -902,7 +902,7 @@ export default class Store {
                 );
 
                 if (!approveList.every(x => x)) {
-                    return { status: false, hash: '' };
+                    return { status: false, hash: '', msg: '' };
                 }
             }
 
@@ -957,9 +957,10 @@ export default class Store {
                 this.getUserTroveInfo(true);
                 this.logOperation(fixNumber(stableCoinAmount), Operation.OpenTrove);
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            return { status: false, hash: '', msg: e?.reason || e?.message };
         }
     }
 
@@ -971,7 +972,7 @@ export default class Store {
         try {
             const { contractMap, walletAddr, supportAssets, web3Provider } = this;
             const { TroveManager, BorrowerOperation } = contractMap;
-            if (!TroveManager || !BorrowerOperation) return { status: false, hash: '' };
+            if (!TroveManager || !BorrowerOperation) return { status: false, hash: '', msg: '' };
 
             const [
                 debt,
@@ -1179,9 +1180,10 @@ export default class Store {
                 this.getUserTroveInfo(true);
                 this.logOperation(fixNumber(newStableCoinAmount), Operation.AdjustTrove);
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            return { status: false, hash: '', msg: e?.reason || e?.message };
         }
     }
 

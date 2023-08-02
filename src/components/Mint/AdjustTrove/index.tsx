@@ -172,7 +172,7 @@ export default observer(function AdjustTrove() {
             toggleStartAdjustTrove();
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);

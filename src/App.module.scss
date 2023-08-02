@@ -4,10 +4,8 @@
 
 .content {
     width: 100%;
-    // height: calc(100vh - var(--banner-height) - 30px);
     width: 1200px;
-    margin: 30px auto 0;
-    // overflow-y: hidden;
+    margin: 30px auto;
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {

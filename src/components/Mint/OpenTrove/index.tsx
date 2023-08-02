@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import { InputNumber, notification, Input } from 'antd';
 import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { addCommas, formatUnits, truncateNumber, OpenEtherScan, checkSumAddr } from 'src/util';
-import { MAX_MINTING_FEE } from 'src/constants';
+import { EMPTY_ADDRESS, MAX_MINTING_FEE } from 'src/constants';
 import { BorrowItem, CollateralStatus } from 'src/types';
 import MintTitle from 'src/components/common/MintTitle';
 import { useStore } from 'src/hooks';
@@ -23,11 +23,12 @@ export default observer(function OpenTrove() {
     const [borrowNum, setBorrowNum] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
     const [maxBorrowNum, setMaxBorrowNum] = useState(0);
+    const [isValidRefer, setIsValidRefer] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
+    const [isAlreadyTips, setIsAlreadyTips] = useState(false);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
     const { web3Provider, systemCCR, systemTCR, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, createdTrove, systemMCR, gasCompensation, mintingFeeRatio, isNormalMode, toggleStartBorrow, systemTotalDebtInUSD, systemTotalValueInUSD, collateralValueInfo } = store;
-    const refEl = useRef<HTMLDivElement>(null);
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);
@@ -84,8 +85,20 @@ export default observer(function OpenTrove() {
         setBorrowNum(+val);
     };
 
-    const onReferAddrChange = (v: any) => {
-        setRefAddr(v.target.value);
+    const onReferAddrChange = async (v: any) => {
+        const addr = v.target.value;
+        setRefAddr(addr);
+        if (`${addr}`.length !== 42) {
+            setIsValidRefer(false);
+        } else {
+            const isValidAddr = checkSumAddr(addr);
+            let isEOAAddr = false;
+            try {
+                const code = await web3Provider.getCode(addr);
+                isEOAAddr = code === '0x';
+            } catch {}
+            setIsValidRefer(isEOAAddr && isValidAddr);
+        }
     };
 
     const setMax = (key: string, v: number) => {
@@ -172,43 +185,22 @@ export default observer(function OpenTrove() {
         if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) {
             return;
         }
-        if (`${referAddr}`.length !== 42) {
-            if (refEl.current) {
-                refEl.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
-            }
+        if (!isValidRefer && !isAlreadyTips) {
+            setIsAlreadyTips(true);
             return notification.error({
-                message: 'Bad referral address.'
-            });
-        }
-        const isValidAddr = checkSumAddr(referAddr);
-        if (!isValidAddr) {
-            return notification.error({
-                message: 'Bad referral address.'
-            });
-        }
-        let isEOAAddr = false;
-        try {
-            const code = await web3Provider.getCode(referAddr);
-            isEOAAddr = code === '0x';
-        } catch {}
-        if (!isEOAAddr) {
-            if (refEl.current) {
-                refEl.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
-            }
-            return notification.error({
-                message: 'Referral address is not an EOA account.'
+                message: 'Referral does not look like a correct EOA address'
             });
         }
         if (collateralRatio < systemMCR) {
             return notification.error({
-                message: 'ICR less than MCR is not permitted.'
+                message: 'ICR less than MCR is not permitted'
             });
         }
         setIsProcessing(true);
         const result = await createdTrove(
             borrowInfo,
             borrowNum * Math.pow(10, stableCoinDecimals),
-            referAddr
+            isValidRefer ? referAddr : EMPTY_ADDRESS
         );
 
         if (result.status) {
@@ -219,7 +211,7 @@ export default observer(function OpenTrove() {
             toggleStartBorrow();
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);
@@ -296,7 +288,7 @@ export default observer(function OpenTrove() {
                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 />
             </div>
-            <div className={s.referInputWrap} ref={refEl}>
+            <div className={s.referInputWrap}>
                 <Input
                     onChange={onReferAddrChange}
                     className={s.referInput}

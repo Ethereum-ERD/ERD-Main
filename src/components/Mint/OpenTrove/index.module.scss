@@ -33,18 +33,6 @@
 
 .referInputWrap {
     height: 52px;
-
-    :global {
-        .ant-input-status-warning {
-            border-color: #faad14;
-    
-            &:focus,
-            &:hover {
-                border-color: #faad14 !important;
-                box-shadow: none !important;
-            }
-        }
-    }
 }
 
 .input {
