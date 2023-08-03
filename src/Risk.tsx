@@ -55,7 +55,7 @@ export default observer(function Risk() {
                 <p className={s.title}>Risk Disclaimer</p>
                 <div className={s.content}>
                     <p>
-                        Ethereum Reserve Dollar, “ERD,” protocol enables users to mint USDE using a selection of crypto-tokenized collaterals (adding new ones are subject to approval). Positions are managed passively: if the collateral's price decreases, the system automatically sells off collateral in a ‘soft liquidation mode.’ If the collateral's price increases, the system recovers the collateral. This process could lead to some losses due to liquidation and de-liquidation.
+                        Ethereum Reserve Dollar, "ERD", protocol enables users to mint USDE using a selection of crypto-tokenized collaterals (adding new ones are subject to approval). Positions are managed passively: if the collateral's price decreases, the system automatically sells off collateral in a ‘soft liquidation mode.’ If the collateral's price increases, the system recovers the collateral. This process could lead to some losses due to liquidation and de-liquidation.
                     </p>
                     <br />
                     <p>Please consider the following risk disclaimers when using the ERD protocol:</p>
