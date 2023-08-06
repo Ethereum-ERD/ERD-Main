@@ -28,7 +28,7 @@ export default observer(function CloseTrove() {
             toggleStartRepay();
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);

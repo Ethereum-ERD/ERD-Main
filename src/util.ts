@@ -2,6 +2,12 @@ import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
 import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY } from 'src/constants';
+import { Errors } from 'src/Error';
+
+export const getContractErrorMsg = (code: string) => {
+    if (!code) return 'Unknown error';
+    return Errors[code] || `Unknown error code ${code}`;
+};
 
 export const checkSumAddr = (addr: string) => {
     return ethers.utils.isAddress(addr);

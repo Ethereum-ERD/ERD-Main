@@ -17,7 +17,7 @@ function NewDeposit() {
     const [depositNum, setDepositNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, depositToStabilityPool, userDepositAmount, spTVL } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, depositToStabilityPool } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -54,7 +54,7 @@ function NewDeposit() {
             });
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setDepositNum('0.00');

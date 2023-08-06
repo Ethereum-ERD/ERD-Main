@@ -57,7 +57,7 @@ function Deposit() {
             });
         } else {
             notification.error({
-                message: "Transaction failed",
+                message: result.msg || "Transaction failed",
             });
         }
     };
@@ -72,7 +72,7 @@ function Deposit() {
             });
         } else {
             notification.error({
-                message: "Transaction failed",
+                message: result.msg || "Transaction failed",
             });
         }
     };

@@ -15,7 +15,7 @@ function Withdraw() {
     const [withdrawNum, setWithdrawNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { userPoolShare, stableCoinName, stableCoinDecimals, userDepositAmount, toggleStartWithdraw, spTVL, withdrawFromStabilityPool } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userDepositAmount, toggleStartWithdraw, withdrawFromStabilityPool } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {

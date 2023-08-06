@@ -16,8 +16,8 @@ import {
 } from 'src/types';
 
 
+import { formatUnits, toBN, fixNumber, getContractErrorMsg } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
-import { formatUnits, toBN, fixNumber } from 'src/util';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
 
@@ -960,7 +960,8 @@ export default class Store {
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
             // @ts-ignore
-            return { status: false, hash: '', msg: e?.reason || e?.message };
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
@@ -1183,13 +1184,14 @@ export default class Store {
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
             // @ts-ignore
-            return { status: false, hash: '', msg: e?.reason || e?.message };
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
     async closeTrove() {
         const { BorrowerOperation } = this.contractMap;
-        if (!BorrowerOperation) return { status: false, hash: '' };
+        if (!BorrowerOperation) return { status: false, hash: '', msg: '' };
         try {
             const { web3Provider } = this;
             const gasLimit = await BorrowerOperation
@@ -1210,9 +1212,11 @@ export default class Store {
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
@@ -1307,14 +1311,15 @@ export default class Store {
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
             // @ts-ignore
-            return { status: false, hash: '', msg: e?.reason || e?.message };
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
     async liquidate(borrowerList: Array<string> | number) {
         const { web3Provider, contractMap, isLiquidateIng } = this;
         const { TroveManager } = contractMap;
-        if (!TroveManager || isLiquidateIng) return { status: false, hash: '' };
+        if (!TroveManager || isLiquidateIng) return { status: false, hash: '', msg: '' };
         runInAction(() => {
             this.isLiquidateIng = true;
         });
@@ -1341,9 +1346,11 @@ export default class Store {
                 );
             }
 
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         } finally {
             runInAction(() => {
                 this.isLiquidateIng = false;
@@ -1354,7 +1361,7 @@ export default class Store {
     async depositToStabilityPool(amount: number) {
         const { web3Provider, contractMap } = this;
         const { StabilityPool, StableCoin } = contractMap;
-        if (!StabilityPool) return { status: false, hash: '' };
+        if (!StabilityPool) return { status: false, hash: '', msg: '' };
         try {
             const amountBN = toBN(amount);
 
@@ -1367,7 +1374,7 @@ export default class Store {
                     ethers.constants.MaxUint256
                 );
     
-                if (!approved) return { status: false, hash: '' };
+                if (!approved) return { status: false, hash: '', msg: '' };
             }
 
             const { hash } = await StabilityPool
@@ -1388,9 +1395,11 @@ export default class Store {
                     Operation.DepositToSP
                 );
             }
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
@@ -1418,14 +1427,15 @@ export default class Store {
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
             // @ts-ignore
-            return { status: false, hash: '', msg: e?.reason || e?.message };
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 
     async claimDepositReward() {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return { status: false, hash: '' };
+        if (!StabilityPool) return { status: false, hash: '', msg: '' };
 
         runInAction(() => {
             this.isClaimRewardIng = true;
@@ -1446,9 +1456,11 @@ export default class Store {
                 );
             }
 
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         } finally {
             runInAction(() => {
                 this.isClaimRewardIng = false;
@@ -1459,7 +1471,7 @@ export default class Store {
     async claimRewardAndMoveToTrove() {
         const { contractMap, web3Provider } = this;
         const { StabilityPool } = contractMap;
-        if (!StabilityPool) return { status: false, hash: '' };
+        if (!StabilityPool) return { status: false, hash: '', msg: '' };
         runInAction(() => {
             this.isClaimRewardToTroveIng = true;
         });
@@ -1477,9 +1489,11 @@ export default class Store {
                 );
             }
 
-            return { status: result.status === 1, hash };
-        } catch {
-            return { status: false, hash: '' };
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         } finally {
             runInAction(() => {
                 this.isClaimRewardToTroveIng = false;

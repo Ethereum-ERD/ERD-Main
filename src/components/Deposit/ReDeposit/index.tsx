@@ -15,7 +15,7 @@ function ReDeposit() {
     const [depositNum, setDepositNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool, spTVL } = store;
+    const { userPoolShare, stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userDepositAmount, depositToStabilityPool } = store;
 
     const onChange = (v: string | null) => {
         if (v == null) {
@@ -52,7 +52,7 @@ function ReDeposit() {
             });
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);
