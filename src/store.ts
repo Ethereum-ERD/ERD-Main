@@ -864,6 +864,10 @@ export default class Store {
         refer: string,
         maxFeePercentage = 1e18
     ) {
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const { supportAssets, contractMap, web3Provider } = this;
             const { BorrowerOperation } = contractMap;
@@ -970,6 +974,10 @@ export default class Store {
         newStableCoinAmount: number,
         maxFeePercentage = 1e18
     ) {
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const { contractMap, walletAddr, supportAssets, web3Provider } = this;
             const { TroveManager, BorrowerOperation } = contractMap;
@@ -1192,6 +1200,10 @@ export default class Store {
     async closeTrove() {
         const { BorrowerOperation } = this.contractMap;
         if (!BorrowerOperation) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const { web3Provider } = this;
             const gasLimit = await BorrowerOperation
@@ -1242,6 +1254,10 @@ export default class Store {
         const { web3Provider, contractMap, latestRandomSeed } = this;
         const { TroveManager, HintHelpers, PriceFeeds, SortTroves } = contractMap;
         if (!TroveManager || !HintHelpers || !PriceFeeds) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const ethPrice = await PriceFeeds.fetchPrice_view();
             const redeemAmountBN = toBN(amount);
@@ -1320,6 +1336,10 @@ export default class Store {
         const { web3Provider, contractMap, isLiquidateIng } = this;
         const { TroveManager } = contractMap;
         if (!TroveManager || isLiquidateIng) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         runInAction(() => {
             this.isLiquidateIng = true;
         });
@@ -1362,6 +1382,10 @@ export default class Store {
         const { web3Provider, contractMap } = this;
         const { StabilityPool, StableCoin } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const amountBN = toBN(amount);
 
@@ -1407,6 +1431,10 @@ export default class Store {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const amountBN = toBN(amount);
 
@@ -1436,6 +1464,11 @@ export default class Store {
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
+
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
 
         runInAction(() => {
             this.isClaimRewardIng = true;
@@ -1472,6 +1505,10 @@ export default class Store {
         const { contractMap, web3Provider } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         runInAction(() => {
             this.isClaimRewardToTroveIng = true;
         });
@@ -1598,7 +1635,11 @@ export default class Store {
     async mintTestAsset(asset: string) {
         const { contractMap, web3Provider, walletAddr } = this;
         const { StableCoin } = contractMap;
-        if (!StableCoin || !walletAddr) return false;
+        if (!StableCoin || !walletAddr) return { status: false, msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
         try {
             const { hash } = await StableCoin
                 .attach(asset)
@@ -1610,9 +1651,9 @@ export default class Store {
                 this.queryUserAssets();
             }
 
-            return result.status === 1;
+            return { status: result.status === 1, msg: '' };
         } catch {
-            return false;
+            return { status: false, msg: '' };
         }
     }
 
@@ -1676,5 +1717,20 @@ export default class Store {
             amount,
             type
         }).catch(() => null)
+    }
+
+    async networkCheck() {
+        const { chainId, onboard } = this;
+        try {
+            if (chainId !== GOERLI_CHAIN_ID) {
+                const switchResult = await onboard.setChain({
+                    chainId: `0x${GOERLI_CHAIN_ID.toString(16)}`,
+                });
+                return switchResult;
+            }
+            return true;
+        } catch {
+            return false;
+        }
     }
 }

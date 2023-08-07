@@ -31,13 +31,13 @@ export default observer(function MintTestAsset() {
         if (isProcessing) return;
         setIsProcessing(true);
         const result = await mintTestAsset(asset);
-        if (result) {
+        if (result.status) {
             notification.success({
                 message: 'Transaction complete'
             });
         } else {
             notification.error({
-                message: 'Transaction failed'
+                message: result.msg || 'Transaction failed'
             });
         }
         setIsProcessing(false);
