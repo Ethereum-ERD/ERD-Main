@@ -45,8 +45,8 @@
         line-height: 133%;
         color: var(--user-trove-show-info-item-title-color);
 
-        svg {
-            margin-right: 10px;
+        p {
+            margin: 0 5px;
         }
     }
 
@@ -78,6 +78,41 @@
             color: var(--coll-ratio-value-health-color);
         }
     }
+}
+
+.tipsWrap {
+    display: flex;
+    align-items: center;
+    cursor: help;
+}
+
+.tipsModal {
+    max-width: unset !important;
+    width: unset !important;
+    padding: 16px 20px;
+}
+
+.formula,
+.formulaText {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 450;
+    line-height: 133%;
+    color: var(--slash-symbol-color);
+
+    span:nth-child(1) {
+        color: var(--total-collateral-value-color);
+    }
+    span:nth-child(2) {
+        color: var(--total-debt-value-color);
+    }
+    span:nth-child(3) {
+        color: var(--collateral-ratio-value-color);
+    }
+}
+
+.formulaText {
+    margin-top: 10px;
 }
 
 .collateralItem {
@@ -160,6 +195,10 @@
     .btn {
         width: 454px;
     }
+
+    .tipsModal {
+        width: 700px !important;
+    }
 }
 
 @media screen and (max-width: 743px) {
@@ -190,5 +229,9 @@
             width: 120px;
             margin-right: 10px;
         }
+    }
+
+    .tipsModal {
+        width: 320px !important;
     }
 }

@@ -102,7 +102,7 @@ function Redeem() {
                         <Popover
                             arrow={false}
                             title=''
-                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on eUSD redemption volumes and is 0.5% at minimum.</div>}
+                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on USDE redemption volumes and is 0.5% at minimum.</div>}
                         >
                             <div className={s.tipsHelp}>
                                 <CircleHelp />

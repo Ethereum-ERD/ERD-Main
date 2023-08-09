@@ -185,7 +185,7 @@ export default observer(function OpenTrove() {
         if (borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) {
             return;
         }
-        if (!isValidRefer && !isAlreadyTips) {
+        if (referAddr && !isValidRefer && !isAlreadyTips) {
             setIsAlreadyTips(true);
             return notification.error({
                 message: 'Referral does not look like a correct EOA address'
@@ -316,12 +316,12 @@ export default observer(function OpenTrove() {
                         return <div key={step} className={cx(s.step, { [s.active]: step <= fastStep })} onClick={() => onFastChoose(step)} />
                     })}
                 </div>
-                {!!assetValue && (
-                    <div className={s.tips}>
-                        <p>{addCommas(formatUnits(minBorrowAmount, stableCoinDecimals))} {stableCoinName} Min</p>
+                <div className={s.tips}>
+                    <p>{addCommas(formatUnits(minBorrowAmount, stableCoinDecimals))} {stableCoinName} Min</p>
+                    {!!assetValue && (
                         <p>{addCommas(maxBorrowNum)} {stableCoinName} Max</p>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
             <FeeInfo
                 totalDebt={realDebt * Math.pow(10, stableCoinDecimals)}

@@ -253,16 +253,14 @@ export default class Store {
         try {
             const wallet = getSaveWallet();
             if (wallet) {
-                await this.onboard.connectWallet({ autoSelect: wallet });
+                await this.onboard.connectWallet({ autoSelect: { label: wallet, disableModals: true } });
             } else {
                 await this.onboard.connectWallet();
             }
             await this.onboard.setChain({
                 chainId: `0x${GOERLI_CHAIN_ID.toString(16)}`,
             });
-        } catch {
-            // do nothing
-        }
+        } catch {}
     }
 
     async disConnectWallet() {
@@ -805,7 +803,7 @@ export default class Store {
             }
 
             return trove;
-        } catch { }
+        } catch {}
     }
 
     async approve(

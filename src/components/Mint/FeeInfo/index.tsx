@@ -39,7 +39,7 @@ export default observer(function FeeInfo({
                 </p>
             </div>
             <div className={s.item}>
-                <p>Total debt</p>
+                <p>Total Debt</p>
                 <p>
                     {formatUnits(totalDebt, stableCoinDecimals)}
                     {"\u00A0"}
