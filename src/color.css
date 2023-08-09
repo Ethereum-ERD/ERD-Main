@@ -2,6 +2,12 @@
     --root-bg-color: #191B1F;
 
 
+    --white-text-color: #fff;
+
+    --tips-border-color: #FF7878;
+    --tips-bg-color: rgba(255, 120, 120, .1);
+    --tips-bold-color: #FF7878;
+
     --slash-symbol-color: rgba(255, 255, 255, 0.70);
     --total-collateral-value-color: #FF7878;
     --total-debt-value-color: #863CFF;

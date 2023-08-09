@@ -302,6 +302,14 @@ export default observer(function AdjustTrove() {
                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 />
             </div>
+            {(borrowNum > 0 && borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) &&(
+                <div className={s.mintTips}>
+                    You must mint at least{"\u00A0"}
+                    <span>
+                        {minBorrowAmount / Math.pow(10, stableCoinDecimals)}{"\u00A0"}{stableCoinName}.
+                    </span>
+                </div>
+            )}
             <div className={s.collRatioInfo}>
                 <div className={s.collRatioInfoTop}>
                     <div>

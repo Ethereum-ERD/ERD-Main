@@ -288,6 +288,14 @@ export default observer(function OpenTrove() {
                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 />
             </div>
+            {(borrowNum > 0 && borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount) &&(
+                <div className={s.mintTips}>
+                    You must mint at least{"\u00A0"}
+                    <span>
+                        {minBorrowAmount / Math.pow(10, stableCoinDecimals)}{"\u00A0"}{stableCoinName}.
+                    </span>
+                </div>
+            )}
             <div className={s.referInputWrap}>
                 <Input
                     onChange={onReferAddrChange}
@@ -295,6 +303,7 @@ export default observer(function OpenTrove() {
                     placeholder='0x...'
                     addonBefore={'Referral'}
                     defaultValue={referAddr}
+                    value={referAddr}
                     maxLength={42}
                     minLength={42}
                 />

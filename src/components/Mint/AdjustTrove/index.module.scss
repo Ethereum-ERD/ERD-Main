@@ -71,6 +71,23 @@
     }
 }
 
+.mintTips {
+    width: 100%;
+    padding: 16px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 133%;
+
+    color: var(--white-text-color);
+    background-color: var(--tips-bg-color);
+    border: 1px solid var(--tips-border-color);
+
+    span {
+        color: var(--tips-bold-color);
+    }
+}
+
 .inputBefore,
 .inputAfter {
     display: flex;
