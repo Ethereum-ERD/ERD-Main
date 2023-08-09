@@ -721,14 +721,10 @@ export default class Store {
                     ,
                     collaterals
                 ],
-                troveData,
-                baseDebtInfo,
-                gasCompensation
+                troveData
             ] = await Promise.all([
                 TroveManager.getEntireDebtAndColl(walletAddr),
-                TroveManager.Troves(walletAddr),
-                TroveDebt.scaledBalanceOf(walletAddr),
-                CollateralManager.getEUSDGasCompensation()
+                TroveManager.Troves(walletAddr)
             ]);
 
             const troveCollateralInfo: Array<{
@@ -777,14 +773,9 @@ export default class Store {
                 return;
             }
 
-            // @TODO: baseDebtInfo includes mintingFee
-            const interest = +debt - +gasCompensation - +baseDebtInfo;
-
             const trove: UserTrove = {
-                interest,
                 debt: +debt,
                 owner: walletAddr,
-                basicDebt: +baseDebtInfo,
                 ICR: assetValue / +debt,
                 collateral: assetInfo.map(x => {
                     return {

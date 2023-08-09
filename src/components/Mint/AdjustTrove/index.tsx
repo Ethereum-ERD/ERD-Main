@@ -180,7 +180,7 @@ export default observer(function AdjustTrove() {
 
     const borrowNumChange = useMemo(() => {
         if (!userTrove) return 0;
-        const troveDebt = userTrove.basicDebt / Math.pow(10, stableCoinDecimals);
+        const troveDebt = userTrove.debt / Math.pow(10, stableCoinDecimals);
         if (borrowNum  <= troveDebt) return 0;
         return borrowNum - troveDebt;
     }, [userTrove, borrowNum, stableCoinDecimals]);
@@ -192,18 +192,18 @@ export default observer(function AdjustTrove() {
     const realDebt = useMemo(() => {
         if (!userTrove) return 0;
         const oldTroveDebt = userTrove.debt / Math.pow(10, stableCoinDecimals);
-        const recordedInterest = userTrove.interest / Math.pow(10, stableCoinDecimals);
 
         if (borrowNum === 0) {
             return 0;
         }
         // means user decrease mint number
-        // therefore the total debt is latest mint number add recorded interest
+        // Because adjusting the position will pay the interest that has already been incurred
+        // so new debt is borrow number 
         if (oldTroveDebt >= borrowNum) {
-            return borrowNum + recordedInterest;
+            return oldTroveDebt - (oldTroveDebt - borrowNum);
         }
 
-        return borrowNum + mintingFee + recordedInterest;
+        return borrowNum + mintingFee;
     }, [userTrove, borrowNum, stableCoinDecimals, mintingFee]);
 
     const crClasses = useMemo(() => {

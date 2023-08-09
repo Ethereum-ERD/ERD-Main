@@ -11,7 +11,7 @@ import s from './index.module.scss';
 
 export default observer(function UserTroveShow() {
     const { store } = useStore();
-    const { userPoolShare, userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, gasCompensation, systemCCR, systemMCR, collateralValueInfo } = store;
+    const { interestRatio, userPoolShare, userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, gasCompensation, systemCCR, systemMCR, collateralValueInfo } = store;
 
     const { collateral = [], debt = 0, ICR = 0 } = userTrove || {};
 
@@ -41,11 +41,8 @@ export default observer(function UserTroveShow() {
                     </p>
                 </div>
                 <div className={s.item}>
-                    <p>Total Interest</p>
-                    <p>
-                        {addCommas(formatUnits(userTrove.interest, stableCoinDecimals))}
-                        <span>{stableCoinName}</span>
-                    </p>
+                    <p>APY</p>
+                    <p>{(interestRatio * 100).toFixed(2)}%</p>
                 </div>
                 <div className={s.item}>
                     <div>

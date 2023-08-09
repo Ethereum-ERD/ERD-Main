@@ -35,8 +35,6 @@ export type UserTrove = {
     ICR: number
     debt: number
     owner: string
-    interest: number
-    basicDebt: number
     arrayIndex: number
     status: UserTroveStatus
     collateral: Array<SupportAssetsItem & { amount: ethers.BigNumber }>
