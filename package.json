@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@babel/core": "^7.16.0",
+    "@cfx-kit/wallet-avatar": "^0.0.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@ethersproject/bignumber": "^5.7.0",

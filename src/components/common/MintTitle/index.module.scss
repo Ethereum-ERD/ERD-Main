@@ -34,12 +34,32 @@
     }
 }
 
-@media screen and (max-width: 743px) {
+.miniDeviceSupportIcon {
+    display: none;
+}
+
+@media screen and (max-width: 1199px) {
+    .miniDeviceSupportIcon {
+        display: flex !important;
+    }
+
     .supportIcon {
         display: none;
     }
+}
 
+@media screen and (max-width: 743px) {
     .title {
         font-size: 25px;
+    }
+
+    .supportIcon {
+        width: 32px;
+        height: 32px;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
     }
 }

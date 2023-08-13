@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { observer } from "mobx-react";
 
 import LoopQuerySystemInfo from "src/LoopQuerySystemInfo";
+import MobileAvatarMenu from "src/MobileAvatarMenu";
 import SupportAsset from "src/SupportAsset";
 import WatchConnect from "src/WatchConnect";
 import WatchWallet from "src/WatchWallet";
@@ -38,6 +39,7 @@ function App() {
             <WatchConnect />
             <Risk />
             <SupportAsset />
+            <MobileAvatarMenu />
         </div>
     );
 }

@@ -7,8 +7,7 @@
 .container {
     width: 100%;
     height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 0 20px;
     backdrop-filter: blur(3px);
 
     display: flex;
@@ -16,7 +15,13 @@
     justify-content: space-between;
 }
 
-.leftWrap {
+.leftWrap,
+.rightWrap {
+    display: flex;
+    align-items: center;
+}
+
+.brandWrap {
     display: flex;
     align-items: center;
 
@@ -26,7 +31,14 @@
     }
 }
 
+.padTabsWrap {
+    margin: 0 auto;
+    display: none;
+    align-items: center;
+}
+
 .tabs {
+    margin-left: 80px;
     display: flex;
     align-items: center;
 }
@@ -44,6 +56,35 @@
 
 .active {
     color: var(--banner-menu-text-active-color);
+}
+
+.accountInfo {
+    display: flex;
+    align-items: center;
+}
+
+.accountInfoItem {
+    margin-right: 40px;
+    display: flex;
+    flex-direction: column;
+
+    span {
+        color: var(--50, rgba(255, 255, 255, 0.50));
+        font-family: CircularStd;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 450;
+        line-height: 133%;
+    }
+
+    p {
+        color: var(--unnamed, #FFF);
+        font-family: CircularStd;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 450;
+        line-height: normal;
+    }
 }
 
 .walletAddr {
@@ -88,6 +129,10 @@
             &:active,
             &:focus {
                 background: rgba(255, 255, 255, 0.1) !important;
+
+                .popMenuItem {
+                    color: var(--basic-text-color) !important;
+                }
             }
         }
 
@@ -108,16 +153,51 @@
     }
 }
 
+.menuIcon {
+    margin-right: 13px;
+}
+
+.avatar {
+    width: 20px;
+    height: 20px;
+    margin: 15px;
+    margin-right: 0;
+
+    img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+    }
+}
+
 @media screen and (max-width: 1199px) {
     .leftWrap img {
         width: 28px;
         height: 28px;
     }
+
+    .accountInfo,
+    .walletAddr {
+        display: none;
+    }
+
+    .mobileIcons {
+        display: flex;
+
+        div {
+            display: flex;
+            align-items: center;
+        }
+    }
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {
-    .container {
-        width: 684px;
+    .padTabsWrap {
+        display: flex;
+    }
+
+    .tabs {
+        display: none;
     }
 
     .tab {
@@ -129,27 +209,27 @@
         height: 32px;
         font-size: 12px;
     }
+
+    .menuIcon {
+        display: none !important;
+    }
 }
 
 @media screen and (max-width: 743px) {
     .container {
-        padding: 0 10px;
+        padding: 0 15px;
     }
 
-    .tabs,
-    .walletAddr {
+    .padTabsWrap {
         display: none;
     }
 
-    .mobileIcons {
+    .tabs {
+        display: none;
+    }
+
+    .menuIcon {
         display: flex;
-
-        div {
-            margin-right: 30px;
-
-            &:last-child {
-                margin-right: 0;
-            }
-        }
+        margin-right: 0;
     }
 }
