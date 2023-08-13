@@ -1719,7 +1719,7 @@ export default class Store {
         try {
             const { walletAddr } = this;
             if (!walletAddr) return;
-            const res = await axios.get(`/api/get_my_list?addr=${walletAddr}`);
+            const res = await axios.get(`/api/get_my_rank?addr=${walletAddr}`);
             const data = res.data;
 
             runInAction(() => {
