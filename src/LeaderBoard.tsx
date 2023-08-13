@@ -33,7 +33,7 @@ export default observer(function LeaderBoard() {
                     <p>{userInvite}</p>
                 </div>
                 <div className={s.item}>
-                    <span>My Ranking</span>
+                    <span>My Debt</span>
                     <p>{addCommas(
                         formatUnits(
                             userTrove?.debt || 0,
