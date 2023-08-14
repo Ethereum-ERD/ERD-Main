@@ -49,6 +49,10 @@ export const Routes = [
         name: 'Statistics'
     },
     {
+        path: '/leaderboard',
+        name: 'LeaderBoard'
+    },
+    {
         path: '/test',
         name: 'Test'
     }

@@ -15,6 +15,7 @@
 
 
     --input-placeholder-color: rgba(255, 255, 255, 0.3);
+    --basic-text-color: #fff;
 
 
     --linear-gradient-btn-from-color: #863CFF;
@@ -80,6 +81,22 @@
     --banner-wallet-border-color: #43454A;
     --banner-wallet-text-color: #fff;
     --banner-pop-menu-bg-color: #2B2D35;
+
+
+    --leader-board-wrap-bg-color: #292A30;
+    --leader-board-wrap-border-color: #43454A;
+    --leader-board-title-color: rgba(255, 255, 255, 1);
+    --leader-board-rank-index-color: #fff;
+    --leader-board-rank-1st-color: #FF4646;
+    --leader-board-rank-2nd-color: #FFE578;
+    --leader-board-rank-3rd-color: #3083FF;
+    --leader-board-self-rank-bg: #34363F;
+    --leader-board-self-rank-item-sp-tag-color: rgba(255, 255, 255, .5);
+    --leader-board-self-rank-item-p-tag-color: #fff;
+    --leader-board-rank-list-bg: #34363F;
+    --leader-board-rank-index-name-color: rgba(255, 255, 255, .5);
+    --leader-board-split-bg: #43454A;
+    --leader-board-no-data-tips-color: rgba(255, 255, 255, 0.5);
 
 
 

@@ -6,19 +6,6 @@ export type ExternalProvider = ethers.providers.Web3Provider;
 
 export type RPCProvider = ethers.providers.JsonRpcProvider;
 
-export enum Operation {
-    Unknown = 'Unknown',
-    OpenTrove = 'OpenTrove',
-    AdjustTrove = 'AdjustTrove',
-    Redeem = 'Redeem',
-    Liquidate = 'Liquidate',
-    CloseTrove = 'CloseTrove',
-    DepositToSP = 'DepositToSP',
-    WithdrawFromSP = 'WithdrawFromSP',
-    WithdrawsRewards = 'WithdrawsRewards',
-    WithdrawsRewardsToTrove = 'WithdrawsRewardsToTrove'
-}
-
 export enum CollateralStatus {
     NotSupport = 0,
     Active,
@@ -64,4 +51,13 @@ export interface SupportAssetsItem {
 export interface BorrowItem {
     token: string
     amount: number
+}
+
+export interface RankItem {
+    rank: number;
+    user: string;
+    score: number;
+    invite: number;
+    amount: number;
+    userFullStr: string;
 }

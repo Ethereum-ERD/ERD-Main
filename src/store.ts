@@ -12,7 +12,8 @@ import {
 import {
     ExternalProvider, UserTrove, SupportAssetsItem,
     UserCollateralItem, UserDepositRewardsItem,
-    ProtocolCollateralItem, RPCProvider, Operation
+    ProtocolCollateralItem, RPCProvider,
+    RankItem
 } from 'src/types';
 
 
@@ -135,7 +136,21 @@ export default class Store {
 
     showSupportAsset = false;
 
+    showMobileAvatarMenu = false;
+
     weekQuota = 0;
+
+    userScores = 0;
+
+    userRank = -1;
+
+    userInvite = 0;
+
+    isLoadingRankList = false;
+
+    isNoRankData = false;
+
+    rankList: Array<RankItem> = [];
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
@@ -157,6 +172,8 @@ export default class Store {
                 this.chainId
             ];
         }, this.initUserInfo);
+
+        reaction(() => this.walletAddr, this.getUserRankInfo);
 
         reaction(() => {
             return [
@@ -658,6 +675,12 @@ export default class Store {
         });
     }
 
+    toggleShowMobileAvatarMenu() {
+        runInAction(() => {
+            this.showMobileAvatarMenu = !this.showMobileAvatarMenu;
+        });
+    }
+
     async getBorrowerOpsListHint(
         collaterals: Array<{ token: string; amount: ethers.BigNumber }>,
         debt: ethers.BigNumber
@@ -948,7 +971,7 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-                this.logOperation(fixNumber(stableCoinAmount), Operation.OpenTrove);
+                this.logOperation(fixNumber(stableCoinAmount), 1);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1176,7 +1199,6 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-                this.logOperation(fixNumber(newStableCoinAmount), Operation.AdjustTrove);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1308,10 +1330,6 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-                this.logOperation(
-                    '0',
-                    Operation.Redeem
-                );
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1347,13 +1365,6 @@ export default class Store {
             }
 
             const result = await this.waitForTransactionConfirmed(hash);
-
-            if (result.status === 1) {
-                this.logOperation(
-                    '0',
-                    Operation.Liquidate
-                );
-            }
 
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1403,10 +1414,6 @@ export default class Store {
                 this.queryUserDepositGain();
                 this.queryUserDepositInfo();
                 this.queryStabilityPoolTVL();
-                this.logOperation(
-                    fixNumber(amount),
-                    Operation.DepositToSP
-                );
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1436,10 +1443,6 @@ export default class Store {
                 this.queryStabilityPoolTVL();
                 this.queryUserDepositInfo();
                 this.queryUserTokenInfo();
-                this.logOperation(
-                    fixNumber(amount),
-                    Operation.WithdrawFromSP
-                );
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1472,10 +1475,6 @@ export default class Store {
             if (result.status === 1) {
                 this.queryUserAssets();
                 this.queryStableCoinInfo();
-                this.logOperation(
-                    '0',
-                    Operation.WithdrawsRewards
-                );
             }
 
             return { status: result.status === 1, hash, msg: '' };
@@ -1507,13 +1506,6 @@ export default class Store {
                 .withdrawCollateralGainToTrove(EMPTY_ADDRESS, EMPTY_ADDRESS);
 
             const result = await this.waitForTransactionConfirmed(hash);
-
-            if (result.status === 1) {
-                this.logOperation(
-                    '0',
-                    Operation.WithdrawsRewardsToTrove
-                );
-            }
 
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1705,7 +1697,7 @@ export default class Store {
             addr: this.walletAddr,
             amount,
             type
-        }).catch(() => null)
+        }).catch(() => null);
     }
 
     async networkCheck() {
@@ -1720,6 +1712,63 @@ export default class Store {
             return true;
         } catch {
             return false;
+        }
+    }
+
+    async getUserRankInfo() {
+        try {
+            const { walletAddr } = this;
+            if (!walletAddr) return;
+            const res = await axios.get(`/api/get_my_rank?addr=${walletAddr}`);
+            const data = res.data;
+
+            runInAction(() => {
+                this.userScores = data.score;
+                this.userInvite = data.invite;
+                this.userRank   = data.rank;
+            });
+        } catch {}
+    }
+
+    async queryRankList () {
+        const { isLoadingRankList } = this;
+
+        if (isLoadingRankList) return;
+
+        runInAction(() => {
+            this.isLoadingRankList = true;
+        });
+
+        try {
+            const res = await axios.get('/api/get_rank_list');
+
+            const list: Array<RankItem> = res.data?.data || [];
+
+            const data: Array<any> = list
+                .map(c => {
+                    const { user, score, amount } = c;
+                    const len = user.length;
+                    return {
+                        ...c,
+                        userFullStr: user,
+                        score: +(score.toFixed(2)),
+                        amount: +(amount.toFixed(2)),
+                        user: user.slice(0, 6) + '...' + user.slice(len - 4)
+                    };
+                });
+
+            runInAction(() => {
+                this.rankList = data;
+                this.isNoRankData = data.length < 1;
+            });
+        } catch {
+            runInAction(() => {
+                this.isNoRankData = true;
+            });
+        } finally {
+            runInAction(() => {
+                this.isLoadingRankList = false;
+            });
         }
     }
 }
