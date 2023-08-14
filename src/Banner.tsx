@@ -141,8 +141,8 @@ function Banner() {
                 <div className={s.rightWrap}>
                     <div className={s.accountInfo}>
                         <div className={s.accountInfoItem}>
-                            <span>My Scores</span>
-                            <p>{userScores}</p>
+                            <span>My Score</span>
+                            <p>{(userScores).toFixed(2)}</p>
                         </div>
                         <div className={s.accountInfoItem}>
                             <span>My Debt</span>
@@ -150,7 +150,8 @@ function Banner() {
                                 {addCommas(
                                     formatUnits(
                                         userTrove?.debt || 0,
-                                        stableCoinDecimals || 18
+                                        stableCoinDecimals || 18,
+                                        2
                                     )
                                 )}
                             </p>

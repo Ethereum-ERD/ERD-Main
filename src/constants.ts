@@ -50,7 +50,7 @@ export const Routes = [
     },
     {
         path: '/leaderboard',
-        name: 'LeaderBoard'
+        name: 'Leaderboard'
     },
     {
         path: '/test',

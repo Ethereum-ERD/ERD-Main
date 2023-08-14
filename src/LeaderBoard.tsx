@@ -25,8 +25,8 @@ export default observer(function LeaderBoard() {
                     <p>{userRank === -1 ? 'UNRANKED' : userRank}</p>
                 </div>
                 <div className={s.item}>
-                    <span>My Scores</span>
-                    <p>{userScores}</p>
+                    <span>My Score</span>
+                    <p>{(userScores).toFixed(2)}</p>
                 </div>
                 <div className={s.item}>
                     <span>My Invitation</span>
@@ -46,7 +46,7 @@ export default observer(function LeaderBoard() {
                 <div className={s.tableHead}>
                     <p className={cx(s.rankIndexName, s.rankIndex)}>Ranking</p>
                     <p className={cx(s.rankIndexName, s.addrIndex)}>Address</p>
-                    <p className={cx(s.rankIndexName, s.scoreIndex)}>Scores</p>
+                    <p className={cx(s.rankIndexName, s.scoreIndex)}>Score</p>
                     <p className={cx(s.rankIndexName, s.invitedIndex)}>Invited</p>
                     <p className={cx(s.rankIndexName, s.debtIndex)}>Debt</p>
                 </div>
