@@ -57,7 +57,7 @@ export default observer(function MobileAvatarMenu() {
             <div className={s.menuList}>
                 <CopyToClipboard
                     text={walletAddr}
-                    onCopy={() => message.success("Copy successfully")}
+                    onCopy={() => message.success("Copied")}
                 >
                     <div
                         className={s.item}

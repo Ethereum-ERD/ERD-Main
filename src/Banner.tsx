@@ -55,7 +55,7 @@ function Banner() {
                 label: (
                     <CopyToClipboard
                         text={walletAddr}
-                        onCopy={() => message.success("Copy successfully")}
+                        onCopy={() => message.success("Copied")}
                     >
                         <div
                             className={cx(s.item, 'popMenuItem')}
