@@ -18,7 +18,7 @@ export default observer(function LeaderBoard() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>LeaderBoard</p>
+            <p className={s.title}>Leaderboard</p>
             <div className={s.selfRank}>
                 <div className={s.item}>
                     <span>My Ranking</span>
@@ -29,7 +29,7 @@ export default observer(function LeaderBoard() {
                     <p>{userScores}</p>
                 </div>
                 <div className={s.item}>
-                    <span>My Invite</span>
+                    <span>My Invitation</span>
                     <p>{userInvite}</p>
                 </div>
                 <div className={s.item}>
