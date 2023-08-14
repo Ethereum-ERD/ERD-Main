@@ -66,7 +66,7 @@ export default observer(function LeaderBoard() {
                                     >
                                         {item.rank}
                                     </p>
-                                    <p className={cx(s.rankIndexValue, s.addrValue)}>{item.user}</p>
+                                    <p className={cx(s.rankIndexValue, s.addrValue)} title={item.userFullStr}>{item.user}</p>
                                     <p className={cx(s.rankIndexValue, s.scoreValue)}>{addCommas(item.score)}</p>
                                     <p className={cx(s.rankIndexValue, s.invitedValue)}>{item.invite}</p>
                                     <p className={cx(s.rankIndexValue, s.debtValue)}>{addCommas(item.amount)}{"\u00A0"}{stableCoinName}</p>

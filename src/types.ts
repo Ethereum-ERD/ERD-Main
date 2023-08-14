@@ -59,4 +59,5 @@ export interface RankItem {
     score: number;
     invite: number;
     amount: number;
+    userFullStr: string;
 }

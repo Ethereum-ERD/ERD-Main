@@ -1750,6 +1750,7 @@ export default class Store {
                     const len = user.length;
                     return {
                         ...c,
+                        userFullStr: user,
                         score: +(score.toFixed(2)),
                         amount: +(amount.toFixed(2)),
                         user: user.slice(0, 6) + '...' + user.slice(len - 4)
