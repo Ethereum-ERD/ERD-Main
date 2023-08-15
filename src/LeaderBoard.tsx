@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import cx from 'classnames';
 import { Skeleton } from 'antd';
 
-import { addCommas, formatUnits } from "src/util";
+import { addCommas, formatUnits, formatNumber } from "src/util";
 import { useStore } from "src/hooks";
 
 import s from './LeaderBoard.module.scss';
@@ -26,7 +26,7 @@ export default observer(function LeaderBoard() {
                 </div>
                 <div className={s.item}>
                     <span>My Score</span>
-                    <p>{(userScores).toFixed(2)}</p>
+                    <p>{formatNumber(userScores)}</p>
                 </div>
                 <div className={s.item}>
                     <span>My Invitation</span>
@@ -67,9 +67,9 @@ export default observer(function LeaderBoard() {
                                         {item.rank}
                                     </p>
                                     <p className={cx(s.rankIndexValue, s.addrValue)} title={item.userFullStr}>{item.user}</p>
-                                    <p className={cx(s.rankIndexValue, s.scoreValue)}>{addCommas(item.score)}</p>
+                                    <p className={cx(s.rankIndexValue, s.scoreValue)}>{formatNumber(item.score)}</p>
                                     <p className={cx(s.rankIndexValue, s.invitedValue)}>{item.invite}</p>
-                                    <p className={cx(s.rankIndexValue, s.debtValue)}>{addCommas(item.amount)}{"\u00A0"}{stableCoinName}</p>
+                                    <p className={cx(s.rankIndexValue, s.debtValue)}>{formatNumber(item.amount)}{"\u00A0"}{stableCoinName}</p>
                                 </div>
                             );
                         })}

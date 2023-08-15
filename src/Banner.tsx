@@ -8,8 +8,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Dropdown, message } from "antd";
 import cx from "classnames";
 
+import { addCommas, formatUnits, formatNumber } from "src/util";
 import { EMPTY_ADDRESS, Routes } from "src/constants";
-import { addCommas, formatUnits } from "src/util";
 import { useStore } from "src/hooks";
 
 import Copy from "src/asset/banner/copy-dark.svg";
@@ -142,7 +142,7 @@ function Banner() {
                     <div className={s.accountInfo}>
                         <div className={s.accountInfoItem}>
                             <span>My Score</span>
-                            <p>{(userScores).toFixed(2)}</p>
+                            <p>{formatNumber(userScores)}</p>
                         </div>
                         <div className={s.accountInfoItem}>
                             <span>My Debt</span>

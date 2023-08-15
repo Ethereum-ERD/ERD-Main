@@ -127,28 +127,28 @@ export default observer(function AdjustTrove() {
     }, [borrowNum, assetValue]);
 
     useEffect(() => {
-        if (assetValue < gasCompensation / Math.pow(10, stableCoinDecimals)) return;
-
         let maxDebt = 0;
         if (isNormalMode) {
             // in normal mode, ICR should be great than MCR and newTCR must be great than CCR;
-            // v1 is ICR > MCR
-            const v1 = assetValue / systemMCR;
-            // v2 is newTCR > CCR;
-            const v2 = (systemTotalValueInUSD + assetValue - systemCCR * systemTotalDebtInUSD) / systemCCR;
-            maxDebt = truncateNumber(Math.min(v1, v2));
+            // MAX_DEBT_A is ICR > MCR
+            // systemMCR >= assetValue / MAX_DEBT_A;
+            const MAX_DEBT_A = assetValue / systemMCR;
+            // MAX_DEBT_B is newTCR > CCR;
+            // CCR >= (systemTotalValueInUSD + assetValue) / (systemTotalDebtInUSD + MAX_DEBT_B)
+            const MAX_DEBT_B = (systemTotalValueInUSD + assetValue - systemCCR * systemTotalDebtInUSD) / systemCCR;
+            maxDebt = truncateNumber(Math.min(MAX_DEBT_A, MAX_DEBT_B));
         } else {
             // in recovery mode, ICR should be great than CCR;
             maxDebt = truncateNumber(assetValue / systemCCR);
         }
 
-        // maxDebt = maxBorrowAble + gasCompensation + mintingFee
+        // maxDebt = maxBorrowAble + mintingFee
         // and mintingFee is [x] percent of maxBorrowAble
-        // so maxBorrowAble = (maxDebt - gasCompensation) / (1 + x)
-        const maxBorrowAble = (maxDebt - gasCompensation / Math.pow(10, stableCoinDecimals)) / (1 + MAX_MINTING_FEE);
+        // so maxBorrowAble = maxDebt / (1 + x)
+        const maxBorrowAble = maxDebt / (1 + mintingFeeRatio);
         if (maxBorrowAble < 0) return;
         setMaxBorrowNum(truncateNumber(maxBorrowAble));
-    }, [assetValue, gasCompensation, stableCoinDecimals, systemMCR, systemCCR, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD]);
+    }, [assetValue, systemMCR, systemCCR, mintingFeeRatio, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD]);
 
     const handleConfirm = async () => {
         if (isProcessing) return;

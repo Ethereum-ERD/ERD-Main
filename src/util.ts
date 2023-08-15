@@ -101,6 +101,21 @@ export function truncateDecimal(v: number, decimalPlaces = 2) {
     return Math.trunc(v * factor) / factor;
 }
 
+export function formatNumber(v: number) {
+    if (Number.isNaN(v) || typeof v !== 'number') {
+        return v;
+    }
+    if (v >= 1e9) {
+        return (v / 1e9).toFixed(2) + "B";
+    } else if (v >= 1e6) {
+        return (v / 1e6).toFixed(2) + "M";
+    } else if (v >= 1e3) {
+        return (v / 1e3).toFixed(2) + "K";
+    } else {
+        return v.toFixed(2);
+    }
+}
+
 export function translateUint(v: number) {
     if (Number.isNaN(v) || typeof v !== 'number') {
         return [v, ''];
