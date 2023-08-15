@@ -44,7 +44,7 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_EUSDLoss",
+              "name": "_USDELoss",
               "type": "uint256"
             }
           ],
@@ -176,19 +176,6 @@ export default {
             }
           ],
           "name": "DepositSnapshotUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_newEUSDTokenAddress",
-              "type": "address"
-            }
-          ],
-          "name": "EUSDTokenAddressChanged",
           "type": "event"
         },
         {
@@ -525,7 +512,7 @@ export default {
               "type": "uint256"
             }
           ],
-          "name": "StabilityPoolEUSDBalanceUpdated",
+          "name": "StabilityPoolUSDEBalanceUpdated",
           "type": "event"
         },
         {
@@ -578,6 +565,19 @@ export default {
             }
           ],
           "name": "TroveManagerRedemptionsAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newUSDETokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
           "type": "event"
         },
         {
@@ -725,6 +725,24 @@ export default {
         {
           "inputs": [],
           "name": "approveBorrowerOperations",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "authorizeBorrowerOperations",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -919,19 +937,6 @@ export default {
           "type": "function"
         },
         {
-          "inputs": [],
-          "name": "eusdToken",
-          "outputs": [
-            {
-              "internalType": "contract IEUSDToken",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
           "inputs": [
             {
               "internalType": "address",
@@ -1044,11 +1049,11 @@ export default {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_depositor",
+              "name": "_frontEnd",
               "type": "address"
             }
           ],
-          "name": "getCompoundedEUSDDeposit",
+          "name": "getCompoundedFrontEndStake",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1063,11 +1068,11 @@ export default {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_frontEnd",
+              "name": "_depositor",
               "type": "address"
             }
           ],
-          "name": "getCompoundedFrontEndStake",
+          "name": "getCompoundedUSDEDeposit",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1249,7 +1254,7 @@ export default {
         },
         {
           "inputs": [],
-          "name": "getTotalEUSDDeposits",
+          "name": "getTotalUSDEDeposits",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1288,7 +1293,7 @@ export default {
         },
         {
           "inputs": [],
-          "name": "lastEUSDLossError_Offset",
+          "name": "lastGainError",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1301,7 +1306,7 @@ export default {
         },
         {
           "inputs": [],
-          "name": "lastGainError",
+          "name": "lastUSDELossError_Offset",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1428,7 +1433,7 @@ export default {
             },
             {
               "internalType": "address",
-              "name": "_eusdTokenAddress",
+              "name": "_usdeTokenAddress",
               "type": "address"
             },
             {
@@ -1526,6 +1531,37 @@ export default {
           "inputs": [
             {
               "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "unauthorizeBorrowerOperations",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "usdeToken",
+          "outputs": [
+            {
+              "internalType": "contract IUSDEToken",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
               "name": "_upperHint",
               "type": "address"
             },
@@ -1557,6 +1593,6 @@ export default {
           "stateMutability": "payable",
           "type": "receive"
         }
-      ],
-    addr: '0xd2090CC01D44e9F22c6626774b9abFC16FF1BCad'
+    ],
+    addr: '0x18ddd6A8e4baF4D359dd6C4ad1067d0490fE02D2'
 }

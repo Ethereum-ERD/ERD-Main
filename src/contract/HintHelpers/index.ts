@@ -222,19 +222,6 @@ export default {
         },
         {
           "inputs": [],
-          "name": "eusdToken",
-          "outputs": [
-            {
-              "internalType": "contract IEUSDToken",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "gasPoolAddress",
           "outputs": [
             {
@@ -354,7 +341,7 @@ export default {
           "inputs": [
             {
               "internalType": "uint256",
-              "name": "_EUSDamount",
+              "name": "_USDEamount",
               "type": "uint256"
             },
             {
@@ -382,7 +369,7 @@ export default {
             },
             {
               "internalType": "uint256",
-              "name": "truncatedEUSDamount",
+              "name": "truncatedUSDEamount",
               "type": "uint256"
             }
           ],
@@ -503,7 +490,20 @@ export default {
           ],
           "stateMutability": "view",
           "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "usdeToken",
+          "outputs": [
+            {
+              "internalType": "contract IUSDEToken",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         }
-      ],
-    addr: '0x96e4ff40898744d4C901a4ba24a812D826C33c42'
+    ],
+    addr: '0xff70A320F0B0FB1b8144E42dC10aE496AC094aF3'
 }

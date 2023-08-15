@@ -56,38 +56,6 @@ export default {
           "anonymous": false,
           "inputs": [
             {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_borrower",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_EUSDFee",
-              "type": "uint256"
-            }
-          ],
-          "name": "EUSDBorrowingFeePaid",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_eusdTokenAddress",
-              "type": "address"
-            }
-          ],
-          "name": "EUSDTokenAddressChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
               "indexed": false,
               "internalType": "address",
               "name": "_gasPoolAddress",
@@ -304,12 +272,44 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "enum IBorrowerOperationsV2.BorrowerOperation",
+              "internalType": "enum IBorrowerOperations.BorrowerOperation",
               "name": "operation",
               "type": "uint8"
             }
           ],
           "name": "TroveUpdated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_borrower",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_USDEFee",
+              "type": "uint256"
+            }
+          ],
+          "name": "USDEBorrowingFeePaid",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_usdeTokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
           "type": "event"
         },
         {
@@ -346,19 +346,6 @@ export default {
         },
         {
           "inputs": [],
-          "name": "EUSD_GAS_COMPENSATION",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "NAME",
           "outputs": [
             {
@@ -373,6 +360,19 @@ export default {
         {
           "inputs": [],
           "name": "PERCENT_DIVISOR",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "USDE_GAS_COMPENSATION",
           "outputs": [
             {
               "internalType": "uint256",
@@ -513,7 +513,7 @@ export default {
             },
             {
               "internalType": "uint256",
-              "name": "_EUSDChange",
+              "name": "_USDEChange",
               "type": "uint256"
             },
             {
@@ -570,19 +570,6 @@ export default {
           "outputs": [
             {
               "internalType": "contract IDefaultPool",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "eusdToken",
-          "outputs": [
-            {
-              "internalType": "contract IEUSDToken",
               "name": "",
               "type": "address"
             }
@@ -764,7 +751,7 @@ export default {
             },
             {
               "internalType": "uint256",
-              "name": "_EUSDAmount",
+              "name": "_USDEAmount",
               "type": "uint256"
             },
             {
@@ -825,7 +812,7 @@ export default {
           "inputs": [
             {
               "internalType": "uint256",
-              "name": "_EUSDAmount",
+              "name": "_USDEAmount",
               "type": "uint256"
             },
             {
@@ -839,7 +826,7 @@ export default {
               "type": "address"
             }
           ],
-          "name": "repayEUSD",
+          "name": "repayUSDE",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -893,7 +880,7 @@ export default {
             },
             {
               "internalType": "address",
-              "name": "_eusdTokenAddress",
+              "name": "_usdeTokenAddress",
               "type": "address"
             }
           ],
@@ -982,15 +969,15 @@ export default {
         },
         {
           "inputs": [],
-          "name": "version",
+          "name": "usdeToken",
           "outputs": [
             {
-              "internalType": "string",
+              "internalType": "contract IUSDEToken",
               "name": "",
-              "type": "string"
+              "type": "address"
             }
           ],
-          "stateMutability": "pure",
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -1025,7 +1012,7 @@ export default {
           "inputs": [
             {
               "internalType": "uint256",
-              "name": "_EUSDAmount",
+              "name": "_USDEAmount",
               "type": "uint256"
             },
             {
@@ -1044,11 +1031,11 @@ export default {
               "type": "uint256"
             }
           ],
-          "name": "withdrawEUSD",
+          "name": "withdrawUSDE",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
         }
-      ],
-    addr: '0xDD35e37A29ff16E8863A05DA871F0923223ADbD4'
+    ],
+    addr: '0x27433b79EeC5350162b116F8f18016624de1471A'
 }

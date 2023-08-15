@@ -110,11 +110,23 @@ export default {
             {
               "indexed": false,
               "internalType": "address",
-              "name": "_newEUSDTokenAddress",
+              "name": "_collateral",
               "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_E_Coll",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_E_USDEDebt",
+              "type": "uint256"
             }
           ],
-          "name": "EUSDTokenAddressChanged",
+          "name": "ETermsUpdated",
           "type": "event"
         },
         {
@@ -141,31 +153,6 @@ export default {
             }
           ],
           "name": "Initialized",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_L_Coll",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_L_EUSDDebt",
-              "type": "uint256"
-            }
-          ],
-          "name": "LTermsUpdated",
           "type": "event"
         },
         {
@@ -205,7 +192,7 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_EUSDGasCompensation",
+              "name": "_USDEGasCompensation",
               "type": "uint256"
             }
           ],
@@ -233,6 +220,12 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [
             {
               "indexed": false,
@@ -250,13 +243,13 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_attemptedEUSDAmount",
+              "name": "_attemptedUSDEAmount",
               "type": "uint256"
             },
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_actualEUSDAmount",
+              "name": "_actualUSDEAmount",
               "type": "uint256"
             },
             {
@@ -535,6 +528,25 @@ export default {
             {
               "indexed": false,
               "internalType": "address",
+              "name": "_newUSDETokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [],
+          "name": "Unpaused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
               "name": "_wethAddress",
               "type": "address"
             }
@@ -657,19 +669,6 @@ export default {
           "outputs": [
             {
               "internalType": "contract IDefaultPool",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "eusdToken",
-          "outputs": [
-            {
-              "internalType": "contract IEUSDToken",
               "name": "",
               "type": "address"
             }
@@ -873,7 +872,7 @@ export default {
             },
             {
               "internalType": "address",
-              "name": "_eusdTokenAddress",
+              "name": "_usdeTokenAddress",
               "type": "address"
             },
             {
@@ -948,7 +947,20 @@ export default {
           ],
           "stateMutability": "view",
           "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "usdeToken",
+          "outputs": [
+            {
+              "internalType": "contract IUSDEToken",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         }
-      ],
-    addr: '0x53BEea6454E40eF6697B5Cd9F7497A059AcDe039'
+    ],
+    addr: '0xdf5Bb8eE730817fB4F5FB42DcE5f207BF56c190a'
 }

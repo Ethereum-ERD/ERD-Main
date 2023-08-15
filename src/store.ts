@@ -365,7 +365,7 @@ export default class Store {
             troveData
         ] = await Promise.all([
             CollateralManager.getMCR(),
-            CollateralManager.getEUSDGasCompensation(),
+            CollateralManager.getUSDEGasCompensation(),
             CollateralManager.getMinNetDebt(),
             CollateralManager.getCCR(),
             TroveManager.getRedemptionRate(),
@@ -544,7 +544,7 @@ export default class Store {
     async queryStabilityPoolTVL() {
         const { StabilityPool } = this.contractMap;
         if (!StabilityPool) return;
-        const data = await StabilityPool.getTotalEUSDDeposits();
+        const data = await StabilityPool.getTotalUSDEDeposits();
         runInAction(() => {
             this.spTVL = +data;
         });
@@ -554,7 +554,7 @@ export default class Store {
         const { walletAddr, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!walletAddr || !StabilityPool) return;
-        const value = await StabilityPool.getCompoundedEUSDDeposit(walletAddr);
+        const value = await StabilityPool.getCompoundedUSDEDeposit(walletAddr);
         runInAction(() => {
             this.userDepositAmount = +value;
         });

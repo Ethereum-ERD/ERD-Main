@@ -172,24 +172,11 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_EUSDDebt",
+              "name": "_USDEDebt",
               "type": "uint256"
             }
           ],
-          "name": "DefaultPoolEUSDDebtUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_newEUSDTokenAddress",
-              "type": "address"
-            }
-          ],
-          "name": "EUSDTokenAddressChanged",
+          "name": "DefaultPoolUSDEDebtUpdated",
           "type": "event"
         },
         {
@@ -334,16 +321,25 @@ export default {
             {
               "indexed": false,
               "internalType": "address",
+              "name": "_newUSDETokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
               "name": "_wethAddress",
               "type": "address"
             }
           ],
           "name": "WETHAddressChanged",
           "type": "event"
-        },
-        {
-          "stateMutability": "payable",
-          "type": "fallback"
         },
         {
           "inputs": [],
@@ -379,7 +375,7 @@ export default {
               "type": "uint256"
             }
           ],
-          "name": "decreaseEUSDDebt",
+          "name": "decreaseUSDEDebt",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -393,19 +389,6 @@ export default {
             }
           ],
           "name": "getCollateralAmount",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "getEUSDDebt",
           "outputs": [
             {
               "internalType": "uint256",
@@ -440,6 +423,19 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "getUSDEDebt",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
               "internalType": "uint256",
@@ -447,7 +443,7 @@ export default {
               "type": "uint256"
             }
           ],
-          "name": "increaseEUSDDebt",
+          "name": "increaseUSDEDebt",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -540,11 +536,7 @@ export default {
           ],
           "stateMutability": "view",
           "type": "function"
-        },
-        {
-          "stateMutability": "payable",
-          "type": "receive"
         }
-      ],
-    addr: '0x7786188F5A9c93fBF0A378e9c14E47e69661A2Ad'
+    ],
+    addr: '0xa6d2e4D7cBd3593D0e120ed8f91b3deC2398F2eE'
 }

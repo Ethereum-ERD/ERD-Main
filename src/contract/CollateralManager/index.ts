@@ -110,11 +110,23 @@ export default {
             {
               "indexed": false,
               "internalType": "address",
-              "name": "_newEUSDTokenAddress",
+              "name": "_collateral",
               "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_E_Coll",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_E_USDEDebt",
+              "type": "uint256"
             }
           ],
-          "name": "EUSDTokenAddressChanged",
+          "name": "ETermsUpdated",
           "type": "event"
         },
         {
@@ -141,31 +153,6 @@ export default {
             }
           ],
           "name": "Initialized",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_L_Coll",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_L_EUSDDebt",
-              "type": "uint256"
-            }
-          ],
-          "name": "LTermsUpdated",
           "type": "event"
         },
         {
@@ -205,7 +192,7 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_EUSDGasCompensation",
+              "name": "_USDEGasCompensation",
               "type": "uint256"
             }
           ],
@@ -256,13 +243,13 @@ export default {
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_attemptedEUSDAmount",
+              "name": "_attemptedUSDEAmount",
               "type": "uint256"
             },
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "_actualEUSDAmount",
+              "name": "_actualUSDEAmount",
               "type": "uint256"
             },
             {
@@ -537,6 +524,19 @@ export default {
         },
         {
           "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newUSDETokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
           "inputs": [],
           "name": "Unpaused",
           "type": "event"
@@ -596,19 +596,6 @@ export default {
         {
           "inputs": [],
           "name": "DECIMAL_PRECISION",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "EUSD_GAS_COMPENSATION",
           "outputs": [
             {
               "internalType": "uint256",
@@ -687,6 +674,19 @@ export default {
         {
           "inputs": [],
           "name": "REDEMPTION_FEE_FLOOR",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "USDE_GAS_COMPENSATION",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1002,19 +1002,6 @@ export default {
         },
         {
           "inputs": [],
-          "name": "eusdToken",
-          "outputs": [
-            {
-              "internalType": "contract IEUSDToken",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "gasPoolAddress",
           "outputs": [
             {
@@ -1231,19 +1218,6 @@ export default {
         {
           "inputs": [],
           "name": "getCollateralsAmount",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "getEUSDGasCompensation",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1645,6 +1619,19 @@ export default {
               "internalType": "address[]",
               "name": "",
               "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getUSDEGasCompensation",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
             }
           ],
           "stateMutability": "view",
@@ -2139,6 +2126,19 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "usdeToken",
+          "outputs": [
+            {
+              "internalType": "contract IUSDEToken",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
               "internalType": "address",
@@ -2180,6 +2180,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-      ],
-    addr: '0x803a9FE67b034Eeb3dcb09Ca6D36BB698d44B055'
+    ],
+    addr: '0x025Cc3ba80Cb7D34c21ce0C1cBD78Cc64771A8B5'
 }

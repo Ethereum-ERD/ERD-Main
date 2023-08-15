@@ -344,6 +344,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-      ],
-    addr: '0x801333AcAe265cA29c5e8CEa9C54Ab42fbD90FA6'
+    ],
+    addr: '0x39d4e79080f02B84d16008E0f85CdA98c2FCc16b'
 }

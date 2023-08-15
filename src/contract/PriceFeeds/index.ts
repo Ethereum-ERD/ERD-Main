@@ -298,6 +298,6 @@ export default {
           "stateMutability": "nonpayable",
           "type": "function"
         }
-      ],
+    ],
     addr: '0x1d00E86748573C322f4cc41518AA0e77BD912Eb4'
 }

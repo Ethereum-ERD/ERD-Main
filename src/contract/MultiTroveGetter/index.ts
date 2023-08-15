@@ -67,7 +67,7 @@ export default {
                 },
                 {
                   "internalType": "uint256[]",
-                  "name": "snapshotEUSDDebts",
+                  "name": "snapshotUSDEDebts",
                   "type": "uint256[]"
                 }
               ],
@@ -123,6 +123,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-      ],
-    addr: '0xe7a1A79d0B5a7E39e7244F1CDFCfbe6ecF41015C'
+    ],
+    addr: '0xf30B5fdD20357f4628b7693CF4e6823308F0b0a6'
 }
