@@ -301,7 +301,7 @@ export default observer(function OpenTrove() {
                     onChange={onReferAddrChange}
                     className={s.referInput}
                     placeholder='0x...'
-                    addonBefore={'Referral(Optional)'}
+                    addonBefore={'Referral (Optional)'}
                     defaultValue={referAddr}
                     value={referAddr}
                     maxLength={42}
@@ -311,7 +311,7 @@ export default observer(function OpenTrove() {
             <div className={s.collRatioInfo}>
                 <div className={s.collRatioInfoTop}>
                     <div>
-                        Collateral Ratio({(systemMCR * 100).toFixed(0)}% Min)
+                        Collateral Ratio{"\u00A0"}({(systemMCR * 100).toFixed(0)}% Min)
                     </div>
                     {validColls.length === 0 && <p>N/A</p>}
                     {validColls.length > 0 && (

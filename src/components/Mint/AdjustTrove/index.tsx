@@ -313,7 +313,7 @@ export default observer(function AdjustTrove() {
             <div className={s.collRatioInfo}>
                 <div className={s.collRatioInfoTop}>
                     <div>
-                        Collateral Ratio({(systemMCR * 100).toFixed(0)}% Min)
+                        Collateral Ratio{"\u00A0"}({(systemMCR * 100).toFixed(0)}% Min)
                     </div>
                     {validColls.length === 0 && <p>N/A</p>}
                     {validColls.length > 0 && (

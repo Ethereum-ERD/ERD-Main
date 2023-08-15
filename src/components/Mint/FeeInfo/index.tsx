@@ -2,8 +2,8 @@ import { observer } from "mobx-react";
 import { Popover } from "antd";
 import cx from 'classnames';
 
+import { formatUnits, truncateDecimal, addCommas } from 'src/util';
 import CircleHelp from "src/components/common/CircleHelp";
-import { formatUnits, truncateDecimal } from 'src/util';
 import { useStore } from "src/hooks";
 
 import s from "./index.module.scss";
@@ -41,7 +41,7 @@ export default observer(function FeeInfo({
             <div className={s.item}>
                 <p>Total Debt</p>
                 <p>
-                    {formatUnits(totalDebt, stableCoinDecimals)}
+                    {addCommas(formatUnits(totalDebt, stableCoinDecimals))}
                     {"\u00A0"}
                     <span>{stableCoinName}</span>
                 </p>
@@ -55,7 +55,7 @@ export default observer(function FeeInfo({
                 <p>
                     {(fee).toFixed(0)}
                     {"\u00A0"}
-                    <span>{stableCoinName}({truncateDecimal(mintingFeeRatio * 100)}%)</span>
+                    <span>{stableCoinName}{"\u00A0"}({truncateDecimal(mintingFeeRatio * 100)}%)</span>
                 </p>
             </div>
         </div>
