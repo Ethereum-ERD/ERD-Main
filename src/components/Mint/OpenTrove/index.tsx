@@ -301,7 +301,7 @@ export default observer(function OpenTrove() {
                     onChange={onReferAddrChange}
                     className={s.referInput}
                     placeholder='0x...'
-                    addonBefore={'Referral'}
+                    addonBefore={'Referral(Optional)'}
                     defaultValue={referAddr}
                     value={referAddr}
                     maxLength={42}

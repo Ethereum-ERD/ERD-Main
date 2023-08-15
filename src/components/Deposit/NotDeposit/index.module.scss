@@ -38,7 +38,7 @@
     width: 100%;
     height: 78px;
     padding: 0 24px;
-    margin-top: 94px;
+    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,10 +64,17 @@
     }
 }
 
+.btnArea {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
 .btn {
     width: 100%;
     height: 52px;
-    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,9 +92,116 @@
     }
 }
 
+.claimBtn {
+    width: 150px;
+    height: 52px;
+
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--no-deposit-btn-text-color);
+    cursor: pointer;
+    border-radius: 10px;
+    flex: 0 0 auto;
+    background-clip: padding-box,border-box;
+    background-image: linear-gradient(26deg,var(--no-deposit-claim-btn-bg),var(--no-deposit-claim-btn-bg)),radial-gradient(circle at left top,var(--linear-gradient-btn-from-color), var(--linear-gradient-btn-to-color));
+    background-origin: border-box;
+    border: 1px solid transparent;
+
+    opacity: 1;
+
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .7;
+    }
+
+    &.disable {
+        cursor: not-allowed;
+        background-image: unset;
+        color: var(--no-deposit-claim-btn-disable-text-color);
+        border: 1px solid var(--no-deposit-claim-btn-disable-border-color);
+        background-color: var(--no-deposit-claim-btn-disable-bg);
+    }
+}
+
+.rewardInfo {
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    background-color: var(--no-deposit-reward-info-bg);
+}
+
+.rewardInfoTitle {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 133%;
+    color: var(--no-deposit-reward-info-title-color);
+}
+
+.rewardList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rewardItem {
+    width: 50%;
+}
+
+.rewardItemHead {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin-top: 0;
+        border-radius: 50%;
+    }
+
+    p {
+        margin-left: 5px;
+        font-size: 14px;
+        line-height: 133%;
+        color: var(--claim-reward-modal-reward-title-color);
+    }
+}
+
+.rewardItemBody {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+
+    &>p:first-child {
+        margin-right: 5px;
+        color: var(--claim-reward-modal-reward-value-color);
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 133%;
+    }
+
+    &>p:last-child {
+        font-size: 14px;
+        line-height: 133%;
+        color: var(--claim-reward-modal-reward-value-extra-color);
+    }
+}
+
 @media screen and (min-width: 744px) and (max-width: 1199px) {
     .wrap {
         width: 100%;
+    }
+
+    .claimBtn {
+        width: 188px;
     }
 }
 
@@ -113,5 +227,25 @@
 
     .balanceAmount {
         font-size: 20px;
+    }
+
+    .rewardItemHead img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .btnArea {
+        flex-direction: column;
+    }
+
+    .btn {
+        order: 1;
+    }
+
+    .claimBtn {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 20px;
+        order: 2;
     }
 }

@@ -54,7 +54,7 @@
 
 
 
-    --fee-info-bg-color: #303237;
+    --fee-info-bg-color: #34363F;
     --fee-info-modal-bg-color: rgba(0, 0, 0, 0.5);
     --fee-info-item-first-p-text-color: rgba(255, 255, 255, 0.5);
     --fee-info-item-first-div-text-color: rgba(255, 255, 255, 0.5);
@@ -70,7 +70,7 @@
     --support-asset-popup-wrap-box-shadow-color: rgba(32, 32, 32, 0.25);
     --support-asset-popup-title-color: #fff;
     --support-asset-popup-column-title-color: rgba(255, 255, 255, 0.5);
-    --support-asset-popup-asset-item-bg-color: #303237;
+    --support-asset-popup-asset-item-bg-color: #34363F;
     --support-asset-popup-asset-item-text-color: #fff;
 
 
@@ -105,7 +105,7 @@
     --new-user-for-open-trove-title-desc-color: rgba(255, 255, 255, 0.5);
     --new-user-for-open-trove-desc-color: rgba(255, 255, 255, 0.7);
     --new-user-for-open-trove-tips-color: rgba(255, 255, 255, 0.5);
-    --new-user-for-open-trove-balance-bg-color: #303237;
+    --new-user-for-open-trove-balance-bg-color: #34363F;
     --new-user-for-open-trove-balance-title-color: #fff;
     --new-user-for-open-trove-balance-asset-name-color: rgba(255, 255, 255, .5);
     --new-user-for-open-trove-balance-asset-amount-color: #fff;
@@ -135,7 +135,7 @@
     --user-trove-show-bg-color: #292A30;
     --user-trove-show-border-color: #43454A;
     --user-trove-show-title-desc-color: rgba(255, 255, 255, 0.5);
-    --user-trove-show-info-bg-color: #303237;
+    --user-trove-show-info-bg-color: #34363F;
     --user-trove-show-info-item-title-color: rgba(255, 255, 255, 0.5);
     --user-trove-show-info-item-value-color: #fff;
     --user-trove-show-info-item-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -185,12 +185,17 @@
     --no-deposit-bg-border-color: #43454A;
     --no-deposit-desc-color: rgba(255, 255, 255, 0.7);
     --no-deposit-tips-color: #999;
-    --no-deposit-balance-info-bg-color: #303237;
+    --no-deposit-balance-info-bg-color: #34363F;
     --no-deposit-balance-info-text-color: rgba(255, 255, 255, .5);
     --no-deposit-balance-amount-text-color: #fff;
     --no-deposit-balance-amount-extra-text-color: rgba(255, 255, 255, 0.5);
     --no-deposit-btn-text-color: #fff;
-
+    --no-deposit-reward-info-bg: #34363F;
+    --no-deposit-claim-btn-bg: #292A30;
+    --no-deposit-claim-btn-disable-bg: #292A30;
+    --no-deposit-claim-btn-disable-text-color: rgba(255, 255, 255, 0.50);
+    --no-deposit-claim-btn-disable-border-color: rgba(255, 255, 255, 0.50);
+    --no-deposit-reward-info-title-color: #fff;
 
 
     --new-deposit-bg-color: #292A30;
@@ -206,7 +211,7 @@
     --new-deposit-balance-warning-bg-color: rgba(255, 120, 120, 0.1);
     --new-deposit-balance-warning-border-color: #FF7878;
     --new-deposit-balance-warning-text-color: #fff;
-    --new-deposit-pool-share-info-bg-color: #303237;
+    --new-deposit-pool-share-info-bg-color: #34363F;
     --new-deposit-pool-share-info-title-text-color: rgba(255, 255, 255, 0.5);
     --new-deposit-pool-share-info-value-text-color: #fff;
     --new-deposit-btn-text-color: #fff;
@@ -219,7 +224,7 @@
     --deposit-over-view-claim-btn-border-color: rgba(255, 255, 255, 0.5);
     --deposit-over-view-claim-btn-text-color: #999;
     --deposit-over-view-desc-color: rgba(255, 255, 255, 0.5); 
-    --deposit-over-view-deposit-info-bg-color: #303237;
+    --deposit-over-view-deposit-info-bg-color: #34363F;
     --deposit-over-view-deposit-info-index-name-color: rgba(255, 255, 255, .5);
     --deposit-over-view-deposit-info-index-value-color: #fff;
     --deposit-over-view-deposit-info-index-value-extra-color: rgba(255, 255, 255, .5);
@@ -233,7 +238,7 @@
     --re-deposit-over-view-claim-btn-border-color: rgba(255, 255, 255, 0.5);
     --re-deposit-over-view-claim-btn-text-color: #999;
     --re-deposit-over-view-desc-color: rgba(255, 255, 255, 0.5); 
-    --re-deposit-over-view-deposit-info-bg-color: #303237;
+    --re-deposit-over-view-deposit-info-bg-color: #34363F;
     --re-deposit-input-wrap-border-color: #43454A;
     --re-deposit-input-bg-color: #292A30;
     --re-deposit-input-text-color: #fff;
@@ -244,7 +249,7 @@
     --re-deposit-balance-warning-bg-color: rgba(255, 120, 120, 0.1);
     --re-deposit-balance-warning-border-color: #FF7878;
     --re-deposit-balance-warning-text-color: #fff;
-    --re-deposit-deposit-info-bg-color: #303237;
+    --re-deposit-deposit-info-bg-color: #34363F;
     --re-deposit-deposit-info-title-color: rgba(255, 255, 255, 0.5);
     --re-deposit-deposit-info-value-color: #fff;
     --re-deposit-deposit-info-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -262,7 +267,7 @@
     --withdraw-input-text-color: #fff;
     --withdraw-input-after-color: rgba(255, 255, 255, 0.7);
     --withdraw-input-max-text-color: #3083FF;
-    --withdraw-deposit-info-bg-color: #303237;
+    --withdraw-deposit-info-bg-color: #34363F;
     --withdraw-deposit-info-title-color: rgba(255, 255, 255, 0.5);
     --withdraw-deposit-info-value-color: #fff;
     --withdraw-deposit-info-value-extra-color: rgba(255, 255, 255, 0.5);
@@ -273,7 +278,7 @@
     --claim-reward-mask-bg-color: rgba(0, 0, 0, 0.3);
     --claim-reward-modal-bg-color: #292A30;
     --claim-reward-modal-title-color: #fff;
-    --claim-reward-modal-content-bg-color: #303237;
+    --claim-reward-modal-content-bg-color: #34363F;
     --claim-reward-modal-content-title-color: #fff;
     --claim-reward-modal-reward-title-color: rgba(255, 255, 255, 0.5);
     --claim-reward-modal-reward-value-color: #fff;
@@ -321,7 +326,7 @@
     --redeem-input-bg-color: #292A30;
     --redeem-input-text-color: #fff;
     --redeem-input-after-color: rgba(255, 255, 255, 0.7);
-    --redeem-fee-info-bg-color: #303237;
+    --redeem-fee-info-bg-color: #34363F;
     --redeem-fee-info-text-color: #999;
     --redeem-fee-amount-color: #fff;
     --redeem-btn-text-color: #fff;

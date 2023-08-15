@@ -50,9 +50,9 @@ export default class Store {
     latestRandomSeed = toBN(RANDOM_SEED);
 
     /* stable coin info */
-    stableCoinName = '';
+    stableCoinName = 'USDE';
 
-    stableCoinDecimals = 0;
+    stableCoinDecimals = 18;
 
     stableCoinTotalSupply = 0;
 
@@ -162,8 +162,6 @@ export default class Store {
                 this.supportAssets.length
             ];
         }, this.queryUserAssets);
-
-        reaction(() => this.contractMap.StableCoin, this.queryStableCoinInfo);
 
         reaction(() => {
             return [
@@ -417,20 +415,6 @@ export default class Store {
         });
     }
 
-    async queryStableCoinInfo() {
-        const { StableCoin } = this.contractMap;
-        if (!StableCoin) return;
-        const [symbol, decimals] = await Promise.all([
-            StableCoin.symbol(),
-            StableCoin.decimals()
-        ]);
-        runInAction(() => {
-            this.stableCoinName = 'USDE';
-            // this.stableCoinName = symbol;
-            this.stableCoinDecimals = decimals;
-        });
-    }
-
     async querySupportCollateral() {
         const { CollateralManager } = this.contractMap;
         if (!CollateralManager) return;
@@ -569,16 +553,27 @@ export default class Store {
             gains
         ]: [Array<string>, Array<ethers.BigNumber>] = await StabilityPool.getDepositorCollateralGain(walletAddr);
 
-        const formatCollateral = collateral
-            .map(c => c.toLowerCase())
-            .map((c, idx) => {
-                const token = c === WETH_ADDR ? MOCK_ETH_ADDR : c;
-                const asset = supportAssets.find(asset => asset.tokenAddr === token);
+        let formatCollateral: Array<UserDepositRewardsItem>;
+
+        if (collateral.length > 0) {
+            formatCollateral = collateral
+                .map(c => c.toLowerCase())
+                .map((c, idx) => {
+                    const token = c === WETH_ADDR ? MOCK_ETH_ADDR : c;
+                    const asset = supportAssets.find(asset => asset.tokenAddr === token);
+                    return {
+                        ...asset!,
+                        rewards: +gains[idx]
+                    };
+                });
+        } else {
+            formatCollateral = supportAssets.map(asset => {
                 return {
-                    ...asset!,
-                    rewards: +gains[idx]
+                    ...asset,
+                    rewards: 0
                 };
             });
+        }
 
         runInAction(() => {
             this.userDepositRewardsInfo = formatCollateral;
@@ -1474,7 +1469,6 @@ export default class Store {
 
             if (result.status === 1) {
                 this.queryUserAssets();
-                this.queryStableCoinInfo();
             }
 
             return { status: result.status === 1, hash, msg: '' };
@@ -1753,7 +1747,7 @@ export default class Store {
                         userFullStr: user,
                         score: +(score.toFixed(2)),
                         amount: +(amount.toFixed(2)),
-                        user: user.slice(0, 6) + '...' + user.slice(len - 4)
+                        user: user.slice(0, 5) + '...' + user.slice(len - 4)
                     };
                 });
 

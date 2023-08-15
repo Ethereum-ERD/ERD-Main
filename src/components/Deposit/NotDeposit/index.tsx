@@ -1,16 +1,18 @@
 import { observer } from "mobx-react";
+import cx from 'classnames';
+import { Skeleton } from 'antd';
 
 import { useStore } from "src/hooks";
 
+import { formatUnits, addCommas, truncateDecimal } from 'src/util';
 import DepositTitle from "src/components/common/DepositTitle";
-import { formatUnits, addCommas } from 'src/util';
 
 import s from "./index.module.scss";
 
 function NotDeposit() {
 
     const { store } = useStore();
-    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit } = store;
+    const { stableCoinName, stableCoinDecimals, userStableCoinBalance, toggleStartDeposit, toggleStartClaimRewards, userCanClaimDepositRewards, userDepositRewardsInfo } = store;
 
     return (
         <div className={s.wrap}>
@@ -29,7 +31,38 @@ function NotDeposit() {
                     <span>{stableCoinName}</span>
                 </p>
             </div>
-            <div className={s.btn} onClick={toggleStartDeposit}>Deposit</div>
+            <div className={s.rewardInfo}>
+                <p className={s.rewardInfoTitle}>Your Rewards</p>
+                <Skeleton active loading={userDepositRewardsInfo.length < 1}>
+                    <div className={s.rewardList}>
+                        {userDepositRewardsInfo.map(token => (
+                            <div key={token.tokenAddr} className={s.rewardItem}>
+                                    <div className={s.rewardItemHead}>
+                                        <img src={token.icon} alt='' />
+                                        <p>{token.assetName}</p>
+                                    </div>
+                                    <div className={s.rewardItemBody}>
+                                        <p>{truncateDecimal(+formatUnits(token.rewards, token.tokenDecimals))}</p>
+                                        <p>{token.tokenName}</p>
+                                    </div>
+                                </div>
+                            )
+                        )}
+                    </div>
+                </Skeleton>
+            </div>
+            <div className={s.btnArea}>
+                <div
+                    className={cx(s.claimBtn, { [s.disable]: !userCanClaimDepositRewards })}
+                    onClick={() => {
+                        if (!userCanClaimDepositRewards) return;
+                        toggleStartClaimRewards();
+                    }}
+                >
+                    Claim Rewards
+                </div>
+                <div className={s.btn} onClick={toggleStartDeposit}>Deposit</div>
+            </div>
         </div>
     );
 }
