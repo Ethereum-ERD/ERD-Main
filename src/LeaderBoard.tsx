@@ -43,11 +43,11 @@ export default observer(function LeaderBoard() {
             <p className={s.title}>Leaderboard</p>
             <div className={s.selfRank}>
                 <div className={s.item}>
-                    <span>My Ranking</span>
+                    <span>My Rank</span>
                     <p>{userRank === -1 ? 'UNRANKED' : userRank}</p>
                 </div>
                 <div className={s.item}>
-                    <span>My Score</span>
+                    <span>Points</span>
                     <p>{formatNumber(userScores)}</p>
                 </div>
                 <div className={s.item}>
@@ -66,10 +66,10 @@ export default observer(function LeaderBoard() {
             </div>
             <div className={s.rankList}>
                 <div className={s.tableHead}>
-                    <p className={cx(s.rankIndexName, s.rankIndex)}>Ranking</p>
+                    <p className={cx(s.rankIndexName, s.rankIndex)}>Rank</p>
                     <p className={cx(s.rankIndexName, s.addrIndex)}>Address</p>
                     <p className={cx(s.rankIndexName, s.scoreIndex)}>Score</p>
-                    <p className={cx(s.rankIndexName, s.invitedIndex)}>Invited</p>
+                    <p className={cx(s.rankIndexName, s.invitedIndex)}>Referrals</p>
                     <p className={cx(s.rankIndexName, s.debtIndex)}>Debt</p>
                 </div>
                 <div className={s.split} />

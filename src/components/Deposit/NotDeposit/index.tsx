@@ -23,7 +23,7 @@ function NotDeposit() {
                 </svg>
                 <p className={s.desc}>You haven't deposited any {stableCoinName} yet.</p>
             </div>
-            <p className={s.tips}>You can borrow {stableCoinName} by depositing collateral. deposit {stableCoinName} to earn liquidation income.</p>
+            <p className={s.tips}>Borrow {stableCoinName} by depositing collateral on the Mint page and deposit it into the Stability Pool to earn liquidation income.</p>
             <div className={s.balanceInfo}>
                 <p>Balance</p>
                 <p className={s.balanceAmount}>

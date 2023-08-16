@@ -11,11 +11,11 @@ export default observer(function SupportAssetPopup() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Support Collateral</p>
+            <p className={s.title}>Supported Collateral</p>
             <div className={s.columnHead}>
                 <p className={s.assetNameTitle}>Collateral</p>
                 <p className={s.tokenInfoTitle}>Token</p>
-                <p className={s.depositInfoTitle}>Total Deposit</p>
+                <p className={s.depositInfoTitle}>Total Deposited</p>
             </div>
             <div className={s.assetList}>
                 {supportAssets.map((asset) => {

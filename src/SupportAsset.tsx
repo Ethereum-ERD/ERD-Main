@@ -20,7 +20,7 @@ export default observer(function SupportAsset() {
             rootClassName={s.maskRoot}
             onCancel={toggleShowSupportAsset}
         >
-            <p className={s.title}>Support Collateral</p>
+            <p className={s.title}>Supported Collateral</p>
             <div className={s.assetList}>
                 {supportAssets.map((asset) => {
                     const assetPrice = collateralValueInfo[asset.tokenAddr] || 0;
@@ -41,7 +41,7 @@ export default observer(function SupportAsset() {
                                 <p className={s.tokenContent}>{asset.tokenName}</p>
                             </div>
                             <div className={s.depositInfo}>
-                                <p className={s.depositTitle}>Total Deposit</p>
+                                <p className={s.depositTitle}>Total Deposited</p>
                                 <p className={s.depositContent}>
                                     $ {addCommas(formatUint(value))}
                                 </p>

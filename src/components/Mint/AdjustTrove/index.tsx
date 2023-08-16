@@ -234,7 +234,7 @@ export default observer(function AdjustTrove() {
             <p className={s.titleDesc}>Deposit collateral to mint the {stableCoinName} stablecoin.</p>
             {validColls.length === 0 && (
                 <div className={s.warning}>
-                    You have no  support Collateral. 😅
+                    You have no  supported Collateral. 😅
                 </div>
             )}
             {validColls.length > 0 &&

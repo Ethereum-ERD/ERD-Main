@@ -50,8 +50,8 @@ export default observer(function MintTestAsset() {
     return (
         <div className={s.wrap}>
             <div className={s.container}>
-                <p className={s.title}>Test</p>
-                <p className={s.desc}>Mint test assets to join protocol.</p>
+                <p className={s.title}>Test Assets</p>
+                <p className={s.desc}>Mint test assets to join ERD's testnet event.</p>
                 <div className={s.list}>
                     <div className={s.optionList}>
                         <Select
