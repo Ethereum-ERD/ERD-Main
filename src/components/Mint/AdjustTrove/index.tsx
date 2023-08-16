@@ -230,8 +230,8 @@ export default observer(function AdjustTrove() {
 
     return (
         <div className={s.wrap}>
-            <MintTitle title='Adjust' />
-            <p className={s.titleDesc}>Deposit collateral to mint {stableCoinName} stablecoin.</p>
+            <MintTitle title='Adjust Trove' />
+            <p className={s.titleDesc}>Deposit collateral to mint the {stableCoinName} stablecoin.</p>
             {validColls.length === 0 && (
                 <div className={s.warning}>
                     You have no  support Collateral. 😅
@@ -253,6 +253,9 @@ export default observer(function AdjustTrove() {
                                             className={s.input}
                                             disabled={isDisable}
                                             onChange={(v) => onChange(coll.tokenAddr, v)}
+                                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            // @ts-ignore
+                                            parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                                             addonBefore={
                                                 <p className={s.inputBefore}>
                                                     <img src={coll.icon} alt='' />
@@ -265,9 +268,9 @@ export default observer(function AdjustTrove() {
                                     <div className={s.help}>
                                         <div className={s.helpContainer}>
                                             <p className={s.balance}>
-                                                Your Balance{"\u00A0"}
+                                                Balance{"\u00A0"}
                                                 <span>
-                                                    {formatUnits(coll.balance, coll.tokenDecimals)}
+                                                    {addCommas(formatUnits(coll.balance, coll.tokenDecimals))}
                                                 </span>
                                             </p>
                                             <p className={s.price}>

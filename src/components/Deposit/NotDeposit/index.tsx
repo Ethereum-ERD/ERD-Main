@@ -32,7 +32,7 @@ function NotDeposit() {
                 </p>
             </div>
             <div className={s.rewardInfo}>
-                <p className={s.rewardInfoTitle}>Your Rewards</p>
+                <p className={s.rewardInfoTitle}>Total Unclaimed Rewards</p>
                 <Skeleton active loading={userDepositRewardsInfo.length < 1}>
                     <div className={s.rewardList}>
                         {userDepositRewardsInfo.map(token => (

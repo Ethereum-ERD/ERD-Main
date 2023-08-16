@@ -175,7 +175,7 @@ function Liquidate() {
             <div className={s.container}>
                 <div className={s.top}>
                     <div className={s.topLeft}>
-                        <p className={s.title}>Liquidate</p>
+                        <p className={s.title}>Liquidate Troves</p>
                         <div
                             className={cx(s.systemMode, {
                                 [s.recoveryMode]: !isNormalMode,

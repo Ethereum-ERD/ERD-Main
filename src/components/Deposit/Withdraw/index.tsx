@@ -72,6 +72,9 @@ function Withdraw() {
                     controls={false}
                     className={s.withdrawNumInput}
                     addonAfter={<p>{stableCoinName}</p>}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    // @ts-ignore
+                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 />
             </div>
             <div className={s.help}>

@@ -72,11 +72,14 @@ function NewDeposit() {
                     controls={false}
                     className={s.depositNumInput}
                     addonAfter={<p>{stableCoinName}</p>}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    // @ts-ignore
+                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 />
             </div>
             <div className={s.help}>
                 <p className={s.balance}>
-                    Your Balance{'\u00A0'}
+                    Balance{'\u00A0'}
                     <span>
                         {addCommas(formatUnits(userStableCoinBalance, stableCoinDecimals))}
                     </span>

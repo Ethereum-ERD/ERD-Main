@@ -34,7 +34,7 @@ export const Routes = [
     },
     {
         path: '/deposit',
-        name: 'Deposit-SP'
+        name: 'Deposit SP'
     },
     {
         path: '/liquidate',

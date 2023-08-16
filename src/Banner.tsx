@@ -141,20 +141,12 @@ function Banner() {
                 <div className={s.rightWrap}>
                     <div className={s.accountInfo}>
                         <div className={s.accountInfoItem}>
-                            <span>My Score</span>
+                            <span>Total Points</span>
                             <p>{formatNumber(userScores)}</p>
                         </div>
                         <div className={s.accountInfoItem}>
-                            <span>My Debt</span>
-                            <p>
-                                {addCommas(
-                                    formatUnits(
-                                        userTrove?.debt || 0,
-                                        stableCoinDecimals || 18,
-                                        2
-                                    )
-                                )}
-                            </p>
+                            <span>Total Debt</span>
+                            <p>{formatNumber((userTrove?.debt || 0) / Math.pow(10, stableCoinDecimals))}</p>
                         </div>
                     </div>
                     {walletAddr && (

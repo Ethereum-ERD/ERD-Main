@@ -35,7 +35,7 @@ function ClaimRewards({
         >
             <div className={s.content}>
                 <div className={s.modalHead}>
-                    <p className={s.modalHeadTitle}>Claim</p>
+                    <p className={s.modalHeadTitle}>Liquidation Income</p>
                     <div className={s.closeIcon} onClick={() => onClose()}>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect y="0.5" width="24" height="24" rx="12" fill="black" fillOpacity="0.2"/>
@@ -44,7 +44,7 @@ function ClaimRewards({
                     </div>
                 </div>
                 <div className={s.modalBody}>
-                    <p className={s.modalBodyTitle}>Total Rewards</p>
+                    <p className={s.modalBodyTitle}>Total Unclaimed Rewards</p>
                     <div className={s.rewardList}>
                         {userDepositRewardsInfo.map(token => (
                             <div key={token.tokenAddr} className={s.rewardItem}>
@@ -70,7 +70,7 @@ function ClaimRewards({
                         <Popover
                             title=''
                             arrow={false}
-                            content={<div className={cx('tipsModal', s.tipsModal)}>Re-collateralize all of your earnings to increase your collateral amount and borrowing credit limit.</div>}
+                            content={<div className={cx('tipsModal', s.tipsModal)}>Collateralize liquidation rewards to improve your Trove's collateral ratio and increase your borrowing limit.</div>}
                         >
                             <div className={s.tips}>
                                 <CircleHelp />

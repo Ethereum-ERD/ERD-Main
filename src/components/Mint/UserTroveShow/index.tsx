@@ -59,7 +59,7 @@ export default observer(function UserTroveShow() {
                                     {"\u00A0"}/{"\u00A0"}
                                     <span>Total Debt</span>{"\u00A0"}
                                     *100% ={"\u00A0"}
-                                    <span>Collateral ratio</span>
+                                    <span>Collateral Ratio</span>
                                 </p>
                                 {collateral.length > 0 && (
                                     <p className={s.formulaText}>

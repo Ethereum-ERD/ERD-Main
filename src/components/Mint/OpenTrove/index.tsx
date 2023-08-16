@@ -248,14 +248,17 @@ export default observer(function OpenTrove() {
                                                 </p>
                                             }
                                             value={v?.amount || '0'}
+                                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            // @ts-ignore
+                                            parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                                         />
                                     </div>
                                     <div className={s.help}>
                                         <div className={s.helpContainer}>
                                             <p className={s.balance}>
-                                                Your Balance{"\u00A0"}
+                                                Balance{"\u00A0"}
                                                 <span>
-                                                    {formatUnits(coll.balance, coll.tokenDecimals)}
+                                                    {addCommas(formatUnits(coll.balance, coll.tokenDecimals))}
                                                 </span>
                                             </p>
                                             <p className={s.price}>

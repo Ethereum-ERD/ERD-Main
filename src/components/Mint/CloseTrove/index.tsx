@@ -4,7 +4,7 @@ import { notification } from 'antd';
 import cx from 'classnames';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { formatUnits, OpenEtherScan } from 'src/util';
+import { OpenEtherScan, formatNumber } from 'src/util';
 import { useStore } from 'src/hooks';
 
 import s from './index.module.scss';
@@ -39,20 +39,20 @@ export default observer(function CloseTrove() {
     return (
         <div className={s.wrap}>
             <p className={s.title}>Close Trove</p>
-            <p className={s.subTitle}>All debts must be repaid, withdraw collateral.</p>
+            <p className={s.subTitle}>Repay the outstanding balance to close the Trove and withdraw loan collateral.</p>
             <div className={s.infoWrap}>
                 <div className={s.item}>
                     <p>Total Debt</p>
                     <p>
-                        {formatUnits(userTrove.debt, stableCoinDecimals)}
+                        {formatNumber(userTrove.debt / Math.pow(10, stableCoinDecimals))}
                         {"\u00A0"}
                         <span>{stableCoinName}</span>
                     </p>
                 </div>
                 <div className={s.item}>
-                    <p>Your Balance</p>
+                    <p>Balance</p>
                     <p>
-                        {formatUnits(userStableCoinBalance, stableCoinDecimals)}
+                        {formatNumber(userStableCoinBalance / Math.pow(10, stableCoinDecimals))}
                         {"\u00A0"}
                         <span>{stableCoinName}</span>
                     </p>
