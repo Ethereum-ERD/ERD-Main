@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { observer } from "mobx-react";
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { InputNumber, Popover, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -73,7 +72,7 @@ function Redeem() {
         <div className={s.wrap}>
             <div className={s.container}>
                 <p className={s.title}>Redeem</p>
-                <p className={s.desc}>Redemption is not for repaying your loan. To repay your loan, adjust your Trove on the <span className={s.highlight}><Link to='/'>Mint</Link></span>.</p>
+                <p className={s.desc}>Redeem {stableCoinName} for loan collateral on the ERD protocol. The protocol will prioritize collateral from the existing Trove with the lowest Collateral Ratio, and the amount of redeemed {stableCoinName} will be used to partially repay the outstanding Trove balance.</p>
                 <div className={s.redeemNumInputWrap}>
                     <InputNumber
                         stringMode
@@ -105,7 +104,7 @@ function Redeem() {
                         <Popover
                             arrow={false}
                             title=''
-                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption Fee depends on USDE redemption volumes and is 0.5% at minimum.</div>}
+                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the total value of redeemed collateral. Redemption Fees are based on {stableCoinName} redemption volumes and have a minimum value of 0.5%.</div>}
                         >
                             <div className={s.tipsHelp}>
                                 <CircleHelp />

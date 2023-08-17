@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import cx from 'classnames';
-import { Skeleton, message } from 'antd';
+import { Skeleton, message, Popover } from 'antd';
 // @ts-ignore
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -31,6 +31,31 @@ function CopyIcon() {
     );
 }
 
+function QuestionIcon() {
+    return (
+        <svg
+            width="15"
+            height="14"
+            viewBox="0 0 15 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M6.89404 10.6C6.89404 10.2686 7.16267 10 7.49404 10C7.82541 10 8.09404 10.2686 8.09404 10.6C8.09404 10.9314 7.82541 11.2 7.49404 11.2C7.16267 11.2 6.89404 10.9314 6.89404 10.6Z"
+                fill="#888888"
+            />
+            <path
+                d="M7.49409 3.0061C6.15645 3.0061 5.06909 4.09346 5.06909 5.4311H6.06909C6.06909 4.64574 6.70873 4.0061 7.49409 4.0061C8.27945 4.0061 8.91909 4.64574 8.91909 5.4311C8.91909 5.96885 8.4746 6.50808 7.89445 6.74376L7.8919 6.74481C7.36235 6.96335 6.99414 7.48413 6.99414 8.0925V9H7.99414V8.0925C7.99414 7.89828 8.10945 7.73731 8.27236 7.66961C9.09969 7.33289 9.91909 6.49869 9.91909 5.4311C9.91909 4.09346 8.83173 3.0061 7.49409 3.0061Z"
+                fill="#888888"
+            />
+            <path
+                d="M14.4941 7C14.4941 3.13401 11.3601 1.18292e-06 7.49414 0C3.62815 -2.14186e-06 0.494142 3.134 0.494141 7C0.494138 10.866 3.62815 14 7.49414 14C11.3601 14 14.4941 10.866 14.4941 7ZM13.4941 7C13.4941 10.3137 10.8078 13 7.49414 13C4.18043 13 1.49414 10.3137 1.49414 7C1.49414 3.68629 4.18043 0.999999 7.49414 1C10.8079 1 13.4941 3.68629 13.4941 7Z"
+                fill="#888888"
+            />
+        </svg>
+    );
+}
+
 export default observer(function LeaderBoard() {
     const { store: { userInvite, userRank, userScores, userTrove, stableCoinDecimals, stableCoinName, rankList, queryRankList, isNoRankData, isLoadingRankList } } = useStore();
 
@@ -47,11 +72,20 @@ export default observer(function LeaderBoard() {
                     <p>{userRank === -1 ? 'UNRANKED' : userRank}</p>
                 </div>
                 <div className={s.item}>
-                    <span>Points</span>
+                    <span>My Points</span>
                     <p>{formatNumber(userScores)}</p>
                 </div>
                 <div className={s.item}>
-                    <span>My Invitation</span>
+                    <div className={s.indexWrap}>
+                        <span>My Referrals</span>
+                        <Popover
+                            title=''
+                            arrow={false}
+                            content={<div className='tipsModal'>Referrals are only counted after the referred user successfully opens a Trove.</div>}
+                        >
+                            <div><QuestionIcon /></div>
+                        </Popover>
+                    </div>
                     <p>{userInvite}</p>
                 </div>
                 <div className={s.item}>

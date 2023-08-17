@@ -2,8 +2,8 @@ import { observer } from 'mobx-react';
 import { Popover } from "antd";
 import cx from 'classnames';
 
-import CircleHelp from 'src/components/common/CircleHelp';
 import { formatUnits, translateUint, truncateDecimal } from 'src/util';
+import CircleHelp from 'src/components/common/CircleHelp';
 import { useStore } from 'src/hooks';
 
 import s from './Dashboard.module.scss';
@@ -26,21 +26,21 @@ export default observer(function Dashboard() {
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
                             TVL
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in ETH and USD.</div>}>
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>Total Value Locked (TVL) is the total value of Ether locked as collateral in the protocol. Measurements are provided in ETH and {stableCoinName}.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>
                             </Popover>
                         </div>
                         <p className={s.indexValue}>
-                            {(protocolValInETH).toFixed(0)} <span>ETH</span>
-                            <span>($ {valueInUSD}{valueInUSDUint})</span>
+                            {(protocolValInETH)} <span>ETH</span>
+                            <span>($ {valueInUSD}{"\u00A0"}{valueInUSDUint})</span>
                         </p>
                     </div>
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
                             Minting Fee
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>An amount set aside to cover the liquidator’s gas costs if your Trove needs to be liquidated. The amount increases your debt and is refunded if you close your Trove by fully paying off its net debt.</div>}>
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>The Minting Fee is an amount set aside to cover gas fees should a borrower's Trove need to be liquidated. This amount increases a borrower's Total Debt and is refunded once any outstanding debt is repaid and the Trove is closed.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>
@@ -53,7 +53,7 @@ export default observer(function Dashboard() {
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
                             Troves
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total number of active Troves in the system.</div>}>
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total number of outstanding Troves on the protocol.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>
@@ -64,7 +64,7 @@ export default observer(function Dashboard() {
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
                             {stableCoinName} Supply
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total {stableCoinName} minted by the ERD Protocol.</div>}>
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total amount of {stableCoinName} minted by the protocol.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>
@@ -79,22 +79,22 @@ export default observer(function Dashboard() {
                 <div className={s.index}>
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
-                            {stableCoinName} in Stability Pool
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total {stableCoinName} currently held in the Stability Pool, expressed as an amount and a fraction of the {stableCoinName} supply.</div>}>
+                            Stability Pool
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>The total value of {stableCoinName} currently deposited into the Stability Pool.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>
                             </Popover>
                         </div>
                         <p className={s.indexValue}>
-                            {spOwn}
-                            <span>{spOwnUint}</span>
+                            {spOwn}{spOwnUint}
+                            <span>{stableCoinName}</span>
                         </p>
                     </div>
                     <div className={s.indexItem}>
                         <div className={s.indexName}>
                             TCR
-                            <Popover arrow={false} title='' content={<div className='tipsModal'>The ratio of the Dollar value of the entire system collateral at the current ETH:USD price, to the entire system debt.</div>}>
+                            <Popover arrow={false} title='' content={<div className='tipsModal'>The Total Collateralization Ratio (TCR) represents the dollar value of all deposited collateral against the total outstanding debt on the protocol. TCR is shown as a ratio and collateral values are calculated at the most recent ETH:USD price.</div>}>
                                 <div className={s.help}>
                                     <CircleHelp />
                                 </div>

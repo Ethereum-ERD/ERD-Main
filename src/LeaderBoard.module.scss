@@ -48,6 +48,18 @@
     }
 }
 
+.indexWrap {
+    display: flex;
+    align-items: center;
+
+    div {
+        margin-left: 5px;
+        display: flex;
+        align-items: center;
+        cursor: help;
+    }
+}
+
 .emptyWrap {
     width: 100%;
     min-height: 200px;

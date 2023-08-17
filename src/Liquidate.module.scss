@@ -74,6 +74,13 @@ div.tipsModal {
     max-height: 500px;
 }
 
+.collRatioTips {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    cursor: help;
+}
+
 .topRight {
     display: flex;
     align-items: center;
@@ -548,7 +555,7 @@ div.tipsModal {
 
     .tableHeadDebt {
         width: 75px;
-        margin-left: 40px;
+        margin-left: 45px;
         font-size: 12px;
         order: 3;
 
@@ -601,7 +608,7 @@ div.tipsModal {
 
     .tableItemDebt {
         width: 75px;
-        margin-left: 40px;
+        margin-left: 45px;
         order: 3;
         font-size: 12px;
     }
@@ -824,6 +831,10 @@ div.tipsModal {
 
     .addonAfter {
         display: none !important;
+    }
+
+    .collRatioTips {
+        margin-left: 3px;
     }
 
     .mobileDeleteIcon {

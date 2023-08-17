@@ -17,7 +17,7 @@ import {
 } from 'src/types';
 
 
-import { formatUnits, toBN, fixNumber, getContractErrorMsg } from 'src/util';
+import { formatUnits, toBN, fixNumber, getContractErrorMsg, addCommas } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
@@ -203,7 +203,7 @@ export default class Store {
             return 0;
         }
 
-        return valueInETH;
+        return addCommas(valueInETH.toFixed(0));
     }
 
     @computed get didUserDeposited() {
