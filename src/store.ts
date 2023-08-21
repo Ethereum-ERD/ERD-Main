@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { ProviderLabel } from '@web3-onboard/injected-wallets';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
 import axios from 'axios';
+import { OnboardAPI } from '@web3-onboard/core';
 
 import {
     EmptyObject, EMPTY_ADDRESS, RANDOM_SEED,
@@ -31,7 +32,7 @@ export default class Store {
 
     walletAddr = '';
 
-    onboard = null as any;
+    onboard: OnboardAPI = null as unknown as OnboardAPI;
 
     web3Provider = null as any as ExternalProvider;
 

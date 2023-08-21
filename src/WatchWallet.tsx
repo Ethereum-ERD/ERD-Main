@@ -18,6 +18,7 @@ export default observer(function WatchWallet() {
             if (wallet) {
                 const { label, accounts, provider, chains } = wallet;
                 saveWallet(label);
+                // @ts-ignore
                 onProviderChange(provider);
                 onAccountChange(accounts);
                 onChainChange(chains.map((x: any) => ({ ...x, label })));
