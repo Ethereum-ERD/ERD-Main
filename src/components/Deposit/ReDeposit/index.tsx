@@ -94,7 +94,7 @@ function ReDeposit() {
                 <p className={s.max} onClick={setToMax}>Max</p>
             </div>
             {(+formatUnits(userStableCoinBalance, stableCoinDecimals) < (+depositNum)) && (
-                <div className={s.InsufficientToken}>You have no enough {stableCoinName} 😅</div>
+                <div className={s.InsufficientToken}>You have insufficient {stableCoinName} balance</div>
             )}
             <div className={s.depositInfo}>
                 <div className={s.depositAmount}>
