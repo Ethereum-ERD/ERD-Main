@@ -50,6 +50,7 @@ function ReDeposit() {
                 message: 'Transaction complete',
                 onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
             });
+            setDepositNum('0.00');
         } else {
             notification.error({
                 message: result.msg || 'Transaction failed'
