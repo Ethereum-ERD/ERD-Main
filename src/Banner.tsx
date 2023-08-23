@@ -8,8 +8,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Dropdown, message } from "antd";
 import cx from "classnames";
 
-import { addCommas, formatUnits, formatNumber } from "src/util";
 import { EMPTY_ADDRESS, Routes } from "src/constants";
+import { formatNumber } from "src/util";
 import { useStore } from "src/hooks";
 
 import Copy from "src/asset/banner/copy-dark.svg";

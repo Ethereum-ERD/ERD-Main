@@ -4,9 +4,11 @@ export const MAIN_CHAIN_ID = 1;
 
 export const GOERLI_CHAIN_ID = 5;
 
-export const MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com/v2/LWSwBcoKgtbYnEYGp6Rxl_aFwDyOlgJq';
+export const ALCHEMY_API_KEY = 'LPyMvM3tqV6T2WdroN8QKJ8y3B5DNm6d';
 
-export const GOERLI_RPC_URL = 'https://eth-goerli.g.alchemy.com/v2/LWSwBcoKgtbYnEYGp6Rxl_aFwDyOlgJq';
+export const MAINNET_RPC_URL = `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
+
+export const GOERLI_RPC_URL = `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 
 export const ROW_PER_PAGE = 10;
 
@@ -59,8 +61,6 @@ export const Routes = [
         name: 'Test'
     }
 ];
-
-export const EmptyObject = Object.create(null);
 
 export const EMPTY_ADDRESS = ethers.constants.AddressZero;
 

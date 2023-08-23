@@ -6,7 +6,6 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import { addCommas, formatUnits, truncateNumber, OpenEtherScan } from 'src/util';
 import MintTitle from 'src/components/common/MintTitle';
-import { MAX_MINTING_FEE } from 'src/constants';
 import { CollateralStatus } from 'src/types';
 import { useStore } from 'src/hooks';
 
@@ -30,7 +29,7 @@ export default observer(function AdjustTrove() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [collateralRatio, setCollateralRatio] = useState(0);
     const [borrowInfo, setBorrowInfo] = useState<Array<BorrowItem>>([]);
-    const { systemCCR, systemTCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, mintingFeeRatio, gasCompensation, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD, collateralValueInfo } = store;
+    const { systemCCR, systemTCR, userTrove, userCollateralInfo, stableCoinName, stableCoinDecimals, fetchWrappedETH2USD, minBorrowAmount, toggleStartAdjustTrove, adjustTrove, systemMCR, mintingFeeRatio, isNormalMode, systemTotalValueInUSD, systemTotalDebtInUSD, collateralValueInfo } = store;
 
     const validColls = useMemo(() => {
         return userCollateralInfo.filter(coll => +coll.balance > 0);

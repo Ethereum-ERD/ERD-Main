@@ -10,7 +10,7 @@ import s from "./index.module.scss";
 function DepositedOverView() {
 
     const { store } = useStore();
-    const { userPoolShare, userDepositAmount, stableCoinName, stableCoinDecimals, spTVL, toggleStartDeposit, toggleStartWithdraw, toggleStartClaimRewards } = store;
+    const { userPoolShare, userDepositAmount, stableCoinName, stableCoinDecimals, toggleStartDeposit, toggleStartWithdraw, toggleStartClaimRewards } = store;
 
     return (
         <div className={s.wrap}>

@@ -4,6 +4,8 @@ import { format } from 'mathjs';
 import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY, CONTRACT_ERROR_PREFIX } from 'src/constants';
 import { Errors } from 'src/Error';
 
+export const getEmptyObject = () => Object.create(null);
+
 export const getContractErrorMsg = (code: string) => {
     if (!code) return 'Unknown error';
     const errorCode = 

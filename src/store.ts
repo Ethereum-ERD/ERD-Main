@@ -1,27 +1,34 @@
 import { ethers } from 'ethers';
 import { ProviderLabel } from '@web3-onboard/injected-wallets';
 import { computed, makeAutoObservable, reaction, runInAction } from 'mobx';
-import axios from 'axios';
 import { OnboardAPI } from '@web3-onboard/core';
+import { Network, Alchemy } from 'alchemy-sdk';
+import axios from 'axios';
 
 import {
-    EmptyObject, EMPTY_ADDRESS, RANDOM_SEED,
-    GOERLI_CHAIN_ID, GOERLI_RPC_URL, WETH_ADDR, BN_ZERO,
-    MOCK_ETH_ADDR, BN_ETHER, MAX_FEE, MAX_ITERATIONS
+    EMPTY_ADDRESS, RANDOM_SEED, GOERLI_CHAIN_ID,
+    WETH_ADDR, BN_ZERO, MOCK_ETH_ADDR, BN_ETHER,
+    MAX_FEE, MAX_ITERATIONS, ALCHEMY_API_KEY
 } from 'src/constants';
 
 import {
     ExternalProvider, UserTrove, SupportAssetsItem,
     UserCollateralItem, UserDepositRewardsItem,
-    ProtocolCollateralItem, RPCProvider,
+    ProtocolCollateralItem,
     RankItem
 } from 'src/types';
 
-
-import { formatUnits, toBN, fixNumber, getContractErrorMsg, addCommas } from 'src/util';
+import { formatUnits, toBN, fixNumber, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
+
+const settings = {
+    apiKey: ALCHEMY_API_KEY,
+    network: Network.ETH_GOERLI
+};
+
+const alchemy = new Alchemy(settings);
 
 export default class Store {
     chainId = 0;
@@ -36,17 +43,15 @@ export default class Store {
 
     web3Provider = null as any as ExternalProvider;
 
-    rpcProvider: RPCProvider = new ethers.providers.JsonRpcProvider(GOERLI_RPC_URL);
-
     currentRoutePath = '';
 
     contractMap: {
         [key: string]: ethers.Contract
-    } = EmptyObject;
+    } = getEmptyObject();
 
     collateralValueInfo: {
         [key: string]: number
-    } = EmptyObject;
+    } = getEmptyObject();
 
     latestRandomSeed = toBN(RANDOM_SEED);
 
@@ -290,13 +295,16 @@ export default class Store {
         }
     }
 
-    initContract() {
+    async initContract() { 
+
+        const provider = await alchemy.config.getProvider();
+
         const contractMap = Object.keys(ContractConfig).reduce((config, name) => {
             const { abi, addr } = ContractConfig[name];
-            config[name] = new ethers.Contract(addr, abi, this.rpcProvider);
+            config[name] = new ethers.Contract(addr, abi, provider);
 
             return config;
-        }, EmptyObject);
+        }, getEmptyObject());
 
         runInAction(() => {
             this.contractMap = contractMap;
