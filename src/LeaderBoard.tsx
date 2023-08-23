@@ -104,7 +104,16 @@ export default observer(function LeaderBoard() {
                     <p className={cx(s.rankIndexName, s.addrIndex)}>Address</p>
                     <p className={cx(s.rankIndexName, s.scoreIndex)}>Score</p>
                     <p className={cx(s.rankIndexName, s.invitedIndex)}>Referrals</p>
-                    <p className={cx(s.rankIndexName, s.debtIndex)}>Debt</p>
+                    <div className={cx(s.rankIndexName, s.debtIndex)}>
+                        Debt
+                        <Popover
+                            title=''
+                            arrow={false}
+                            content={<div className='tipsModal'>This total debt amount represents the total value of USDE minted by the user within a 24-hour period and is refreshed every 24 hours.</div>}
+                        >
+                            <div><QuestionIcon /></div>
+                        </Popover>
+                    </div>
                 </div>
                 <div className={s.split} />
                 <Skeleton active loading={isLoadingRankList}>
