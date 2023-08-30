@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import { Skeleton } from 'antd';
+import cx from 'classnames';
 
 import MintTitle from 'src/components/common/MintTitle';
 import { formatUnits, addCommas } from 'src/util';
@@ -9,7 +10,7 @@ import s from './index.module.scss';
 
 export default observer(function New() {
     const { store } = useStore();
-    const { stableCoinName, toggleStartBorrow, userCollateralInfo } = store;
+    const { stableCoinName, toggleStartBorrow, userCollateralInfo, supportAssets } = store;
 
     return <div className={s.wrap}>
         <MintTitle />
@@ -43,6 +44,11 @@ export default observer(function New() {
                 </Skeleton>
             </div>
         </div>
-        <div className={s.btn} onClick={toggleStartBorrow}>Start</div>
+        <div
+            className={cx(s.btn, { [s.disable]: supportAssets.length < 1 })}
+            onClick={toggleStartBorrow}
+        >
+            Start
+        </div>
     </div>
 })

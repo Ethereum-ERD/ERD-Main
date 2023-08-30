@@ -143,6 +143,13 @@
     &:hover {
         opacity: .7;
     }
+
+    &.disable {
+        border: 1px solid var(--disable-btn-border-color);
+        color: var(--disable-btn-text-color);
+        background: var(--disable-btn-bg-color);
+        cursor: not-allowed;
+    }
 }
 
 @media screen and (min-width: 744px) and (max-width: 1199px) {

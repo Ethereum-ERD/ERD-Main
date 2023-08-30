@@ -399,11 +399,14 @@ export default class Store {
 
     async queryUserAssets() {
         const { supportAssets, walletAddr, contractMap, web3Provider } = this;
-        if (supportAssets.length < 1 || !walletAddr) return;
-        if (!contractMap.ERC20) return;
+        if (supportAssets.length < 1 || !walletAddr || !contractMap.ERC20) {
+            return runInAction(() => supportAssets.map((info) => ({ ...info, balance: 0 })));
+        }
+
         runInAction(() => {
             this.isLoadingAssetSupport = true;
         });
+
         const balances = await Promise.all(
             supportAssets.map(asset => {
                 if (asset.tokenAddr === MOCK_ETH_ADDR) {
@@ -656,6 +659,8 @@ export default class Store {
     }
 
     toggleStartBorrow() {
+        if (this.isLoadingAssetSupport) return;
+
         runInAction(() => {
             this.startBorrowStableCoin = !this.startBorrowStableCoin;
         });
