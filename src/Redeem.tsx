@@ -16,7 +16,7 @@ function Redeem() {
     const [redeemNum, setRedeemNum] = useState('0.00');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { userStableCoinBalance, stableCoinName, stableCoinDecimals, redeemFeeRatio, systemMCR, systemTCR, redeem } = store;
+    const { userStableCoinBalance, stableCoinName, stableCoinDecimals, redeemFeeRatio, systemMCR, systemTCR, redeem, redeemFeeFloor } = store;
 
     const canRedeem = systemTCR > systemMCR;
 
@@ -104,7 +104,7 @@ function Redeem() {
                         <Popover
                             arrow={false}
                             title=''
-                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the total value of redeemed collateral. Redemption Fees are based on {stableCoinName} redemption volumes and have a minimum value of 0.5%.</div>}
+                            content={<div className={cx('tipsModal', s.redeemFeeTips)}>The Redemption Fee is charged as a percentage of the total value of redeemed collateral. Redemption Fees are based on {stableCoinName} redemption volumes and have a minimum value of {(redeemFeeFloor * 100).toFixed(2)}%.</div>}
                         >
                             <div className={s.tipsHelp}>
                                 <CircleHelp />

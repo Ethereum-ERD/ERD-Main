@@ -82,6 +82,8 @@ export default class Store {
 
     redeemFeeRatio = 0;
 
+    redeemFeeFloor = 0;
+
     interestRatio = 0;
 
     systemTCR = 0;
@@ -369,7 +371,8 @@ export default class Store {
             borrowFee,
             stableCoinTotalSupply,
             spOwnStableCoinAmount,
-            troveData
+            troveData,
+            redeemFeeFloor,
         ] = await Promise.all([
             CollateralManager.getMCR(),
             CollateralManager.getUSDEGasCompensation(),
@@ -379,7 +382,8 @@ export default class Store {
             TroveManager.getBorrowingRate(),
             StableCoin.totalSupply(),
             StableCoin.balanceOf(StabilityPool.address),
-            TroveManager.getTroveData()
+            TroveManager.getTroveData(),
+            CollateralManager.getRedemptionFeeFloor()
         ]);
 
         this.querySystemTCR(true);
@@ -391,6 +395,7 @@ export default class Store {
             this.gasCompensation = +gasCompensation;
             this.mintingFeeRatio = borrowFee / 1e18;
             this.redeemFeeRatio = redeemFee / 1e18;
+            this.redeemFeeFloor = redeemFeeFloor / 1e18;
             this.stableCoinTotalSupply = +stableCoinTotalSupply;
             this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
             this.interestRatio = troveData.currentBorrowRate / 1e27;
