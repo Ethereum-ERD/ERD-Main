@@ -38,7 +38,7 @@ export default observer(function MobileAvatarMenu() {
         >
             <div className={s.accountInfo}>
                 <div className={s.accountInfoItem}>
-                    <span>My Score</span>
+                    <span>My Points</span>
                     <p>{userScores}</p>
                 </div>
                 <div className={s.accountInfoItem}>

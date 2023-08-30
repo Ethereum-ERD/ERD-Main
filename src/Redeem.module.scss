@@ -119,9 +119,10 @@
     line-height: 133%;
     border-radius: 16px;
     border: 1px solid #FF4646;
+    align-items: center;
 
     &.show {
-        display: block;
+        display: flex;
     }
 }
 
