@@ -1,5 +1,4 @@
 import Onboard from '@web3-onboard/core';
-import coinbaseWalletModule from '@web3-onboard/coinbase';
 import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from '@web3-onboard/walletconnect';
 
@@ -21,8 +20,6 @@ export const clearWallet = () => {
 
 const injected = injectedModule();
 
-const coinbaseWalletSdk = coinbaseWalletModule();
-
 // const walletConnect = walletConnectModule({ version: 1 });
 const walletConnect = walletConnectModule({
     version: 2,
@@ -35,7 +32,7 @@ const walletConnect = walletConnectModule({
 export function createBoard() {
     return Onboard({
         // @ts-ignore
-        wallets: [injected, walletConnect, coinbaseWalletSdk],
+        wallets: [injected, walletConnect],
         theme: 'dark',
         chains: [
             {

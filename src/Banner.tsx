@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { observer } from "mobx-react";
 // @ts-ignore
 import { generateAvatarURL } from "@cfx-kit/wallet-avatar";
@@ -46,7 +46,10 @@ function Banner() {
 
     const navigate = useNavigate();
 
-    const handleGo = (path: string) => path && navigate(path);
+    const handleGo = useCallback(
+        (path: string) => path && navigate(path),
+        [navigate]
+    );
 
     const WalletItems = useMemo(() => {
         return [
@@ -87,7 +90,7 @@ function Banner() {
                 ),
             },
             {
-                key: "disconnect",
+                key: "Disconnect",
                 label: (
                     <div onClick={disConnectWallet} className={cx(s.item, 'popMenuItem')}>
                         <img src={Exit} alt="disconnect" />

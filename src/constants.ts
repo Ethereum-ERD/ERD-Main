@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
 
+import StableCoin from 'src/contract/StableCoin';
+
 export const MAIN_CHAIN_ID = 1;
 
 export const GOERLI_CHAIN_ID = 5;
@@ -78,11 +80,22 @@ export const WETH_ADDR   = '0x23Cb0c6C75df5A88F559fE998b079C4069F14837'.toLowerC
 export const R_ETH_ADDR  = '0x10963DeA0a7bAe56Cd4C822bd2a58dACe5A88e7c'.toLowerCase();
 export const ST_ETH_ADDR = '0xF5Edf26C26028BB921344B7F394CB731307AB2F5'.toLowerCase();
 export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
+export const USDE_ADDR   = StableCoin.addr.toLowerCase();
 
 // export const WETH_ADDR   = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
 // export const ST_ETH_ADDR = '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase();
 // export const R_ETH_ADDR  = '0xae78736Cd615f374D3085123A210448E74Fc6393'.toLowerCase();
 // export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
+// export const USDE_ADDR   = '';
+
+export const TOKEN_IMG_URL = {
+    [WETH_ADDR]: 'https://etherscan.io/token/images/weth_28.png',
+    [R_ETH_ADDR]: 'https://etherscan.io/token/images/rocketpooleth_32.png?v=2',
+    [ST_ETH_ADDR]: 'https://etherscan.io/token/images/lido-steth_32.png',
+    [CB_ETH_ADDR]: 'https://etherscan.io/token/images/cbeth_32.png',
+    [USDE_ADDR]: 'https://erd-fe-storage.s3.amazonaws.com/usde.svg',
+    [EMPTY_ADDRESS]: 'https://etherscan.io/images/svg/brands/ethereum-original.svg'
+};
 
 export const BN_ETHER = ethers.BigNumber.from(1 + '0'.repeat(18));
 

@@ -8,7 +8,8 @@ import axios from 'axios';
 import {
     EMPTY_ADDRESS, RANDOM_SEED, GOERLI_CHAIN_ID,
     WETH_ADDR, BN_ZERO, MOCK_ETH_ADDR, BN_ETHER,
-    MAX_FEE, MAX_ITERATIONS, ALCHEMY_API_KEY
+    MAX_FEE, MAX_ITERATIONS, ALCHEMY_API_KEY,
+    TOKEN_IMG_URL
 } from 'src/constants';
 
 import {
@@ -1653,7 +1654,7 @@ export default class Store {
 
     async addTokenToWallet(token: string) {
         const { supportAssets, web3Provider, isMetaMask } = this;
-        if (!isMetaMask) return false;
+        if (!isMetaMask || token === EMPTY_ADDRESS) return false;
         const tokenInfo = supportAssets.find(c => c.tokenAddr === token);
         if (!tokenInfo) return false;
         try {
@@ -1667,7 +1668,7 @@ export default class Store {
                         address: token,
                         symbol: tokenInfo.tokenName,
                         decimals: tokenInfo.tokenDecimals,
-                        image: '',
+                        image: TOKEN_IMG_URL[token.toLowerCase()] || '',
                     },
                 },
             });

@@ -74,7 +74,7 @@ export default observer(function MintTestAsset() {
                     <div
                         className={s.addTokenToWallet}
                         onClick={addToken}
-                        title=' Add Token to MetaMask'
+                        title='Add Token to MetaMask'
                     >
                         <img src={MMIcon} alt='metamask icon' />
                     </div>

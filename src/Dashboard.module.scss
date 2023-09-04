@@ -14,9 +14,85 @@
     color: var(--dashboard-title-color);
 }
 
-.indexes {
+.userAssetIndex,
+.protocolIndex {
+    width: 100%;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 18px;
+    background-color: #34363F;
+}
+
+.indexTitle {
+    font-size: 20px;
+    line-height: 133%;
+    font-weight: 500;
+    color: #fff;
+}
+
+.indexes,
+.userAssetsInfo {
     width: 100%;
     margin-top: 30px;
+}
+
+.userAssetsInfo {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.asset {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.asset:nth-child(n+3) {
+    margin-top: 20px;
+}
+
+.assetInfo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 450;
+    font-size: 20px;
+    line-height: 133%;
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+}
+
+.assetName {
+    font-size: 14px;
+    color: var(--new-user-for-open-trove-balance-asset-name-color);
+    line-height: 133%;
+    font-weight: 450;
+}
+
+.tokenInfo {
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.assetAmount {
+    color: var(--new-user-for-open-trove-balance-asset-amount-color);
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 500;
+}
+
+.assetTokenName {
+    margin-left: 5px;
+    color: var(--new-user-for-open-trove-balance-asset-token-name-color);
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 450;
 }
 
 .index {
@@ -122,5 +198,12 @@ div.systemModal {
     .tipsModal {
         width: 300px;
     }
-}
 
+    .asset:nth-child(even) {
+        padding-left: 15px;
+    }
+
+    .indexItem:nth-child(even) {
+        padding-left: 15px;
+    }
+}

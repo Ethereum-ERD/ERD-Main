@@ -102,7 +102,7 @@ export default observer(function LeaderBoard() {
                 <div className={s.tableHead}>
                     <p className={cx(s.rankIndexName, s.rankIndex)}>Rank</p>
                     <p className={cx(s.rankIndexName, s.addrIndex)}>Address</p>
-                    <p className={cx(s.rankIndexName, s.scoreIndex)}>Score</p>
+                    <p className={cx(s.rankIndexName, s.scoreIndex)}>Points</p>
                     <p className={cx(s.rankIndexName, s.invitedIndex)}>Referrals</p>
                     <div className={cx(s.rankIndexName, s.debtIndex)}>
                         Debt
