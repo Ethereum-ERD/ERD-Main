@@ -82,7 +82,7 @@
 
 .assetAmount {
     color: var(--new-user-for-open-trove-balance-asset-amount-color);
-    font-size: 16px;
+    font-size: 20px;
     line-height: 21px;
     font-weight: 500;
 }
@@ -138,7 +138,7 @@
     display: flex;
     align-items: center;
     color: var(--dashboard-index-value-color);
-    font-size: 16px;
+    font-size: 20px;
     line-height: 133%;
     font-weight: 500;
 
@@ -148,6 +148,7 @@
         font-size: 14px;
         font-weight: 450;
         display: inline-block;
+        flex: 0 0 auto;
     }
 }
 
@@ -188,10 +189,10 @@ div.systemModal {
     }
 
     .indexValue {
-        font-size: 14px;
+        font-size: 16px;
 
         span {
-            font-size: 12px;
+            font-size: 14px;
         }
     }
 
@@ -205,5 +206,9 @@ div.systemModal {
 
     .indexItem:nth-child(even) {
         padding-left: 15px;
+    }
+
+    .assetAmount {
+        font-size: 16px;
     }
 }

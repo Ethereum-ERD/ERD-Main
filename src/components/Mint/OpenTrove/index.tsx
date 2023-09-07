@@ -206,7 +206,7 @@ export default observer(function OpenTrove() {
         if (result.status) {
             notification.success({
                 message: 'Transaction complete',
-                onClick: () => OpenEtherScan(`https://goerli.etherscan.io/tx/${result.hash}`)
+                onClick: () => OpenEtherScan(`/tx/${result.hash}`)
             });
             toggleStartBorrow();
         } else {

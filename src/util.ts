@@ -112,11 +112,11 @@ export function formatNumber(v: number) {
     if (Number.isNaN(v) || typeof v !== 'number') {
         return v;
     }
-    if (v >= 1e9) {
+    if (v > 1e9) {
         return (v / 1e9).toFixed(2) + "B";
-    } else if (v >= 1e6) {
+    } else if (v > 1e6) {
         return (v / 1e6).toFixed(2) + "M";
-    } else if (v >= 1e3) {
+    } else if (v > 1e3) {
         return (v / 1e3).toFixed(2) + "K";
     } else {
         return v.toFixed(2);
@@ -127,20 +127,20 @@ export function translateUint(v: number) {
     if (Number.isNaN(v) || typeof v !== 'number') {
         return [v, ''];
     }
-    if (v >= 1e9) {
-        return [(v / 1e9).toFixed(2), 'B'];
+    if (v > 1e9) {
+        return [(v / 1e9).toFixed(0), 'B'];
     }
-    if (v >= 1e6) {
-        return [(v / 1e6).toFixed(2), 'M'];
-    }
-
-    if (v >= 1e3) {
-        return [(v / 1e3).toFixed(2), 'K'];
+    if (v > 1e6) {
+        return [(v / 1e6).toFixed(0), 'M'];
     }
 
-    return [`${v.toFixed(2)}`, ''];
+    if (v > 1e3) {
+        return [(v / 1e3).toFixed(0), 'K'];
+    }
+
+    return [`${v.toFixed(0)}`, ''];
 }
 
-export function OpenEtherScan(url: string) {
-    window.open(url, '_blank');
+export function OpenEtherScan(path: string) {
+    window.open(`https://goerli.etherscan.io${path}`, '_blank');
 }

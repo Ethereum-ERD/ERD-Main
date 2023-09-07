@@ -123,7 +123,7 @@ function Liquidate() {
                 message: "Transaction complete",
                 onClick: () =>
                     OpenEtherScan(
-                        `https://goerli.etherscan.io/tx/${result.hash}`
+                        `/tx/${result.hash}`
                     ),
             });
         } else {
@@ -166,7 +166,7 @@ function Liquidate() {
                 message: "Transaction complete",
                 onClick: () =>
                     OpenEtherScan(
-                        `https://goerli.etherscan.io/tx/${result.hash}`
+                        `/tx/${result.hash}`
                     ),
             });
         } else {
