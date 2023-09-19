@@ -1,0 +1,110 @@
+.wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--footer-border-top-color);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.medias {
+    margin-left: 20px;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid var(--footer-medias-border-left-color);
+
+    div {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        opacity: 1;
+        cursor: pointer;
+        transition: opacity .2s ease-in-out;
+    }
+
+    div:hover {
+        opacity: .7;
+    }
+
+    div:last-child {
+        margin-right: 0;
+    }
+}
+
+.disclaimerLinks {
+    display: flex;
+    align-items: center;
+
+    p {
+        color: var(--footer-disclaimer-link-color);
+        font-family: CircularStd;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 450;
+        line-height: normal;
+
+        opacity: 1;
+        cursor: pointer;
+        transition: opacity .2s ease-in-out;
+    }
+
+    p:hover {
+        opacity: .7;
+    }
+
+    p:first-child {
+        margin-right: 40px;
+    }
+}
+
+@media screen and (min-width: 744px) and (max-width: 1199px) {
+    .wrap {
+        width: unset;
+        margin: 0 30px;
+    }
+}
+
+@media screen and (max-width: 743px) {
+    .wrap {
+        width: unset;
+        margin: 0 20px;
+        border-top: none;
+        flex-direction: column;
+    }
+
+    .left,
+    .disclaimerLinks {
+        width: 100%;
+    }
+
+    .left {
+        justify-content: space-between;
+    }
+
+    .medias {
+        border-left: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    .disclaimerLinks {
+        margin-top: 20px;
+        padding: 20px 0 10px 0;
+
+        border-top: 1px solid var(--footer-disclaimer-border-top-color);
+        justify-content: space-between;
+
+        p:first-child {
+            margin-right: 0;
+        }
+    }
+}
+

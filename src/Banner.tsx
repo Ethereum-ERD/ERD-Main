@@ -105,7 +105,7 @@ function Banner() {
         <div className={s.wrap}>
             <div className={s.container}>
                 <div className={s.leftWrap}>
-                    <div className={s.brandWrap}>
+                    <div className={s.brandWrap} onClick={() => handleGo('/')}>
                         <img src={Logo} alt="" />
                     </div>
                     <div className={s.tabs}>
