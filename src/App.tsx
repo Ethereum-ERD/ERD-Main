@@ -8,6 +8,7 @@ import WatchConnect from "src/WatchConnect";
 import WatchWallet from "src/WatchWallet";
 import RouterComp from 'src/RouterComp';
 import { useStore } from "src/hooks";
+import Footer from "src/Footer";
 import Risk from "src/Risk";
 
 import WatchRoute from 'src/WatchRoute';
@@ -40,6 +41,7 @@ function App() {
             <Risk />
             <SupportAsset />
             <MobileAvatarMenu />
+            <Footer />
         </div>
     );
 }

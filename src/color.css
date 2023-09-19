@@ -2,6 +2,12 @@
     --root-bg-color: #191B1F;
 
 
+    --footer-border-top-color: rgba(255, 255, 255, .1);
+    --footer-medias-border-left-color: #43454A;
+    --footer-disclaimer-link-color: #999;
+    --footer-disclaimer-border-top-color: rgba(255, 255, 255, .1);
+
+
     --white-text-color: #fff;
 
     --tips-border-color: #FF7878;
