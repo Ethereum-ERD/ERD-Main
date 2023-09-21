@@ -986,7 +986,7 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-                this.logOperation(fixNumber(stableCoinAmount), 1);
+                this.logOperation(hash);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1705,12 +1705,11 @@ export default class Store {
         return y;
     }
 
-    logOperation(amount: string, type: any) {
+    logOperation(hash: string) {
         if (!this.isMainNet) return;
         axios.post('/api/record', {
             addr: this.walletAddr,
-            amount,
-            type
+            hash
         }).catch(() => null);
     }
 
