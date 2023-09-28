@@ -346,7 +346,7 @@ div.tipsModal {
 }
 
 .collateralCell {
-    margin-right: 64px;
+    width: 120px;
     display: flex;
     flex-direction: column;
 
@@ -620,7 +620,7 @@ div.tipsModal {
     }
 
     .collateralCell {
-        margin-right: 30px;
+        width: 79px;
 
         .collateralAmount {
             font-size: 12px;
@@ -814,7 +814,7 @@ div.tipsModal {
     }
 
     .collateralCell {
-        margin-right: 16px;
+        width: 120px;
         flex-direction: row;
     }
 
