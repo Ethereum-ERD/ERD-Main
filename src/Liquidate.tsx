@@ -78,11 +78,13 @@ function QuestionIcon() {
 
 function Liquidate() {
     const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
     const [selectTrove, setSelectTrove] = useState<string>("");
     const [liquidateTroveAmount, setLiquidateTroveAmount] = useState(0);
 
     const { store } = useStore();
     const {
+        trovesMap,
         getTroves,
         troveAmount,
         isNormalMode,
@@ -182,7 +184,7 @@ function Liquidate() {
     }, [collateralValueInfo, troveAmount]);
 
     useEffect(() => {
-        isReady && getTroves();
+        isReady && getTroves(1);
     }, [isReady, getTroves]);
 
     const NoTroves = troveAmount === 0;
@@ -191,9 +193,15 @@ function Liquidate() {
         troveAmount > 0 && isLoadingTroves && troveList.length === 0;
     const isLoadingSystemInfo = isLoadingTroveAmount || isLoadingSupportAsset;
 
-    const handleLoadMore = useCallback((page: number) => {
+    const handleLoadMore = useCallback(async (page: number) => {
+        if (isLoading) return;
+        setIsLoading(true);
         setPage(page);
-    }, []);
+        await getTroves(page);
+        setIsLoading(false);
+    }, [isLoading, getTroves]);
+
+    const currentPageTroves = trovesMap[page] || [];
 
     return (
         <div className={s.wrap}>
@@ -424,9 +432,13 @@ function Liquidate() {
                                 <Spin tip={<span>Loading...</span>} />
                             </div>
                         )}
+                        {isLoading && (
+                            <div className={s.emptyWrap}>
+                                <Spin tip={<span>Loading...</span>} />
+                            </div>
+                        )}
                         {showTroveList &&
-                            troveList
-                                .slice((page - 1) * ROW_PER_PAGE, page * ROW_PER_PAGE)
+                            currentPageTroves
                                 .map((row) => {
                                     const { owner, collateral, debt, ICR } =
                                         row;
@@ -587,7 +599,8 @@ function Liquidate() {
                                                         {addCommas(
                                                             formatUnits(
                                                                 debt,
-                                                                stableCoinDecimals
+                                                                stableCoinDecimals,
+                                                                2
                                                             )
                                                         )}
                                                     </p>

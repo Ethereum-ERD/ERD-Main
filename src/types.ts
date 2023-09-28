@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
 
-import { UserTroveStatus } from 'src/constants';
-
 export type ExternalProvider = ethers.providers.Web3Provider;
 
 export type RPCProvider = ethers.providers.JsonRpcProvider;
@@ -22,8 +20,7 @@ export type UserTrove = {
     ICR: number
     debt: number
     owner: string
-    arrayIndex: number
-    status: UserTroveStatus
+    status: string
     collateral: Array<SupportAssetsItem & { amount: ethers.BigNumber }>
 }; 
 

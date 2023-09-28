@@ -9,7 +9,7 @@ import {
     EMPTY_ADDRESS, RANDOM_SEED, GOERLI_CHAIN_ID,
     WETH_ADDR, BN_ZERO, MOCK_ETH_ADDR, BN_ETHER,
     MAX_FEE, MAX_ITERATIONS, ALCHEMY_API_KEY,
-    TOKEN_IMG_URL
+    TOKEN_IMG_URL, TROVE_PER_PAGE
 } from 'src/constants';
 
 import {
@@ -19,7 +19,7 @@ import {
     RankItem
 } from 'src/types';
 
-import { formatUnits, toBN, fixNumber, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
+import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
@@ -121,7 +121,7 @@ export default class Store {
 
     troveAmount = -1;
 
-    troveList: Array<UserTrove> = [];
+    trovesMap: Record<string, Array<UserTrove>> = {};
 
     /* stability pool info */
     spTVL = 0;
@@ -245,6 +245,17 @@ export default class Store {
         const { userDepositRewardsInfo } = this;
 
         return userDepositRewardsInfo.some(c => +c.rewards > 0);
+    }
+
+    @computed get troveList() {
+        const { trovesMap } = this;
+
+        return Object.keys(trovesMap).reduce((list, key: any) => {
+            const troves = trovesMap[key] || [];
+            list.push(...troves);
+
+            return list;
+        }, [] as unknown as Array<any>);
     }
 
     init() {
@@ -821,8 +832,7 @@ export default class Store {
                         amount: x.amount
                     };
                 }),
-                status: troveData.status,
-                arrayIndex: +troveData.arrayIndex,
+                status: troveData.status
             };
 
             if (setStore) {
@@ -1539,11 +1549,11 @@ export default class Store {
         return result;
     }
 
-    async getTroves() {
-        const { troveAmount, contractMap, isLoadingTroves, troveList } = this;
+    async getTroves(page: number) {
+        const { troveAmount, contractMap, isLoadingTroves, trovesMap } = this;
         const { MultiTroveGetter } = contractMap;
         if (
-            troveList.length >= troveAmount ||
+            trovesMap[page]?.length > 0 ||
             !MultiTroveGetter ||
             troveAmount < 1 ||
             isLoadingTroves
@@ -1554,15 +1564,18 @@ export default class Store {
         });
 
         try {
+            const startIdx = -1 + -1 * TROVE_PER_PAGE * (page - 1);
+
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
-                0,
-                troveAmount
+                startIdx,
+                TROVE_PER_PAGE
             );
-            const troves = this.mapBackendTroves(backendTroves);
+
+            const troves = await this.mapBackendTroves(backendTroves);
 
             runInAction(() => {
                 // @ts-ignore
-                this.troveList = troves.sort((troveA, troveB) => troveA.ICR - troveB.ICR);
+                this.trovesMap[`${page}`] = troves;
             });
         } finally {
             runInAction(() => {
@@ -1571,19 +1584,23 @@ export default class Store {
         }
     }
 
-    mapBackendTroves = (troves: Array<{
+    mapBackendTroves = async (troves: Array<{
         owner: string
         debt: ethers.BigNumber
         colls: Array<ethers.BigNumber>
         collaterals: Array<string>
-        shares: Array<ethers.BigNumber>
-        stakes: Array<ethers.BigNumber>
-        snapshotColls: Array<ethers.BigNumber>
-        snapshotEUSDDebts: Array<ethers.BigNumber>
     }>) => {
-        const { supportAssets, collateralValueInfo, stableCoinDecimals } = this;
+        const { supportAssets, contractMap } = this;
 
-        return troves.map((trove) => {
+        const { PriceFeeds, TroveManager } = contractMap;
+
+        const ethPrice = await PriceFeeds.fetchPrice_view();
+
+        const ICRList = await Promise.all(
+            troves.map(t => TroveManager.getCurrentICR(t.owner, ethPrice))
+        );
+
+        return troves.map((trove, idx) => {
             const {
                 owner,
                 debt,
@@ -1607,22 +1624,13 @@ export default class Store {
                 };
             });
 
-            const assetValue = formatCollateral.reduce((v, i) => {
-                const valueInfo = collateralValueInfo[i.tokenAddr!] || 0;
-                const amount = +formatUnits(+i.amount, i.tokenDecimals);
-                return v + amount * valueInfo;
-            }, 0);
-
             return {
                 owner: owner,
                 status: "open",
-                arrayIndex: 0,
                 interest: 0,
-                ICR: assetValue / +formatUnits(+debt, stableCoinDecimals),
+                ICR: ICRList[idx] / 1e18,
                 collateral: formatCollateral,
-                debt: +debt,
-                stakes: [],
-                shares: []
+                debt: +debt
             }
         });
     }

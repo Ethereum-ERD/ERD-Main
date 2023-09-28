@@ -13,7 +13,7 @@ import { useStore } from 'src/hooks';
 export default function MintTitle({ title }: { title?: string }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { store: { toggleShowSupportAsset } } = useStore();
+    const { store: { toggleShowSupportAsset, showSupportAsset } } = useStore();
 
     return (
         <div className={s.top}>
@@ -31,13 +31,10 @@ export default function MintTitle({ title }: { title?: string }) {
                 </div>
             </Popover>
             <div
-                onClick={() => {
-                    setIsOpen(c => !c)
-                    toggleShowSupportAsset();
-                }}
+                onClick={toggleShowSupportAsset}
                 className={cx(s.supportIcon, s.miniDeviceSupportIcon)}
             >
-                <img src={isOpen ? SupportAssetOpenIcon : SupportAssetCloseIcon} alt='' />
+                <img src={showSupportAsset ? SupportAssetOpenIcon : SupportAssetCloseIcon} alt='' />
             </div>
         </div>
     );

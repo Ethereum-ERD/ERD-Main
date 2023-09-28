@@ -102,3 +102,5 @@ export const BN_ETHER = ethers.BigNumber.from(1 + '0'.repeat(18));
 export const TERMS_SAVED_KEY = "DidYouAgreeERDTerms";
 
 export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';
+
+export const TROVE_PER_PAGE = 10;

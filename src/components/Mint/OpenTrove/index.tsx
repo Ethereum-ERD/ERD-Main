@@ -341,7 +341,7 @@ export default observer(function OpenTrove() {
             />
             <div className={s.btnArea}>
                 {validColls.length === 0 && (
-                    <div className={cx(s.btn, s.disable, s.fullDisable)}>Get Start</div>
+                    <div className={cx(s.btn, s.disable, s.fullDisable)}>Confirm</div>
                 )}
                 {validColls.length > 0 && (
                     <>
