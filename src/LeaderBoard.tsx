@@ -136,7 +136,7 @@ export default observer(function LeaderBoard() {
                                         onCopy={() => message.success("Copied")}
                                     >
                                         <div className={s.addrValueWrap}>
-                                            <p className={cx(s.rankIndexValue, s.addrValue)} title={item.userFullStr}>{item.user}</p>
+                                            <p className={cx(s.rankIndexValue, s.addrValue)} title={item.userFullStr}>{item.userFullStr}</p>
                                             <CopyIcon />
                                         </div>
                                     </CopyToClipboard>

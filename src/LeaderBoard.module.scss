@@ -173,6 +173,8 @@
 .addrValue {
     width: 85px;
     margin-right: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .scoreValue,

@@ -1,6 +1,7 @@
 .wrap {
     width: 100vw;
     height: var(--banner-height);
+    flex: 0 0 auto;
     border-bottom: 1px solid var(--banner-bottom-border-color);
 }
 
@@ -39,13 +40,13 @@
 }
 
 .tabs {
-    margin-left: 80px;
+    margin-left: 30px;
     display: flex;
     align-items: center;
 }
 
 .tab {
-    margin-right: 40px;
+    margin-right: 25px;
     color: var(--banner-menu-text-color);
     font-size: 20px;
     cursor: pointer;
