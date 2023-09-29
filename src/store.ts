@@ -40,6 +40,8 @@ export default class Store {
 
     walletAddr = '';
 
+    ensName = '';
+
     onboard: OnboardAPI = null as unknown as OnboardAPI;
 
     web3Provider = null as any as ExternalProvider;
@@ -199,6 +201,8 @@ export default class Store {
         reaction(() => this.contractMap, this.initSystemKeyInfo);
 
         reaction(() => this.chainId, this.getWeeklyQuota);
+
+        reaction(() => this.walletAddr, this.getUserEnsName);
     }
 
     @computed get isMainNet() {
@@ -356,6 +360,18 @@ export default class Store {
         this.queryUserDepositGain();
     }
 
+    async getUserEnsName() {
+        const { walletAddr } = this;
+
+        if (!walletAddr) return;
+
+        const ensName = await this.resolveENSName(walletAddr);
+
+        runInAction(() => {
+            this.ensName = ensName === walletAddr ? '' : ensName;
+        });
+    }
+
     async querySystemTCR(setStore = false) {
         const { TroveManager, PriceFeeds } = this.contractMap;
         if (!TroveManager || !PriceFeeds) return 0;
@@ -415,7 +431,7 @@ export default class Store {
     }
 
     async queryUserAssets() {
-        const { supportAssets, walletAddr, contractMap, web3Provider } = this;
+        const { supportAssets, walletAddr, contractMap } = this;
         if (supportAssets.length < 1 || !walletAddr || !contractMap.ERC20) {
             return runInAction(() => supportAssets.map((info) => ({ ...info, balance: 0 })));
         }
@@ -424,10 +440,12 @@ export default class Store {
             this.isLoadingAssetSupport = true;
         });
 
+        const alchemyProvider = await alchemy.config.getProvider();
+
         const balances = await Promise.all(
             supportAssets.map(asset => {
                 if (asset.tokenAddr === MOCK_ETH_ADDR) {
-                    return web3Provider.getBalance(walletAddr);
+                    return alchemyProvider.getBalance(walletAddr);
                 }
                 return contractMap.ERC20.attach(asset.tokenAddr).balanceOf(walletAddr)
             })
@@ -996,7 +1014,11 @@ export default class Store {
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-                this.logOperation(hash);
+
+                const timer = setTimeout(() => {
+                    this.logOperation(hash);
+                    clearTimeout(timer);
+                }, 20 * 1000);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1459,9 +1481,19 @@ export default class Store {
         try {
             const amountBN = toBN(amount);
 
+            const gasLimit = await StabilityPool
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .withdrawFromSP(amountBN);
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
-                .withdrawFromSP(amountBN);
+                .withdrawFromSP(
+                    amountBN,
+                    { gasLimit: toBN(~~moreGasLimit) }
+                );
 
             const result = await this.waitForTransactionConfirmed(hash);
             if (result.status === 1) {
@@ -1492,9 +1524,20 @@ export default class Store {
         });
 
         try {
+            const gasLimit = await StabilityPool
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .withdrawFromSP('0');
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
-                .withdrawFromSP('0');
+                .withdrawFromSP(
+                    '0',
+                    { gasLimit: toBN(~~moreGasLimit) }
+                );
+
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
@@ -1525,9 +1568,20 @@ export default class Store {
             this.isClaimRewardToTroveIng = true;
         });
         try {
+            const gasLimit = await StabilityPool
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .withdrawCollateralGainToTrove(EMPTY_ADDRESS, EMPTY_ADDRESS);
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
-                .withdrawCollateralGainToTrove(EMPTY_ADDRESS, EMPTY_ADDRESS);
+                .withdrawCollateralGainToTrove(
+                    EMPTY_ADDRESS,
+                    EMPTY_ADDRESS,
+                    { gasLimit: toBN(~~moreGasLimit) }
+                );
 
             const result = await this.waitForTransactionConfirmed(hash);
 
@@ -1790,6 +1844,18 @@ export default class Store {
             runInAction(() => {
                 this.isLoadingRankList = false;
             });
+        }
+    }
+
+    async resolveENSName (addr: string) {
+        const provider = await alchemy.config.getProvider();
+
+        try {
+            const ensName = await provider.lookupAddress(addr);
+
+            return ensName || addr;
+        } catch {
+            return addr;
         }
     }
 }
