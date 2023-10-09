@@ -788,10 +788,12 @@ export default class Store {
                     ,
                     collaterals
                 ],
-                troveData
+                troveData,
+                ethPrice
             ] = await Promise.all([
                 TroveManager.getEntireDebtAndColl(walletAddr),
-                TroveManager.Troves(walletAddr)
+                TroveManager.Troves(walletAddr),
+                PriceFeeds.fetchPrice_view()
             ]);
 
             const troveCollateralInfo: Array<{
@@ -817,21 +819,6 @@ export default class Store {
                         };
                     });
 
-            const queryAssetList = assetInfo.map(asset => {
-                if (asset.tokenAddr === MOCK_ETH_ADDR) {
-                    return {
-                        ...asset,
-                        tokenAddr: WETH_ADDR
-                    };
-                }
-                return asset;
-            });
-
-            const assetValue = await CollateralManager.getTotalValue(
-                queryAssetList.map(asset => asset.tokenAddr),
-                queryAssetList.map(asset => asset.amount)
-            );
-
             // means user no trove in our system
             if (debt.eq(BN_ZERO)) {
                 runInAction(() => {
@@ -840,10 +827,12 @@ export default class Store {
                 return;
             }
 
+            const icr = await TroveManager.getCurrentICR(walletAddr, ethPrice);
+
             const trove: UserTrove = {
                 debt: +debt,
                 owner: walletAddr,
-                ICR: assetValue / +debt,
+                ICR: +icr / 1e18,
                 collateral: assetInfo.map(x => {
                     return {
                         ...x,
