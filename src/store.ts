@@ -16,7 +16,7 @@ import {
     ExternalProvider, UserTrove, SupportAssetsItem,
     UserCollateralItem, UserDepositRewardsItem,
     ProtocolCollateralItem,
-    RankItem
+    RankItem, TroveStatus
 } from 'src/types';
 
 import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
@@ -260,6 +260,13 @@ export default class Store {
 
             return list;
         }, [] as unknown as Array<any>);
+    }
+
+    @computed get userHasCollToClaimAfterRedeem() {
+        const { existCollateral } = this.userTrove || {};
+        if (!Array.isArray(existCollateral)) return false;
+        if (existCollateral.length < 1) return false;
+        return existCollateral.some(coll => +coll.amount > 0);
     }
 
     init() {
@@ -776,8 +783,8 @@ export default class Store {
 
     async getUserTroveInfo(setStore = false): Promise<UserTrove | undefined> {
         const { contractMap, walletAddr, supportAssets } = this;
-        const { TroveManager, HintHelpers, PriceFeeds, CollateralManager, TroveDebt } = contractMap;
-        if (!TroveManager || !HintHelpers || !PriceFeeds || !CollateralManager || !walletAddr || !TroveDebt || supportAssets.length < 1) return;
+        const { TroveManager, PriceFeeds, CollateralManager, TroveDebt } = contractMap;
+        if (!TroveManager || !PriceFeeds || !CollateralManager || !walletAddr || !TroveDebt || supportAssets.length < 1) return;
 
         try {
             const [
@@ -820,7 +827,10 @@ export default class Store {
                     });
 
             // means user no trove in our system
-            if (debt.eq(BN_ZERO)) {
+            if (
+                +troveData.status === TroveStatus.NonExistent ||
+                +troveData.status === TroveStatus.ClosedByOwner
+            ) {
                 runInAction(() => {
                     this.userTrove = null as unknown as UserTrove;
                 });
@@ -839,8 +849,28 @@ export default class Store {
                         amount: x.amount
                     };
                 }),
-                status: troveData.status
+                existCollateral: [],
+                status: +troveData.status
             };
+
+            if (+trove.status === TroveStatus.ClosedByRedemption) {
+                const collateralAmounts = await Promise.all(
+                    assetInfo.map(a => {
+                        const tokenAddr = a.tokenAddr === MOCK_ETH_ADDR ? WETH_ADDR : a.tokenAddr;
+                        return TroveManager.getCollateral(
+                            walletAddr,
+                            tokenAddr  
+                        );
+                    })
+                );
+    
+                trove.existCollateral = assetInfo.map((x, idx) => {
+                    return {
+                        ...x,
+                        amount: collateralAmounts[idx]
+                    };
+                });
+            }
 
             if (setStore) {
                 runInAction(() => {
@@ -1583,6 +1613,39 @@ export default class Store {
             runInAction(() => {
                 this.isClaimRewardToTroveIng = false;
             });
+        }
+    }
+
+    async claimExistCollAfterHasBeenRedeemed() {
+        const { contractMap, web3Provider } = this;
+        const { BorrowerOperation } = contractMap;
+        if (!BorrowerOperation) return { status: false, hash: '', msg: '' };
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
+
+        try {
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .claimCollateral();
+
+            const moreGasLimit = +gasLimit * 1.5;
+
+            const { hash } = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .claimCollateral(
+                    { gasLimit: toBN(~~moreGasLimit) }
+                );
+
+            const result = await this.waitForTransactionConfirmed(hash);
+
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
         }
     }
 

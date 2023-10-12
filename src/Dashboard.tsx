@@ -70,7 +70,7 @@ export default observer(function Dashboard() {
         <div className={s.wrap}>
             <p className={s.title}>Statistics</p>
             <div className={s.userAssetIndex}>
-                <p className={s.indexTitle}>Balance</p>
+                <p className={s.indexTitle}>Balances</p>
                 <div className={s.userAssetsInfo}>
                     <Skeleton active loading={userCollateralInfo.length < 1}>
                         {userCollateralInfo.map(asset => {

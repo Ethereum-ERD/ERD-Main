@@ -4,6 +4,14 @@ export type ExternalProvider = ethers.providers.Web3Provider;
 
 export type RPCProvider = ethers.providers.JsonRpcProvider;
 
+export enum TroveStatus {
+    NonExistent = 0,
+    Active,
+    ClosedByOwner,
+    ClosedByLiquidation,
+    ClosedByRedemption
+}
+
 export enum CollateralStatus {
     NotSupport = 0,
     Active,
@@ -20,9 +28,10 @@ export type UserTrove = {
     ICR: number
     debt: number
     owner: string
-    status: string
+    status: number
     collateral: Array<SupportAssetsItem & { amount: ethers.BigNumber }>
-}; 
+    existCollateral: Array<SupportAssetsItem & { amount: ethers.BigNumber }>
+};
 
 export interface ProtocolCollateralItem extends SupportAssetsItem {
     balance: number

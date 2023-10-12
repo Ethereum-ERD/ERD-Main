@@ -227,11 +227,12 @@ div.tipsModal {
 
     border: 1px solid var(--liquidate-table-head-border-color);
     border-radius: 16px;
+}
 
-    &[data-sticky=true] {
-        z-index: var(--sticky-z-index);
-        box-shadow: 0px 10px 16px var(--liquidate-table-head-sticky-box-shadow-color);
-    }
+.tableHeadContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .tableHeadOfOwner,
@@ -329,6 +330,9 @@ div.tipsModal {
     align-items: center;
 
     .owner {
+        width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
         color: var(--liquidate-table-item-owner-text-color);
         font-size: 20px;
         margin-right: 10px;
@@ -548,7 +552,7 @@ div.tipsModal {
 
     .tableHeadCollRatio {
         width: 55px;
-        margin-left: 40px;
+        margin-left: 30px;
         font-size: 12px;
         order: 2;
     }
@@ -595,7 +599,7 @@ div.tipsModal {
 
     .tableItemRatio {
         width: 55px;
-        margin-left: 40px;
+        margin-left: 30px;
         order: 2;
         display: flex;
         align-items: center;
@@ -706,6 +710,17 @@ div.tipsModal {
         background: var(--root-bg-color);
     }
 
+    .tableHeadContainer {
+        overflow-x: scroll;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .tableHeadContainer::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
     .tableHeadOfOwner,
     .tableHeadCollRatio,
     .tableHeadDebt,
@@ -715,14 +730,14 @@ div.tipsModal {
     }
 
     .tableHeadOfOwner {
-        width: 40px;
+        width: 80px;
         padding-left: 0;
         order: 1;
     }
 
     .tableHeadCollRatio {
         width: 55px;
-        margin-left: 30px;
+        margin-left: 20px;
         order: 2;
     }
 
@@ -737,6 +752,7 @@ div.tipsModal {
     }
 
     .tableHeadCollateral {
+        width: 200px;
         margin-left: 30px;
         flex: 1 0 auto;
         order: 4;
@@ -771,7 +787,7 @@ div.tipsModal {
     }
 
     .tableItemOwner {
-        width: 40px;
+        width: 80px;
         padding-left: 0;
         order: 1;
 
@@ -783,15 +799,11 @@ div.tipsModal {
             display: block;
             font-size: 12px;
         }
-
-        .copyIcon {
-            display: none;
-        }
     }
 
     .tableItemRatio {
         width: 55px;
-        margin-left: 30px;
+        margin-left: 20px;
         order: 2;
         
         .tableItemCollRatioText {
