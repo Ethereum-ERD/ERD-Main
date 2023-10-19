@@ -1,11 +1,11 @@
 .wrap {
-    max-width: 1200px;
+    max-width: 1366px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
 }
 
-@media screen and (min-width: 744px) and (max-width: 1199px) {
+@media screen and (min-width: 744px) and (max-width: 1365px) {
     .wrap {
         width: 100%;
         padding: 0 0 50px;

@@ -40,7 +40,7 @@
 }
 
 .tabs {
-    margin-left: 80px;
+    margin-left: 50px;
     display: flex;
     align-items: center;
 }
@@ -173,7 +173,7 @@
     }
 }
 
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 1365px) {
     .leftWrap img {
         width: 28px;
         height: 28px;
@@ -194,7 +194,7 @@
     }
 }
 
-@media screen and (min-width: 744px) and (max-width: 1199px) {
+@media screen and (min-width: 744px) and (max-width: 1365px) {
     .padTabsWrap {
         display: flex;
     }

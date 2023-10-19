@@ -5,7 +5,7 @@
 
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1366px;
     margin: 0 auto;
     padding: 10px 0;
     display: flex;
@@ -69,7 +69,7 @@
     }
 }
 
-@media screen and (min-width: 744px) and (max-width: 1199px) {
+@media screen and (min-width: 744px) and (max-width: 1365px) {
     .container {
         width: unset;
         margin: 0 30px;

@@ -3,7 +3,7 @@
     --banner-height: 100px;
 }
 
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 1365px) {
     :root {
         --banner-height: 50px;
     }
