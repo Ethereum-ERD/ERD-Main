@@ -4,7 +4,7 @@ import StableCoin from 'src/contract/StableCoin';
 
 const CURRENT_CHAIN_ID = process.env.REACT_APP_CHAIN_ID ? +(process.env.REACT_APP_CHAIN_ID) : GOERLI_CHAIN_ID;
 
-console.log('process env: ', process.env.REACT_APP_CHAIN_ID);
+console.log('process env: ', process.env.REACT_APP_CHAIN_ID, process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID);
 
 const GOERLI_WETH_ADDR   = '0x23Cb0c6C75df5A88F559fE998b079C4069F14837'.toLowerCase();
 const GOERLI_R_ETH_ADDR  = '0x10963DeA0a7bAe56Cd4C822bd2a58dACe5A88e7c'.toLowerCase();
