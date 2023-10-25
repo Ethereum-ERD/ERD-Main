@@ -26,7 +26,8 @@ const walletConnect = walletConnectModule({
     requiredChains: [MAIN_CHAIN_ID],
     // @ts-ignore
     optionalChains: [GOERLI_CHAIN_ID],
-    projectId: '713e3f7b3e63b09197a8bf045a9471f9',
+    // @ts-expect-error
+    projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
 });
 
 export function createBoard() {
