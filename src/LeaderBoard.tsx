@@ -90,12 +90,7 @@ export default observer(function LeaderBoard() {
                 </div>
                 <div className={s.item}>
                     <span>My Debt</span>
-                    <p>{addCommas(
-                        formatUnits(
-                            userTrove?.debt || 0,
-                            stableCoinDecimals || 18
-                        )
-                    )}{"\u00A0"}{stableCoinName}</p>
+                    <p>{formatNumber((userTrove?.debt || 0) / Math.pow(10, stableCoinDecimals))}{"\u00A0"}{stableCoinName}</p>
                 </div>
             </div>
             <div className={s.rankList}>

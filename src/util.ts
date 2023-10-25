@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
 
-import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY, CONTRACT_ERROR_PREFIX } from 'src/constants';
+import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY, CONTRACT_ERROR_PREFIX, MAINNET_ETHER_SCAN_URL_PREFIX, GOERLI_ETHER_SCAN_URL_PREFIX } from 'src/constants';
+import { MAIN_CHAIN_ID } from 'src/chain-id';
+import { CURRENT_CHAIN_ID } from 'src/env';
 import { Errors } from 'src/Error';
 
 export const getEmptyObject = () => Object.create(null);
@@ -142,5 +144,6 @@ export function translateUint(v: number) {
 }
 
 export function OpenEtherScan(path: string) {
-    window.open(`https://goerli.etherscan.io${path}`, '_blank');
+    const urlPrefix = CURRENT_CHAIN_ID === MAIN_CHAIN_ID ? MAINNET_ETHER_SCAN_URL_PREFIX : GOERLI_ETHER_SCAN_URL_PREFIX;
+    window.open(`${urlPrefix}${path}`, '_blank');
 }

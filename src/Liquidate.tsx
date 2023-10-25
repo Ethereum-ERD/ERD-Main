@@ -89,7 +89,6 @@ function Liquidate() {
         troveAmount,
         isNormalMode,
         troveList,
-        systemTCR,
         systemMCR,
         systemCCR,
         liquidate,
@@ -144,17 +143,12 @@ function Liquidate() {
         }
 
         const ICR = trove.ICR;
-        let canBeLiquidated = false;
 
-        if (isNormalMode) {
-            canBeLiquidated = ICR < systemMCR;
-        } else {
-            canBeLiquidated = ICR < systemMCR || ICR < systemTCR;
-        }
+        const compareIndex = isNormalMode ? systemMCR : systemCCR;
 
-        if (!canBeLiquidated) {
+        if (ICR >= compareIndex) {
             return notification.warning({
-                message: `This Trove has a CR greater than 110% and is currently ineligible for liquidation.`,
+                message: `This Trove has a CR greater than ${(compareIndex * 100).toFixed(0)}% and is currently ineligible for liquidation.`,
             });
         }
 
@@ -469,13 +463,23 @@ function Liquidate() {
                                 const troveCollRatioClass = [
                                     s.tableItemCollRatioText,
                                 ];
-                                if (ICR >= systemCCR) {
-                                    troveCollRatioClass.push(s.health);
-                                } else if (ICR >= systemMCR) {
-                                    troveCollRatioClass.push(s.waring);
+
+                                if (isNormalMode) {
+                                    if (ICR >= systemCCR) {
+                                        troveCollRatioClass.push(s.health);
+                                    } else if (ICR >= systemMCR) {
+                                        troveCollRatioClass.push(s.warning);
+                                    } else {
+                                        troveCollRatioClass.push(s.emergency);
+                                    }
                                 } else {
-                                    troveCollRatioClass.push(s.emergency);
+                                    if (ICR >= systemCCR) {
+                                        troveCollRatioClass.push(s.health);
+                                    } else {
+                                        troveCollRatioClass.push(s.emergency);
+                                    }
                                 }
+
                                 return (
                                     <div
                                         key={owner}

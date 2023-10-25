@@ -1,10 +1,8 @@
 import { ethers } from 'ethers';
 
-import StableCoin from 'src/contract/StableCoin';
+import { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR } from 'src/env';
 
-export const MAIN_CHAIN_ID = 1;
-
-export const GOERLI_CHAIN_ID = 5;
+export { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR };
 
 export const ALCHEMY_API_KEY = 'LPyMvM3tqV6T2WdroN8QKJ8y3B5DNm6d';
 
@@ -66,27 +64,7 @@ export const Routes = [
 
 export const EMPTY_ADDRESS = ethers.constants.AddressZero;
 
-export type UserTroveStatus =
-    | "nonExistent"
-    | "open"
-    | "closedByOwner"
-    | "closedByLiquidation"
-    | "closedByRedemption";
-
 export const RANDOM_SEED = 31337;
-
-// @TODO: will remove this line when deploy to mainnet
-export const WETH_ADDR   = '0x23Cb0c6C75df5A88F559fE998b079C4069F14837'.toLowerCase();
-export const R_ETH_ADDR  = '0x10963DeA0a7bAe56Cd4C822bd2a58dACe5A88e7c'.toLowerCase();
-export const ST_ETH_ADDR = '0xF5Edf26C26028BB921344B7F394CB731307AB2F5'.toLowerCase();
-export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
-export const USDE_ADDR   = StableCoin.addr.toLowerCase();
-
-// export const WETH_ADDR   = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
-// export const ST_ETH_ADDR = '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase();
-// export const R_ETH_ADDR  = '0xae78736Cd615f374D3085123A210448E74Fc6393'.toLowerCase();
-// export const CB_ETH_ADDR = '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704'.toLowerCase();
-// export const USDE_ADDR   = '';
 
 export const TOKEN_IMG_URL = {
     [WETH_ADDR]: 'https://etherscan.io/token/images/weth_28.png',
@@ -104,3 +82,7 @@ export const TERMS_SAVED_KEY = "DidYouAgreeERDTerms";
 export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';
 
 export const TROVE_PER_PAGE = 10;
+
+export const MAINNET_ETHER_SCAN_URL_PREFIX = 'https://etherscan.io';
+
+export const GOERLI_ETHER_SCAN_URL_PREFIX  = 'https://goerli.etherscan.io';
