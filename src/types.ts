@@ -61,9 +61,11 @@ export interface BorrowItem {
 
 export interface RankItem {
     rank: number;
-    user: string;
+    user?: string;
+    wallet?: string;
     score: number;
     invite: number;
     amount: number;
     userFullStr: string;
+    totalPoints?: number;
 }

@@ -182,7 +182,7 @@ export default class Store {
             ];
         }, this.initUserInfo);
 
-        reaction(() => this.walletAddr, this.getUserRankInfo);
+        reaction(() => this.walletAddr, () => this.getUserRankInfo());
 
         reaction(() => {
             return [
@@ -1037,7 +1037,7 @@ export default class Store {
                 const timer = setTimeout(() => {
                     this.logOperation(hash);
                     clearTimeout(timer);
-                }, 20 * 1000);
+                }, 10 * 1000);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
@@ -1822,9 +1822,10 @@ export default class Store {
     logOperation(hash: string) {
         if (!this.isMainNet) return;
         axios.post('/api/record', {
-            addr: this.walletAddr,
             hash
-        }).catch(() => null);
+        }).catch((e) => {
+            console.log('log hash failed.', e.message);
+        });
     }
 
     async networkCheck() {
@@ -1842,22 +1843,22 @@ export default class Store {
         }
     }
 
-    async getUserRankInfo() {
+    async getUserRankInfo(stage = -1) {
         try {
             const { walletAddr } = this;
             if (!walletAddr) return;
-            const res = await axios.get(`/api/get_my_rank?addr=${walletAddr}`);
+            const res = await axios.get(`/api/get_my_rank?addr=${walletAddr}&stage=${stage}`);
             const data = res.data;
 
             runInAction(() => {
-                this.userScores = data.score;
+                this.userScores = data.score || data.totalPoints;
                 this.userInvite = data.invite;
                 this.userRank   = data.rank;
             });
         } catch {}
     }
 
-    async queryRankList () {
+    async queryRankList (stage = -1) {
         const { isLoadingRankList } = this;
 
         if (isLoadingRankList) return;
@@ -1867,20 +1868,21 @@ export default class Store {
         });
 
         try {
-            const res = await axios.get('/api/get_rank_list');
+            const res = await axios.get(`/api/get_rank_list?stage=${stage}`);
 
             const list: Array<RankItem> = res.data?.data || [];
 
             const data: Array<any> = list
                 .map(c => {
-                    const { user, score, amount } = c;
-                    const len = user.length;
+                    const { wallet, user, score, amount, totalPoints } = c;
+                    const userAddr = user || wallet || '';
+                    const userScore = score || totalPoints || 0;
+
                     return {
                         ...c,
-                        userFullStr: user,
-                        score: +(score.toFixed(2)),
-                        amount: +(amount.toFixed(2)),
-                        user: user.slice(0, 5) + '...' + user.slice(len - 4)
+                        userFullStr: userAddr,
+                        score: +(userScore.toFixed(2)),
+                        amount: +(amount.toFixed(2))
                     };
                 });
 
