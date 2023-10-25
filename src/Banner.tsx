@@ -8,8 +8,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Dropdown, message } from "antd";
 import cx from "classnames";
 
+import { formatNumber, OpenEtherScan } from "src/util";
 import { EMPTY_ADDRESS, Routes } from "src/constants";
-import { formatNumber } from "src/util";
 import { useStore } from "src/hooks";
 
 import Copy from "src/asset/banner/copy-dark.svg";
@@ -79,13 +79,9 @@ function Banner() {
                 label: (
                     <div className={cx(s.item, 'popMenuItem')}>
                         <img src={View} alt="view on explore" />
-                        <a
-                            href={`https://goerli.etherscan.io/address/${walletAddr}`}
-                            rel="noreferrer noopenner"
-                            target="_blank"
-                        >
+                        <div onClick={() => OpenEtherScan(`/address/${walletAddr}`)}>
                             View on Explorer
-                        </a>
+                        </div>
                     </div>
                 ),
             },

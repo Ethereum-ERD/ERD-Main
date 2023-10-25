@@ -6,7 +6,7 @@ import { Modal } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { message } from "antd";
 
-import { addCommas, formatUnits } from "src/util";
+import { OpenEtherScan, formatNumber } from "src/util";
 import { useStore } from "src/hooks";
 
 import Copy from "src/asset/banner/copy.svg";
@@ -21,6 +21,7 @@ export default observer(function MobileAvatarMenu() {
         userScores,
         userTrove,
         walletAddr,
+        stableCoinName,
         disConnectWallet,
         stableCoinDecimals,
         showMobileAvatarMenu,
@@ -39,17 +40,14 @@ export default observer(function MobileAvatarMenu() {
             <div className={s.accountInfo}>
                 <div className={s.accountInfoItem}>
                     <span>My Points</span>
-                    <p>{userScores}</p>
+                    <p>{formatNumber(userScores)}</p>
                 </div>
                 <div className={s.accountInfoItem}>
                     <span>My Debt</span>
                     <p>
-                        {addCommas(
-                            formatUnits(
-                                userTrove?.debt || 0,
-                                stableCoinDecimals || 18
-                            )
-                        )}
+                        {formatNumber((userTrove?.debt || 0) / Math.pow(10, stableCoinDecimals))}
+                        {"\u00A0"}
+                        {stableCoinName}
                     </p>
                 </div>
             </div>
@@ -73,13 +71,9 @@ export default observer(function MobileAvatarMenu() {
                 </CopyToClipboard>
                 <div className={s.item}>
                     <img src={View} alt="view on explore" />
-                    <a
-                        href={`https://goerli.etherscan.io/address/${walletAddr}`}
-                        rel="noreferrer noopenner"
-                        target="_blank"
-                    >
+                    <div onClick={() => OpenEtherScan(`/address/${walletAddr}`)}>
                         View on Explorer
-                    </a>
+                    </div>
                 </div>
                 <div onClick={() => {
                         disConnectWallet();

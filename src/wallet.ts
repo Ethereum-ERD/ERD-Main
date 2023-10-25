@@ -2,7 +2,8 @@ import Onboard from '@web3-onboard/core';
 import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from '@web3-onboard/walletconnect';
 
-import { MAIN_CHAIN_ID, GOERLI_CHAIN_ID, MAINNET_RPC_URL, GOERLI_RPC_URL } from 'src/constants';
+import { MAINNET_RPC_URL, GOERLI_RPC_URL } from 'src/constants';
+import { MAIN_CHAIN_ID, GOERLI_CHAIN_ID } from 'src/chain-id';
 
 const WalletSavedKey = "ErdSelectedWallet";
 
@@ -20,13 +21,13 @@ export const clearWallet = () => {
 
 const injected = injectedModule();
 
-// const walletConnect = walletConnectModule({ version: 1 });
 const walletConnect = walletConnectModule({
     version: 2,
     requiredChains: [MAIN_CHAIN_ID],
     // @ts-ignore
     optionalChains: [GOERLI_CHAIN_ID],
-    projectId: '713e3f7b3e63b09197a8bf045a9471f9',
+    // @ts-expect-error
+    projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
 });
 
 export function createBoard() {

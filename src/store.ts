@@ -6,9 +6,9 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import axios from 'axios';
 
 import {
-    EMPTY_ADDRESS, RANDOM_SEED, GOERLI_CHAIN_ID,
-    WETH_ADDR, BN_ZERO, MOCK_ETH_ADDR, BN_ETHER,
-    MAX_FEE, MAX_ITERATIONS, ALCHEMY_API_KEY,
+    EMPTY_ADDRESS, RANDOM_SEED, WETH_ADDR, BN_ZERO,
+    MOCK_ETH_ADDR, BN_ETHER, MAX_FEE,
+    MAX_ITERATIONS, ALCHEMY_API_KEY,
     TOKEN_IMG_URL, TROVE_PER_PAGE
 } from 'src/constants';
 
@@ -22,6 +22,7 @@ import {
 import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
+import { GOERLI_CHAIN_ID } from 'src/chain-id';
 import ContractConfig from 'src/contract';
 
 const settings = {
