@@ -9,7 +9,7 @@ import {
     EMPTY_ADDRESS, RANDOM_SEED, WETH_ADDR, BN_ZERO,
     MOCK_ETH_ADDR, BN_ETHER, MAX_FEE,
     MAX_ITERATIONS, ALCHEMY_API_KEY,
-    TOKEN_IMG_URL, TROVE_PER_PAGE
+    TOKEN_IMG_URL, ROW_PER_PAGE
 } from 'src/constants';
 
 import {
@@ -153,6 +153,8 @@ export default class Store {
     weekQuota = 0;
 
     userScores = 0;
+
+    userTotalPoints = 0;
 
     userRank = -1;
 
@@ -1671,11 +1673,11 @@ export default class Store {
         });
 
         try {
-            const startIdx = -1 + -1 * TROVE_PER_PAGE * (page - 1);
+            const startIdx = -1 + -1 * ROW_PER_PAGE * (page - 1);
 
             const backendTroves = await MultiTroveGetter.getMultipleSortedTroves(
                 startIdx,
-                TROVE_PER_PAGE
+                ROW_PER_PAGE
             );
 
             const troves = await this.mapBackendTroves(backendTroves);
@@ -1852,10 +1854,17 @@ export default class Store {
             const data = res.data;
 
             runInAction(() => {
-                this.userScores = data.score || data.totalPoints;
+                this.userScores = +(data.score || data.totalPoints || 0);
                 this.userInvite = data.invite;
                 this.userRank   = data.rank;
             });
+
+            if (stage === -1) {
+                runInAction(() => {
+                    this.userTotalPoints = +(data.score || data.totalPoints || 0);
+                });
+            }
+
         } catch {}
     }
 
@@ -1877,16 +1886,15 @@ export default class Store {
                 .map(c => {
                     const { wallet, user, score, amount, totalPoints } = c;
                     const userAddr = user || wallet || '';
-                    const userScore = score || totalPoints || 0;
+                    const userScore = +(score || totalPoints || 0);
 
                     return {
                         ...c,
                         userFullStr: userAddr,
                         score: +(userScore.toFixed(2)),
-                        amount: +(amount.toFixed(2))
+                        amount: +((+amount).toFixed(2))
                     };
                 });
-
             runInAction(() => {
                 this.rankList = data;
                 this.isNoRankData = data.length < 1;

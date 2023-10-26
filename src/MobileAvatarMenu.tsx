@@ -18,10 +18,9 @@ import s from "./MobileAvatarMenu.module.scss";
 export default observer(function MobileAvatarMenu() {
     const { store } = useStore();
     const {
-        userScores,
+        userTotalPoints,
         userTrove,
         walletAddr,
-        stableCoinName,
         disConnectWallet,
         stableCoinDecimals,
         showMobileAvatarMenu,
@@ -39,15 +38,13 @@ export default observer(function MobileAvatarMenu() {
         >
             <div className={s.accountInfo}>
                 <div className={s.accountInfoItem}>
-                    <span>My Points</span>
-                    <p>{formatNumber(userScores)}</p>
+                    <span>Total Points</span>
+                    <p>{formatNumber(userTotalPoints)}</p>
                 </div>
                 <div className={s.accountInfoItem}>
-                    <span>My Debt</span>
+                    <span>Total Debt</span>
                     <p>
                         {formatNumber((userTrove?.debt || 0) / Math.pow(10, stableCoinDecimals))}
-                        {"\u00A0"}
-                        {stableCoinName}
                     </p>
                 </div>
             </div>

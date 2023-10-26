@@ -1,14 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import cx from 'classnames';
-import { Skeleton, message, Popover } from 'antd';
+import { Skeleton, message, Popover, Select } from 'antd';
 // @ts-ignore
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import dayjs from 'dayjs';
 
-import { addCommas, formatUnits, formatNumber } from "src/util";
+import { LEADER_BOARD_START_TIME } from 'src/constants';
+import { formatNumber } from "src/util";
 import { useStore } from "src/hooks";
 
 import s from './LeaderBoard.module.scss';
+
+const { Option } = Select;
 
 function CopyIcon() {
     return (
@@ -56,16 +60,86 @@ function QuestionIcon() {
     );
 }
 
+function SuffixIcon() {
+    return (
+        <div style={{ pointerEvents: 'none' }}>
+            <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 6H2L6.5 10.5L11 6Z" fill="white" fillOpacity="0.5"/>
+            </svg>
+        </div>
+    );
+}
+
 export default observer(function LeaderBoard() {
-    const { store: { userInvite, userRank, userScores, userTrove, stableCoinDecimals, stableCoinName, rankList, queryRankList, isNoRankData, isLoadingRankList } } = useStore();
+    const [phase, setPhase] = useState(0);
+    const [activePhase, setActivePhase] = useState(0);
+    const { store: { userInvite, userRank, userScores, userTrove, stableCoinDecimals, stableCoinName, rankList, queryRankList, getUserRankInfo, isNoRankData, isLoadingRankList } } = useStore();
+
+    useEffect(() => {
+        const timeStart = dayjs(LEADER_BOARD_START_TIME);
+        const timeDiff = dayjs().diff(timeStart, 'days');
+        const timeDiffInWeek = ~~(timeDiff / 7);
+        setPhase(timeDiffInWeek);
+    }, []);
 
     useEffect(() => {
         rankList.length < 1 && queryRankList();
     }, [rankList, queryRankList]);
 
+    useEffect(() => {
+        queryRankList(activePhase === 0 ? -1 : activePhase);
+        getUserRankInfo(activePhase === 0 ? -1 : activePhase);
+    }, [activePhase, getUserRankInfo, queryRankList]);
+
+    const options = useMemo(() => {
+        return Array
+            .from({ length: phase + 1 })
+            .map((_, idx) => {
+                if (idx === 0) {
+                    return {
+                        value: idx,
+                        label: 'All'
+                    };
+                }
+
+                const time = dayjs(LEADER_BOARD_START_TIME).add(7 * idx, 'days');
+
+                return {
+                    value: idx,
+                    label: time.format('YYYY-MM-DD')
+                };
+            });
+    }, [phase]);
+
     return (
         <div className={s.wrap}>
-            <p className={s.title}>Leaderboard</p>
+            <div className={s.head}>
+                <p className={s.title}>Leaderboard</p>
+                <Select
+                    onSelect={(v) => setActivePhase(v)}
+                    className={s.phaseSelect}
+                    suffixIcon={<SuffixIcon />}
+                    popupClassName={s.popUpContainer}
+                    defaultValue={0}
+                >
+                    {options.map((option, idx) => {
+                        const isActive = activePhase === option.value;
+
+                        return (
+                            <Option
+                                value={option.value}
+                                key={option.value}
+                                className={cx(s.optionItem, { [s.active]: isActive })}
+                            >
+                                {option.label}
+                                {idx !== 0 && (
+                                    <span>Phase{idx - 1}</span>
+                                )}
+                            </Option>
+                        );
+                    })}
+                </Select>
+            </div>
             <div className={s.selfRank}>
                 <div className={s.item}>
                     <span>My Rank</span>
@@ -106,7 +180,7 @@ export default observer(function LeaderBoard() {
                             arrow={false}
                             content={<div className='tipsModal'>This total debt amount represents the total value of USDE minted by the user within a 24-hour period and is refreshed every 24 hours.</div>}
                         >
-                            <div><QuestionIcon /></div>
+                            <div className={s.questionIconWrap}><QuestionIcon /></div>
                         </Popover>
                     </div>
                 </div>
@@ -120,7 +194,7 @@ export default observer(function LeaderBoard() {
                         )}
                         {rankList.length > 0 && rankList.map((item) => {
                             return (
-                                <div key={item.user} className={s.rankItem}>
+                                <div key={item.userFullStr} className={s.rankItem}>
                                     <p className={cx(s.rankIndexValue, s.rankValue)}
                                         data-rank={item.rank}
                                     >
