@@ -32,7 +32,7 @@ const trigger: any = ["click"];
 function Banner() {
     const {
         store: {
-            userScores,
+            userTotalPoints,
             displayWallet,
             walletAddr,
             connectWallet,
@@ -141,7 +141,7 @@ function Banner() {
                     <div className={s.accountInfo}>
                         <div className={s.accountInfoItem}>
                             <span>Total Points</span>
-                            <p>{formatNumber(userScores)}</p>
+                            <p>{formatNumber(userTotalPoints)}</p>
                         </div>
                         <div className={s.accountInfoItem}>
                             <span>Total Debt</span>

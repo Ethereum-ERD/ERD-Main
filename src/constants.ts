@@ -4,7 +4,9 @@ import { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR } from 'src/
 
 export { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR };
 
-export const ALCHEMY_API_KEY = 'LPyMvM3tqV6T2WdroN8QKJ8y3B5DNm6d';
+export const LEADER_BOARD_START_TIME = '2023-09-08';
+
+export const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY;
 
 export const MAINNET_RPC_URL = `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 
@@ -16,7 +18,9 @@ export const BN_ZERO = ethers.BigNumber.from(0);
 
 export const BN_ONE = ethers.BigNumber.from(1);
 
-export const MOCK_ETH_ADDR = '0x' + '0'.repeat(40);
+export const EMPTY_ADDRESS = ethers.constants.AddressZero;
+
+export const MOCK_ETH_ADDR = EMPTY_ADDRESS;
 
 export const MAX_MINTING_FEE = 0.05;
 
@@ -62,8 +66,6 @@ export const Routes = [
     }
 ];
 
-export const EMPTY_ADDRESS = ethers.constants.AddressZero;
-
 export const RANDOM_SEED = 31337;
 
 export const TOKEN_IMG_URL = {
@@ -80,8 +82,6 @@ export const BN_ETHER = ethers.BigNumber.from(1 + '0'.repeat(18));
 export const TERMS_SAVED_KEY = "DidYouAgreeERDTerms";
 
 export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';
-
-export const TROVE_PER_PAGE = 10;
 
 export const MAINNET_ETHER_SCAN_URL_PREFIX = 'https://etherscan.io';
 

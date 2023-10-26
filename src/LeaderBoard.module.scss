@@ -7,11 +7,89 @@
     border: 1px solid var(--leader-board-wrap-border-color);
 }
 
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .title {
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
     color: var(--leader-board-title-color);
+}
+
+.phaseSelect {
+    width: 197px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, .5);
+
+    :global {
+        div.ant-select-selector {
+            width: 100% !important;
+            height: 100% !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        span.ant-select-selection-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.70) !important;
+            font-size: 16px;
+
+            span {
+                margin-left: 5px;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.popUpContainer {
+    border-radius: 10px;
+    border: 1px solid #43454A;
+    background: #292A30;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.20);
+}
+
+.optionItem {
+    height: 52px;
+    padding: 0 16px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: none !important;
+    background-color: transparent !important;
+
+    :global {
+        .ant-select-item-option-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 0 0 auto;
+            font-size: 16px !important;
+            font-weight: normal !important;
+            color: rgba(255, 255, 255, 0.70);
+        }
+    }
+
+    &.active {
+        background-color: rgba(255, 255, 255, 0.10) !important;
+
+        :global {
+            .ant-select-item-option-content {
+                color: rgb(255, 255, 255);
+            }
+        }
+    }
 }
 
 .selfRank {
@@ -74,6 +152,11 @@
     font-size: 14px;
     font-weight: 450;
     color: var(--leader-board-no-data-tips-color);
+}
+
+.questionIconWrap {
+    display: flex;
+    align-items: center;
 }
 
 .rankList {
@@ -300,6 +383,25 @@
     .title {
         font-size: 25px;
         line-height: normal;
+    }
+
+    .phaseSelect {
+        width: 180px;
+        :global {
+            span.ant-select-selection-item {
+                font-size: 14px;
+            }
+        }
+    }
+
+    .optionItem {
+        height: 40px;
+
+        :global {
+            .ant-select-item-option-content {
+                font-size: 14px !important;
+            }
+        }
     }
 
     .item {
