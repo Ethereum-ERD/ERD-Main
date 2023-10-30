@@ -83,8 +83,9 @@ export default observer(function LeaderBoard() {
     }, []);
 
     useEffect(() => {
+        if (isNoRankData) return;
         rankList.length < 1 && queryRankList();
-    }, [rankList, queryRankList]);
+    }, [rankList, isNoRankData, queryRankList]);
 
     useEffect(() => {
         queryRankList(activePhase === 0 ? -1 : activePhase);
