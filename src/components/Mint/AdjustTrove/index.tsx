@@ -250,7 +250,7 @@ export default observer(function AdjustTrove() {
                                             stringMode
                                             controls={false}
                                             className={s.input}
-                                            disabled={isDisable}
+                                            disabled={isDisable || isProcessing}
                                             onChange={(v) => onChange(coll.tokenAddr, v)}
                                             formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             // @ts-ignore
@@ -298,6 +298,7 @@ export default observer(function AdjustTrove() {
                     onChange={onBorrowNumChange}
                     value={borrowNum}
                     className={s.input}
+                    disabled={isProcessing}
                     addonAfter={<span className={s.inputAfter}>{stableCoinName}</span>}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     // @ts-ignore

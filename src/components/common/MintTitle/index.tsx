@@ -20,7 +20,7 @@ export default function MintTitle({ title }: { title?: string }) {
             <p className={s.title}>{title || 'Mint'}</p>
             <Popover
                 title=''
-                trigger="click"
+                trigger='hover'
                 onOpenChange={setIsOpen}
                 arrow={false}
                 overlayClassName={s.popupWrap}

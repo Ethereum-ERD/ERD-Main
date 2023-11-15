@@ -144,7 +144,7 @@ export default class Store {
 
     isClaimRewardIng = false;
 
-    isLoadingAssetSupport = false;
+    isLoadingUserAsset = false;
 
     showSupportAsset = false;
 
@@ -447,7 +447,7 @@ export default class Store {
         }
 
         runInAction(() => {
-            this.isLoadingAssetSupport = true;
+            this.isLoadingUserAsset = true;
         });
 
         const alchemyProvider = await alchemy.config.getProvider();
@@ -468,7 +468,7 @@ export default class Store {
                     balance: +balances[idx]
                 }
             });
-            this.isLoadingAssetSupport = false;
+            this.isLoadingUserAsset = false;
         });
     }
 
@@ -704,8 +704,6 @@ export default class Store {
     }
 
     toggleStartBorrow() {
-        if (this.isLoadingAssetSupport) return;
-
         runInAction(() => {
             this.startBorrowStableCoin = !this.startBorrowStableCoin;
         });
@@ -939,6 +937,7 @@ export default class Store {
         collateral: Array<{ token: string; amount: number }>,
         stableCoinAmount: number,
         refer: string,
+        collateralRatio: number,
         maxFeePercentage = 1e18
     ) {
         const checkResult = await this.networkCheck();
@@ -1033,6 +1032,22 @@ export default class Store {
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
+                runInAction(() => {
+                    this.userTrove = {
+                        status: 1,
+                        ICR: collateralRatio,
+                        owner: this.walletAddr,
+                        debt: stableCoinAmount,
+                        collateral: formatCollateral.map(c => {
+                            const asset = supportAssets.find(asset => asset.tokenAddr === c.token);
+                            return {
+                                ...asset!,
+                                amount: c.amount
+                            };
+                        }),
+                        existCollateral: []
+                    };
+                });
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);

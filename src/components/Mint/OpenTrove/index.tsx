@@ -200,7 +200,8 @@ export default observer(function OpenTrove() {
         const result = await createdTrove(
             borrowInfo,
             borrowNum * Math.pow(10, stableCoinDecimals),
-            isValidRefer ? referAddr : EMPTY_ADDRESS
+            isValidRefer ? referAddr : EMPTY_ADDRESS,
+            collateralRatio
         );
 
         if (result.status) {
@@ -239,7 +240,7 @@ export default observer(function OpenTrove() {
                                             stringMode
                                             controls={false}
                                             className={s.input}
-                                            disabled={isDisable}
+                                            disabled={isDisable || isProcessing}
                                             onChange={(v) => onChange(coll.tokenAddr, v)}
                                             addonBefore={
                                                 <p className={s.inputBefore}>
@@ -285,6 +286,7 @@ export default observer(function OpenTrove() {
                     onChange={onBorrowNumChange}
                     value={borrowNum}
                     className={s.input}
+                    disabled={isProcessing}
                     addonAfter={<span className={s.inputAfter}>{stableCoinName}</span>}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     // @ts-ignore
@@ -309,6 +311,7 @@ export default observer(function OpenTrove() {
                     value={referAddr}
                     maxLength={42}
                     minLength={42}
+                    disabled={isProcessing}
                 />
             </div>
             <div className={s.collRatioInfo}>
@@ -345,7 +348,10 @@ export default observer(function OpenTrove() {
                 )}
                 {validColls.length > 0 && (
                     <>
-                        <div className={cx(s.btn, s.cancel)} onClick={toggleStartBorrow}>Cancel</div>
+                        <div className={cx(s.btn, s.cancel, { [s.disable]: isProcessing })} onClick={() => {
+                            if (isProcessing) return;
+                            toggleStartBorrow();
+                        }}>Cancel</div>
                         <div
                             className={cx(s.btn, {
                                 [s.disable]: borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount || collateralRatio < systemMCR,
