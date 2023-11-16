@@ -53,6 +53,7 @@ export default observer(function UserTroveShow() {
                         <Popover
                             title=''
                             arrow={false}
+                            trigger='hover'
                             content={<div className={cx('tipsModal', s.tipsModal)}>
                                 <p className={s.formula}>
                                     <span>Total Collateral Value</span>
