@@ -1048,14 +1048,10 @@ export default class Store {
                         existCollateral: []
                     };
                 });
+                this.logOperation(hash);
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
-
-                const timer = setTimeout(() => {
-                    this.logOperation(hash);
-                    clearTimeout(timer);
-                }, 10 * 1000);
             }
             return { status: result.status === 1, hash, msg: '' };
         } catch (e) {
