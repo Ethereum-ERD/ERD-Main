@@ -1048,7 +1048,7 @@ export default class Store {
                         existCollateral: []
                     };
                 });
-                this.logOperation(hash);
+                this.logOperation('mint', hash);
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
@@ -1311,6 +1311,7 @@ export default class Store {
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
+                this.logOperation('burn', hash);
                 this.queryUserAssets();
                 this.queryUserTokenInfo();
                 this.getUserTroveInfo(true);
@@ -1323,7 +1324,7 @@ export default class Store {
         }
     }
 
-    async estimateEligible(EUSDAmount: ethers.BigNumber) {
+    async estimateEligible(USDEAmount: ethers.BigNumber) {
         const { TroveManagerRedemption, TroveManager } = this.contractMap;
         const [
             totalEUSDSupply,
@@ -1334,7 +1335,7 @@ export default class Store {
         ]);
         const squareTerm = toBN(this.dec(1005, 15)).add(decayedBaseRate); // BR + .5%
         const sqrtTerm = squareTerm.mul(squareTerm); //.div(this.toBN(this.dec(1,18))) // Square term squared, over the precision
-        const sqrtTerm2 = ((toBN(this.dec(2, 0))).mul(EUSDAmount)).mul(toBN(this.dec(1, 36))).div(totalEUSDSupply);
+        const sqrtTerm2 = ((toBN(this.dec(2, 0))).mul(USDEAmount)).mul(toBN(this.dec(1, 36))).div(totalEUSDSupply);
         const finalSqrtTerm = this.sqrt((sqrtTerm.add(sqrtTerm2)).mul(toBN(this.dec(1, 18)))); //.div(this.toBN(this.dec(1,9)))
 
         const finalEUSDAmount = totalEUSDSupply.mul(finalSqrtTerm.sub(squareTerm.mul(toBN(this.dec(1, 9))))).div(toBN(this.dec(1, 27)));
@@ -1833,9 +1834,10 @@ export default class Store {
         return y;
     }
 
-    logOperation(hash: string) {
+    logOperation(type: 'mint' | 'burn', hash: string) {
         if (!this.isMainNet) return;
         axios.post('/api/record', {
+            type,
             hash
         }).catch((e) => {
             console.log('log hash failed.', e.message);
