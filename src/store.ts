@@ -481,6 +481,13 @@ export default class Store {
 
         const supportList: Array<string> = await CollateralManager.getCollateralSupport();
         const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
+
+        const idx = lowerCaseSupportList.findIndex(a => a === '0xf5edf26c26028bb921344b7f394cb731307ab2f5'.toLowerCase());
+
+        if (idx !== -1) {
+            lowerCaseSupportList[idx] = '0x4ADb75038Eb7fe2aE9900873eEd5DddC7235E4A5'.toLowerCase();
+        }
+
         const statusList = await Promise
             .all(
                 lowerCaseSupportList.map(c => CollateralManager.collateralParams(c))
@@ -1760,10 +1767,10 @@ export default class Store {
         const { contractMap, web3Provider, walletAddr } = this;
         const { StableCoin } = contractMap;
         if (!StableCoin || !walletAddr) return { status: false, msg: '' };
-        const checkResult = await this.networkCheck();
-        if (!checkResult) {
-            return { status: false, hash: '', msg: 'Bad network id' };
-        }
+        // const checkResult = await this.networkCheck();
+        // if (!checkResult) {
+        //     return { status: false, hash: '', msg: 'Bad network id' };
+        // }
         try {
             const { hash } = await StableCoin
                 .attach(asset)
