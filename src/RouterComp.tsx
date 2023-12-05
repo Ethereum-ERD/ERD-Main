@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react';
 import { Routes, Route } from 'react-router-dom';
 
-import MintTestAsset from 'src/MintTestAsset';
 import LeaderBoard from 'src/LeaderBoard';
 import Dashboard from 'src/Dashboard';
 import Liquidate from "src/Liquidate";
@@ -18,7 +17,6 @@ export default observer(function RouterComp() {
             <Route path='/deposit' element={<Deposit />} />
             <Route path='/redeem' element={<Redeem />} />
             <Route path='/statistics' element={<Dashboard />} />
-            <Route path='/test' element={<MintTestAsset />} />
             <Route path='/leaderboard' element={<LeaderBoard />} />
             <Route path='*' element={<NotMatch />} />
         </Routes>

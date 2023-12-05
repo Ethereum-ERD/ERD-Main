@@ -124,6 +124,13 @@ export default observer(function Risk() {
                     >
                         Halborn
                     </a>
+                    <a
+                        href='https://github.com/Ethereum-ERD/ERD-Audits/blob/main/Ethereum%20Reserve%20Dollar%20(ERD)%20-%20Report.pdf'
+                        rel="noreferrer noopenner"
+                        target="_blank"
+                    >
+                        Quantstamp
+                    </a>
                 </div>
             </div>
         </Modal>

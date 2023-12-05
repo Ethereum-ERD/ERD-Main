@@ -1,6 +1,26 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotCM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TD_ZeroValue",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -225,6 +245,6 @@ export default {
           "stateMutability": "nonpayable",
           "type": "function"
         }
-    ],
-    addr: '0xb99D5af3DD3aB88D3103B164368050d55Ec699D4'
+      ],
+    addr: '0x1F00007F16Dc867Ab7124bca52Df3880973a15ef'
 }
