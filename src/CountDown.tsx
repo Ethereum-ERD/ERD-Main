@@ -38,7 +38,7 @@ export default observer(function CountDown() {
 
     return (
         <div className={s.wrap}>
-            <p className={s.title}>CountDown</p>
+            <p className={s.title}>Coming soon</p>
             <div className={s.countdown}>
                 <div className={s.valueList}>
                     {timeRemain.map((n, idx) => {
