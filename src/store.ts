@@ -1431,6 +1431,11 @@ export default class Store {
             let finalEUSDAmount = toBN(0);
             finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
 
+            console.log('finalEUSDAmount: ', finalEUSDAmount, finalEUSDAmount.toString());
+            if (finalEUSDAmount.lte(toBN(0))) {
+                return { status: false, hash: '', msg: 'Can not redeem now' };
+            }
+
             const redemptionHint = await HintHelpers.getRedemptionHints(finalEUSDAmount, ethPrice, 0);
 
             const firstRedemptionHint = redemptionHint[0];
