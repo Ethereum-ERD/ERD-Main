@@ -1,6 +1,11 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -36,25 +41,6 @@ export default {
             }
           ],
           "name": "BorrowerOperationsAddressChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_user",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "EUSDTokenBalanceUpdated",
           "type": "event"
         },
         {
@@ -171,6 +157,25 @@ export default {
             }
           ],
           "name": "TroveManagerRedemptionsAddressChanged",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "USDETokenBalanceUpdated",
           "type": "event"
         },
         {
@@ -703,5 +708,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: "0x408173C27A6a812a95029F2e6CC03A0ece67e6cA",
+    addr: "0x1d00E86748573C322f4cc41518AA0e77BD912Eb4",
 };

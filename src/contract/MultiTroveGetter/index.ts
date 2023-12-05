@@ -1,6 +1,11 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -123,6 +128,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xf30B5fdD20357f4628b7693CF4e6823308F0b0a6'
+      ],
+    addr: '0x4E23265Bb7ef1ADF6Cb414A5F509Bbccb21b58f9'
 }

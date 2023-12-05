@@ -1,5 +1,7 @@
 :root {
     --root-bg-color: #191B1F;
+    --wrap-bg-color: #292A30;
+    --wrap-border-color: #43454A;
 
 
     --footer-border-top-color: rgba(255, 255, 255, .1);
@@ -388,9 +390,13 @@
     --test-page-option-selected-text-color: #fff;
 
 
-
     --not-found-page-bg-color: #292A30;
     --not-found-page-border-color: #43454A;
     --not-found-page-title-color: rgba(255, 255, 255, 0.7);
     --not-found-page-tips-color: rgba(255, 255, 255, 0.5);
+
+    --count-down-title-color: #fff;
+    --count-down-value-color: #fff;
+    --count-down-value-shadow-color: #fff;
+    --count-down-unit-color: rgba(255, 255, 255, .7);
 }

@@ -1,6 +1,36 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TML_EmptyArray",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TML_NoUSDEInSP",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TML_NothingToLiquidate",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -333,19 +363,6 @@ export default {
               "internalType": "uint256",
               "name": "_newTotalStakes",
               "type": "uint256"
-            }
-          ],
-          "name": "TotalStakesUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "_newTotalStakes",
-              "type": "uint256[]"
             }
           ],
           "name": "TotalStakesUpdated",
@@ -961,6 +978,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xdf5Bb8eE730817fB4F5FB42DcE5f207BF56c190a'
+      ],
+    addr: '0xF58f06a6A59a63a793d1bcC14490Fd77994AaaFa'
 }

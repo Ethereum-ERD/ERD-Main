@@ -1,688 +1,718 @@
 export default {
     abi: [
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newActivePoolAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "ActivePoolAddressChanged",
-            "type": "event"
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_collateral",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "_amount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "ActivePoolCollBalanceUpdated",
-            "type": "event"
+          "inputs": [],
+          "name": "Caller_NotBOOrTM",
+          "type": "error"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "_USDEDebt",
-                    "type": "uint256"
-                }
-            ],
-            "name": "ActivePoolUSDEDebtUpdated",
-            "type": "event"
+          "inputs": [],
+          "name": "Caller_NotBOOrTMOrSPOrTMLOrTMR",
+          "type": "error"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newBorrowerOperationsAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "BorrowerOperationsAddressChanged",
-            "type": "event"
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_collSurplusPoolAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "CollSurplusPoolAddressChanged",
-            "type": "event"
+          "inputs": [],
+          "name": "SendETHFailed",
+          "type": "error"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newCollateralManagerAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "CollateralManagerAddressChanged",
-            "type": "event"
+          "inputs": [],
+          "name": "ZeroValue",
+          "type": "error"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_to",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256[]",
-                    "name": "_amount",
-                    "type": "uint256[]"
-                }
-            ],
-            "name": "CollateralSent",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newActivePoolAddress",
+              "type": "address"
+            }
+          ],
+          "name": "ActivePoolAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_to",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_collateral",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "_amount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "CollateralSent",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "ActivePoolCollBalanceUpdated",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newCommunityIssuanceAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "CommunityIssuanceAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_USDEDebt",
+              "type": "uint256"
+            }
+          ],
+          "name": "ActivePoolUSDEDebtUpdated",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newDefaultPoolAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "DefaultPoolAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newBorrowerOperationsAddress",
+              "type": "address"
+            }
+          ],
+          "name": "BorrowerOperationsAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "uint8",
-                    "name": "version",
-                    "type": "uint8"
-                }
-            ],
-            "name": "Initialized",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_collSurplusPoolAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CollSurplusPoolAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newLiquidityIncentiveAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "LiquidityIncentiveAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newCollateralManagerAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CollateralManagerAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "previousOwner",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "newOwner",
-                    "type": "address"
-                }
-            ],
-            "name": "OwnershipTransferred",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "CollateralSent",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newPriceFeedAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "PriceFeedAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256[]",
+              "name": "_amount",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "CollateralsSent",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newSortedTrovesAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "SortedTrovesAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newCommunityIssuanceAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CommunityIssuanceAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newStabilityPoolAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "StabilityPoolAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newDefaultPoolAddress",
+              "type": "address"
+            }
+          ],
+          "name": "DefaultPoolAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newTreasuryAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "TreasuryAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint8",
+              "name": "version",
+              "type": "uint8"
+            }
+          ],
+          "name": "Initialized",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newTroveManagerAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "TroveManagerAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newLiquidityIncentiveAddress",
+              "type": "address"
+            }
+          ],
+          "name": "LiquidityIncentiveAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newTroveManagerRedemptionsAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "TroveManagerLiquidationsAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newTroveManagerLiquidationsAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "TroveManagerRedemptionsAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newPriceFeedAddress",
+              "type": "address"
+            }
+          ],
+          "name": "PriceFeedAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_newUSDETokenAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "USDETokenAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newSortedTrovesAddress",
+              "type": "address"
+            }
+          ],
+          "name": "SortedTrovesAddressChanged",
+          "type": "event"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "_wethAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "WETHAddressChanged",
-            "type": "event"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newStabilityPoolAddress",
+              "type": "address"
+            }
+          ],
+          "name": "StabilityPoolAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [],
-            "name": "DECIMAL_PRECISION",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newTreasuryAddress",
+              "type": "address"
+            }
+          ],
+          "name": "TreasuryAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [],
-            "name": "NAME",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newTroveManagerAddress",
+              "type": "address"
+            }
+          ],
+          "name": "TroveManagerAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [],
-            "name": "WETH",
-            "outputs": [
-                {
-                    "internalType": "contract IWETH",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newTroveManagerRedemptionsAddress",
+              "type": "address"
+            }
+          ],
+          "name": "TroveManagerLiquidationsAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [],
-            "name": "borrowerOperationsAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newTroveManagerLiquidationsAddress",
+              "type": "address"
+            }
+          ],
+          "name": "TroveManagerRedemptionsAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_amount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "decreaseUSDEDebt",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_newUSDETokenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "USDETokenAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [],
-            "name": "defaultPoolAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_wethAddress",
+              "type": "address"
+            }
+          ],
+          "name": "WETHAddressChanged",
+          "type": "event"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_collateral",
-                    "type": "address"
-                }
-            ],
-            "name": "getCollateralAmount",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "DECIMAL_PRECISION",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "getTotalCollateral",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "total",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "address[]",
-                    "name": "collaterals",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "uint256[]",
-                    "name": "amounts",
-                    "type": "uint256[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "NAME",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "getUSDEDebt",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "WETH",
+          "outputs": [
+            {
+              "internalType": "contract IWETH",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_amount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "increaseUSDEDebt",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [],
+          "name": "borrowerOperationsAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "initialize",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "decreaseUSDEDebt",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "liquidityIncentiveAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "defaultPoolAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "owner",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            }
+          ],
+          "name": "getCollateralAmount",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "renounceOwnership",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [],
+          "name": "getTotalCollateral",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "total",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "collaterals",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "address[]",
-                    "name": "_collaterals",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "uint256[]",
-                    "name": "_amounts",
-                    "type": "uint256[]"
-                }
-            ],
-            "name": "sendCollFees",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [],
+          "name": "getUSDEDebt",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_account",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address[]",
-                    "name": "_collaterals",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "uint256[]",
-                    "name": "_amounts",
-                    "type": "uint256[]"
-                }
-            ],
-            "name": "sendCollateral",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "increaseUSDEDebt",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_borrowerOperationsAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_troveManagerAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_troveManagerLiquidationAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_troveManagerRedemptionsAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_stabilityPoolAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_defaultPoolAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_treasuryAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_liquidityIncentiveAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_collSurplusPoolAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_wethAddress",
-                    "type": "address"
-                }
-            ],
-            "name": "setAddresses",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [],
+          "name": "initialize",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "stabilityPoolAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "liquidityIncentiveAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "newOwner",
-                    "type": "address"
-                }
-            ],
-            "name": "transferOwnership",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "treasuryAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [],
+          "name": "renounceOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "troveManagerAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_collaterals",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "sendCollFees",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "troveManagerLiquidationsAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_collaterals",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "sendCollateral",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "inputs": [],
-            "name": "troveManagerRedemptionsAddress",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_borrowerOperationsAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_troveManagerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_troveManagerLiquidationAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_troveManagerRedemptionsAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stabilityPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_defaultPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_treasuryAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_liquidityIncentiveAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_collSurplusPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_wethAddress",
+              "type": "address"
+            }
+          ],
+          "name": "setAddresses",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
-            "stateMutability": "payable",
-            "type": "receive"
+          "inputs": [],
+          "name": "stabilityPoolAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "transferOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "treasuryAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "troveManagerAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "troveManagerLiquidationsAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "troveManagerRedemptionsAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "stateMutability": "payable",
+          "type": "receive"
         }
-    ],
-    addr: '0x061C38eFc83BE833C5F920b7497857Eb58157cF3'
+      ],
+    addr: '0xef8d928bD9D7581A26D9b142BfCaB1B0ae246294'
 }

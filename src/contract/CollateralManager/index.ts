@@ -1,6 +1,76 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "CM_BadValue",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollExists",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollNotPaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollNotSupported",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_NoMoreColl",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBO",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBOOrTM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTMR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LengthMismatch",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OwnershipCannotBeRenounced",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -333,19 +403,6 @@ export default {
               "internalType": "uint256",
               "name": "_newTotalStakes",
               "type": "uint256"
-            }
-          ],
-          "name": "TotalStakesUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "_newTotalStakes",
-              "type": "uint256[]"
             }
           ],
           "name": "TotalStakesUpdated",
@@ -1672,35 +1729,6 @@ export default {
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address[]",
-              "name": "_collaterals",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_amounts",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "getValue",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "totalValue",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "values",
-              "type": "uint256[]"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
           "inputs": [],
           "name": "initialize",
           "outputs": [],
@@ -1809,7 +1837,7 @@ export default {
           "inputs": [],
           "name": "renounceOwnership",
           "outputs": [],
-          "stateMutability": "nonpayable",
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -2139,35 +2167,6 @@ export default {
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_account",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "validAdjustment",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
           "inputs": [],
           "name": "wethAddress",
           "outputs": [
@@ -2180,6 +2179,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0x025Cc3ba80Cb7D34c21ce0C1cBD78Cc64771A8B5'
+      ],
+    addr: '0x14165363A7573F1439f768Ddd692b5D5Ca83c7d3'
 }

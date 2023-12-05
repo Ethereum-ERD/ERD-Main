@@ -1,6 +1,21 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -63,9 +78,15 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "uint256[]",
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
               "name": "_amount",
-              "type": "uint256[]"
+              "type": "uint256"
             }
           ],
           "name": "CollateralSent",
@@ -82,18 +103,12 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "_amount",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
-          "name": "CollateralSent",
+          "name": "CollateralsSent",
           "type": "event"
         },
         {
@@ -127,31 +142,6 @@ export default {
           "inputs": [
             {
               "indexed": false,
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_coll",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_totalColl",
-              "type": "uint256"
-            }
-          ],
-          "name": "DefaultPoolCollBalanceUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
               "internalType": "address[]",
               "name": "_collaterals",
               "type": "address[]"
@@ -163,7 +153,7 @@ export default {
               "type": "uint256[]"
             }
           ],
-          "name": "DefaultPoolCollBalanceUpdated",
+          "name": "DefaultPoolCollsBalanceUpdated",
           "type": "event"
         },
         {
@@ -537,6 +527,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xa6d2e4D7cBd3593D0e120ed8f91b3deC2398F2eE'
+      ],
+    addr: '0x7CDe819aAb2422e84d1B489939579c1B92ee9D44'
 }

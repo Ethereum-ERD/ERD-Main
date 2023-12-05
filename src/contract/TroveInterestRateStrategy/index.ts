@@ -1,6 +1,21 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OwnershipCannotBeRenounced",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -207,7 +222,7 @@ export default {
           "inputs": [],
           "name": "renounceOwnership",
           "outputs": [],
-          "stateMutability": "nonpayable",
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -344,6 +359,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0x39d4e79080f02B84d16008E0f85CdA98c2FCc16b'
+      ],
+    addr: '0xD6ae8b270608F878Df71175a05C4c7121d46Bf24'
 }

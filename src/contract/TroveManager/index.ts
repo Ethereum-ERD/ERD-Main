@@ -1,6 +1,96 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBO",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBOOrTMLOrTMR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBOOrTMR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotCM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTML",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTMR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ProtocolPaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadBaseRate",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadBorrowIndex",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadBorrowRate",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadClosedStatus",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadFee",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadValue",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_OnlyOneTroveLeft",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_TroveNotExistOrClosed",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_ZeroValue",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -343,19 +433,6 @@ export default {
           "inputs": [
             {
               "indexed": false,
-              "internalType": "uint256[]",
-              "name": "_newTotalStakes",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "TotalStakesUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
               "internalType": "address",
               "name": "_treasuryAddress",
               "type": "address"
@@ -394,6 +471,19 @@ export default {
             }
           ],
           "name": "TroveIndexUpdated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_troveInterestRateAddress",
+              "type": "address"
+            }
+          ],
+          "name": "TroveInterestRateStrategyAddressChanged",
           "type": "event"
         },
         {
@@ -801,6 +891,11 @@ export default {
           "inputs": [],
           "name": "calcDecayedBaseRate",
           "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
             {
               "internalType": "uint256",
               "name": "",
@@ -1591,9 +1686,9 @@ export default {
           "name": "getTroveStatus",
           "outputs": [
             {
-              "internalType": "uint256",
+              "internalType": "enum DataTypes.Status",
               "name": "",
-              "type": "uint256"
+              "type": "uint8"
             }
           ],
           "stateMutability": "view",
@@ -2003,6 +2098,19 @@ export default {
           "inputs": [
             {
               "internalType": "address",
+              "name": "_interestRateAddress",
+              "type": "address"
+            }
+          ],
+          "name": "setTroveInterestRateStrategyAddress",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
               "name": "_borrower",
               "type": "address"
             },
@@ -2214,6 +2322,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xDfde08a50709a728cC558508fb7bD21973F471BC'
+      ],
+    addr: '0xa220612513C4F7754257700faDcfd23E7e992380'
 }

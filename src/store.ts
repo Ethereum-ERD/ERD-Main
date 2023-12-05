@@ -19,11 +19,11 @@ import {
     RankItem, TroveStatus
 } from 'src/types';
 
-import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject } from 'src/util';
+import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject, timeToLaunch } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
-import { GOERLI_CHAIN_ID } from 'src/chain-id';
 import ContractConfig from 'src/contract';
+import { CURRENT_CHAIN_ID } from 'src/env';
 
 const settings = {
     apiKey: ALCHEMY_API_KEY,
@@ -166,6 +166,8 @@ export default class Store {
 
     rankList: Array<RankItem> = [];
 
+    isLaunch = false;
+
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
 
@@ -206,6 +208,8 @@ export default class Store {
         reaction(() => this.chainId, this.getWeeklyQuota);
 
         reaction(() => this.walletAddr, this.getUserEnsName);
+
+        this.isLaunch = timeToLaunch().every(remain => remain === 0);
     }
 
     @computed get isMainNet() {
@@ -283,6 +287,12 @@ export default class Store {
         this.querySystemTotalValueAndDebt();
     }
 
+    setIsLaunch() {
+        runInAction(() => {
+            this.isLaunch = true;
+        });
+    }
+
     async getWeeklyQuota() {
         if (!this.isMainNet) return;
         try {
@@ -307,7 +317,7 @@ export default class Store {
                 await this.onboard.connectWallet();
             }
             await this.onboard.setChain({
-                chainId: `0x${GOERLI_CHAIN_ID.toString(16)}`,
+                chainId: `0x${CURRENT_CHAIN_ID.toString(16)}`,
             });
         } catch {}
     }
@@ -353,7 +363,7 @@ export default class Store {
         if (
             !wallet ||
             Object.keys(map).length < 1 ||
-            chainId !== GOERLI_CHAIN_ID
+            chainId !== CURRENT_CHAIN_ID
         ) return;
         this.queryUserTokenInfo();
         this.queryUserDepositInfo();
@@ -364,7 +374,7 @@ export default class Store {
             !wallet ||
             supportAssets.length < 1 ||
             Object.keys(map).length < 1 ||
-            chainId !== GOERLI_CHAIN_ID
+            chainId !== CURRENT_CHAIN_ID
         ) return;
         this.getUserTroveInfo(true);
         this.queryUserDepositGain();
@@ -386,12 +396,17 @@ export default class Store {
         const { TroveManager, PriceFeeds } = this.contractMap;
         if (!TroveManager || !PriceFeeds) return 0;
         const ethPrice = await PriceFeeds.fetchPrice_view();
-        const TCR = await TroveManager.getTCR(ethPrice);
-
-        if (setStore) {
-            runInAction(() => {
-                this.systemTCR = +(TCR / +BN_ETHER);
-            });
+        let TCR = 0;
+        try {
+            TCR = await TroveManager.getTCR(ethPrice);
+            if (setStore && TCR > 0) {
+                runInAction(() => {
+                    this.systemTCR = +(TCR / +BN_ETHER);
+                });
+            }
+        } catch (e) {
+            // @ts-ignore
+            console.log('getTCR failed: ', e.message);
         }
 
         return TCR;
@@ -400,44 +415,50 @@ export default class Store {
     async querySystemInfo() {
         const { CollateralManager, StableCoin, StabilityPool, TroveManager, TroveInterestRateStrategy } = this.contractMap;
         if (!CollateralManager || !StableCoin || !StabilityPool || !TroveManager || !TroveInterestRateStrategy) return;
-        const [
-            MCR,
-            gasCompensation,
-            minDebt,
-            systemCCR,
-            redeemFee,
-            borrowFee,
-            stableCoinTotalSupply,
-            spOwnStableCoinAmount,
-            troveData,
-            redeemFeeFloor,
-        ] = await Promise.all([
-            CollateralManager.getMCR(),
-            CollateralManager.getUSDEGasCompensation(),
-            CollateralManager.getMinNetDebt(),
-            CollateralManager.getCCR(),
-            TroveManager.getRedemptionRate(),
-            TroveManager.getBorrowingRate(),
-            StableCoin.totalSupply(),
-            StableCoin.balanceOf(StabilityPool.address),
-            TroveManager.getTroveData(),
-            CollateralManager.getRedemptionFeeFloor()
-        ]);
 
-        this.querySystemTCR(true);
-
-        runInAction(() => {
-            this.minBorrowAmount = +minDebt;
-            this.systemCCR = systemCCR / 1e18;
-            this.systemMCR = +(MCR / +BN_ETHER);
-            this.gasCompensation = +gasCompensation;
-            this.mintingFeeRatio = borrowFee / 1e18;
-            this.redeemFeeRatio = redeemFee / 1e18;
-            this.redeemFeeFloor = redeemFeeFloor / 1e18;
-            this.stableCoinTotalSupply = +stableCoinTotalSupply;
-            this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
-            this.interestRatio = troveData.currentBorrowRate / 1e27;
-        });
+        try {
+            const [
+                MCR,
+                gasCompensation,
+                minDebt,
+                systemCCR,
+                redeemFee,
+                borrowFee,
+                stableCoinTotalSupply,
+                spOwnStableCoinAmount,
+                troveData,
+                redeemFeeFloor,
+            ] = await Promise.all([
+                CollateralManager.getMCR(),
+                CollateralManager.getUSDEGasCompensation(),
+                CollateralManager.getMinNetDebt(),
+                CollateralManager.getCCR(),
+                TroveManager.getRedemptionRate(),
+                TroveManager.getBorrowingRate(),
+                StableCoin.totalSupply(),
+                StableCoin.balanceOf(StabilityPool.address),
+                TroveManager.getTroveData(),
+                CollateralManager.getRedemptionFeeFloor()
+            ]);
+    
+            this.querySystemTCR(true);
+    
+            runInAction(() => {
+                this.minBorrowAmount = +minDebt;
+                this.systemCCR = systemCCR / 1e18;
+                this.systemMCR = +(MCR / +BN_ETHER);
+                this.gasCompensation = +gasCompensation;
+                this.mintingFeeRatio = borrowFee / 1e18;
+                this.redeemFeeRatio = redeemFee / 1e18;
+                this.redeemFeeFloor = redeemFeeFloor / 1e18;
+                this.stableCoinTotalSupply = +stableCoinTotalSupply;
+                this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
+                this.interestRatio = troveData.currentBorrowRate / 1e27;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('querySystemInfo failed: ', e.message);
+        }
     }
 
     async queryUserAssets() {
@@ -479,30 +500,35 @@ export default class Store {
             this.isLoadingSupportAsset = true;
         });
 
-        const supportList: Array<string> = await CollateralManager.getCollateralSupport();
-        const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
-        const statusList = await Promise
-            .all(
-                lowerCaseSupportList.map(c => CollateralManager.collateralParams(c))
-            );
-
-        const collateralStatusList = statusList.map(c => c.status);
-
-        const displayList: Array<SupportAssetsItem> = [];
-
-        lowerCaseSupportList.forEach((addr, idx) => {
-            const status = collateralStatusList[idx];
-            const selectAddr = addr === WETH_ADDR ? MOCK_ETH_ADDR : addr;
-            const item = SupportAssets.find(asset => asset.tokenAddr === selectAddr);
-            if (item) {
-                displayList.push({ ...item, status });
-            }
-        });
-
-        runInAction(() => {
-            this.supportAssets = displayList;
-            this.isLoadingSupportAsset = false;
-        });
+        try {
+            const supportList: Array<string> = await CollateralManager.getCollateralSupport();
+            const lowerCaseSupportList = supportList.map(asset => asset.toLowerCase());
+            const statusList = await Promise
+                .all(
+                    lowerCaseSupportList.map(c => CollateralManager.collateralParams(c))
+                );
+    
+            const collateralStatusList = statusList.map(c => c.status);
+    
+            const displayList: Array<SupportAssetsItem> = [];
+    
+            lowerCaseSupportList.forEach((addr, idx) => {
+                const status = collateralStatusList[idx];
+                const selectAddr = addr === WETH_ADDR ? MOCK_ETH_ADDR : addr;
+                const item = SupportAssets.find(asset => asset.tokenAddr === selectAddr);
+                if (item) {
+                    displayList.push({ ...item, status });
+                }
+            });
+    
+            runInAction(() => {
+                this.supportAssets = displayList;
+                this.isLoadingSupportAsset = false;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('querySupportCollateral failed: ', e.message);
+        }
     }
 
     async queryCollateralValue(assetList: Array<SupportAssetsItem>) {
@@ -511,45 +537,56 @@ export default class Store {
 
         if (assetList.length < 1) return;
 
-        const tokenAddr = assetList
-            .map(asset => asset.tokenAddr)
-            .filter(addr => addr !== MOCK_ETH_ADDR);
+        try {
+            const tokenAddr = assetList
+                .map(asset => asset.tokenAddr)
+                .filter(addr => addr !== MOCK_ETH_ADDR);
+    
+            const collateralInfo = await Promise.all(
+                tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
+            );
+    
+            const oracles = collateralInfo.map(c => c.oracle);
+    
+            const ethPrice = await PriceFeeds.fetchPrice_view();
+            const ethPriceInNormal = +ethPrice / 1e18;
+    
+            const prices = await Promise.all(
+                oracles.map(o => {
+                    if (o === EMPTY_ADDRESS) {
+                        return 0;
+                    }
+                    return PriceFeeds.attach(o).fetchPrice_view()
+                })
+            );
+    
+            runInAction(() => {
+                this.collateralValueInfo = tokenAddr.reduce((v, t, i) => {
+                    v[t] = +prices[i] / 1e18 * ethPriceInNormal;
+    
+                    return v;
+                }, { [MOCK_ETH_ADDR]: ethPriceInNormal } as { [key: string]: number });
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('queryCollateralValue failed: ', e.message);
+        }
 
-        const collateralInfo = await Promise.all(
-            tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
-        );
-
-        const oracles = collateralInfo.map(c => c.oracle);
-
-        const ethPrice = await PriceFeeds.fetchPrice_view();
-        const ethPriceInNormal = +ethPrice / 1e18;
-
-        const prices = await Promise.all(
-            oracles.map(o => {
-                if (o === EMPTY_ADDRESS) {
-                    return 0;
-                }
-                return PriceFeeds.attach(o).fetchPrice_view()
-            })
-        );
-
-        runInAction(() => {
-            this.collateralValueInfo = tokenAddr.reduce((v, t, i) => {
-                v[t] = +prices[i] / 1e18 * ethPriceInNormal;
-
-                return v;
-            }, { [MOCK_ETH_ADDR]: ethPriceInNormal } as { [key: string]: number });
-        });
     }
 
     async queryUserTokenInfo() {
         const { walletAddr, contractMap } = this;
         const { StableCoin } = contractMap;
         if (!StableCoin || !walletAddr) return;
-        const balance = await StableCoin.balanceOf(walletAddr);
-        runInAction(() => {
-            this.userStableCoinBalance = +balance;
-        });
+        try {
+            const balance = await StableCoin.balanceOf(walletAddr);
+            runInAction(() => {
+                this.userStableCoinBalance = +balance;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('queryUserTokenInfo failed: ', e.message);
+        }
     }
 
     async queryProtocolAssetInfo(assetList: Array<SupportAssetsItem>) {
@@ -585,70 +622,91 @@ export default class Store {
     async queryStabilityPoolTVL() {
         const { StabilityPool } = this.contractMap;
         if (!StabilityPool) return;
-        const data = await StabilityPool.getTotalUSDEDeposits();
-        runInAction(() => {
-            this.spTVL = +data;
-        });
+        try {
+            const data = await StabilityPool.getTotalUSDEDeposits();
+            runInAction(() => {
+                this.spTVL = +data;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('queryStabilityPoolTVL failed: ', e.message);
+        }
     }
 
     async queryUserDepositInfo() {
         const { walletAddr, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!walletAddr || !StabilityPool) return;
-        const value = await StabilityPool.getCompoundedUSDEDeposit(walletAddr);
-        runInAction(() => {
-            this.userDepositAmount = +value;
-        });
+        try {
+            const value = await StabilityPool.getCompoundedUSDEDeposit(walletAddr);
+            runInAction(() => {
+                this.userDepositAmount = +value;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('queryUserDepositInfo failed: ', e.message);
+        }
     }
 
     async queryUserDepositGain() {
         const { walletAddr, contractMap, supportAssets } = this;
         const { StabilityPool } = contractMap;
         if (!walletAddr || !StabilityPool || supportAssets.length < 1) return;
-        const [
-            collateral,
-            gains
-        ]: [Array<string>, Array<ethers.BigNumber>] = await StabilityPool.getDepositorCollateralGain(walletAddr);
-
-        let formatCollateral: Array<UserDepositRewardsItem>;
-
-        if (collateral.length > 0) {
-            formatCollateral = collateral
-                .map(c => c.toLowerCase())
-                .map((c, idx) => {
-                    const token = c === WETH_ADDR ? MOCK_ETH_ADDR : c;
-                    const asset = supportAssets.find(asset => asset.tokenAddr === token);
+        try {
+            const [
+                collateral,
+                gains
+            ]: [Array<string>, Array<ethers.BigNumber>] = await StabilityPool.getDepositorCollateralGain(walletAddr);
+    
+            let formatCollateral: Array<UserDepositRewardsItem>;
+    
+            if (collateral.length > 0) {
+                formatCollateral = collateral
+                    .map(c => c.toLowerCase())
+                    .map((c, idx) => {
+                        const token = c === WETH_ADDR ? MOCK_ETH_ADDR : c;
+                        const asset = supportAssets.find(asset => asset.tokenAddr === token);
+                        return {
+                            ...asset!,
+                            rewards: +gains[idx]
+                        };
+                    });
+            } else {
+                formatCollateral = supportAssets.map(asset => {
                     return {
-                        ...asset!,
-                        rewards: +gains[idx]
+                        ...asset,
+                        rewards: 0
                     };
                 });
-        } else {
-            formatCollateral = supportAssets.map(asset => {
-                return {
-                    ...asset,
-                    rewards: 0
-                };
+            }
+    
+            runInAction(() => {
+                this.userDepositRewardsInfo = formatCollateral;
             });
+        } catch (e) {
+            // @ts-ignore
+            console.log('queryUserDepositGain failed: ', e.message);
         }
-
-        runInAction(() => {
-            this.userDepositRewardsInfo = formatCollateral;
-        });
     }
 
     async querySystemTotalValueAndDebt() {
         const { PriceFeeds, BorrowerOperation } = this.contractMap;
         if (!PriceFeeds || !BorrowerOperation) return [0, 0];
         const ethPrice = await PriceFeeds.fetchPrice_view();
-        const [[, , systemCollTotalValue], systemTotalDebt] = await Promise.all([
-            BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
-            BorrowerOperation.getEntireSystemDebt()
-        ]);
-        runInAction(() => {
-            this.systemTotalDebtInUSD = +systemTotalDebt / 1e18;
-            this.systemTotalValueInUSD = +systemCollTotalValue / 1e18;
-        });
+
+        try {
+            const [[, , systemCollTotalValue], systemTotalDebt] = await Promise.all([
+                BorrowerOperation['getEntireSystemColl(uint256)'](ethPrice),
+                BorrowerOperation.getEntireSystemDebt()
+            ]);
+            runInAction(() => {
+                this.systemTotalDebtInUSD = +systemTotalDebt / 1e18;
+                this.systemTotalValueInUSD = +systemCollTotalValue / 1e18;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('querySystemTotalValueAndDebt failed: ', e.message);
+        }
     }
 
     fetchWrappedETH2USD(wrappedETH: Array<{ token: string; amount: number }>) {
@@ -775,11 +833,20 @@ export default class Store {
             this.isLoadingTroveAmount = true;
         });
 
-        const troves = +(await SortTroves.getSize());
-        runInAction(() => {
-            this.troveAmount = troves;
-            this.isLoadingTroveAmount = false;
-        });
+        try {
+            const troves = +(await SortTroves.getSize());
+            runInAction(() => {
+                this.troveAmount = troves;
+                this.isLoadingTroveAmount = false;
+            });
+        } catch (e) {
+            // @ts-ignore
+            console.log('getTroveNumbers failed: ', e.message);
+        } finally {
+            runInAction(() => {
+                this.isLoadingTroveAmount = false;
+            });
+        }
     }
 
     async getUserTroveInfo(setStore = false): Promise<UserTrove | undefined> {
@@ -1847,9 +1914,9 @@ export default class Store {
     async networkCheck() {
         const { chainId, onboard } = this;
         try {
-            if (chainId !== GOERLI_CHAIN_ID) {
+            if (chainId !== CURRENT_CHAIN_ID) {
                 const switchResult = await onboard.setChain({
-                    chainId: `0x${GOERLI_CHAIN_ID.toString(16)}`,
+                    chainId: `0x${CURRENT_CHAIN_ID.toString(16)}`,
                 });
                 return switchResult;
             }

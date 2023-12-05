@@ -1,6 +1,101 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "CM_CollNotSupported",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTML",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LengthMismatch",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ProtocolPaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_AlreadyRegistered",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_BadDebtOffset",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_BadKickbackRate",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_CallerTroveNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_HadDeposit",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_MustRegisteredOrZeroAddress",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_NoDepositBefore",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_USDELossGreaterThanOne",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_WithdrawWithICRLessThanMCR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_ZeroGain",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SP_ZeroValue",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SendETHFailed",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -88,9 +183,15 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "uint256[]",
+              "internalType": "address",
+              "name": "_collateral",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
               "name": "_amount",
-              "type": "uint256[]"
+              "type": "uint256"
             }
           ],
           "name": "CollateralSent",
@@ -107,18 +208,12 @@ export default {
             },
             {
               "indexed": false,
-              "internalType": "address",
-              "name": "_collateral",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "_amount",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
-          "name": "CollateralSent",
+          "name": "CollateralsSent",
           "type": "event"
         },
         {
@@ -1593,6 +1688,6 @@ export default {
           "stateMutability": "payable",
           "type": "receive"
         }
-    ],
-    addr: '0x18ddd6A8e4baF4D359dd6C4ad1067d0490fE02D2'
+      ],
+    addr: '0x517555e6F45Ff1463Fe9a2CeB8bb579C21a4C6dd'
 }
