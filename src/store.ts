@@ -1428,8 +1428,15 @@ export default class Store {
             const ethPrice = await PriceFeeds.fetchPrice_view();
             const redeemAmountBN = toBN(amount);
 
+            console.log('redeemAmountBN: ', redeemAmountBN.toString());
+
             let finalEUSDAmount = toBN(0);
-            finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
+            try {
+                finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
+            } catch (e) {
+                // @ts-ignore
+                console.log('estimateEligible: ', e.message);
+            }
 
             console.log('finalEUSDAmount: ', finalEUSDAmount, finalEUSDAmount.toString());
             if (finalEUSDAmount.lte(toBN(0))) {
