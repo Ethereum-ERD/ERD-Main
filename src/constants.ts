@@ -1,10 +1,22 @@
 import { ethers } from 'ethers';
 
-import { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR } from 'src/env';
+import { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR, CURRENT_CHAIN_ID } from 'src/env';
+
+import { MAIN_CHAIN_ID } from './chain-id';
+import { getLaunchTime } from 'src/util';
 
 export { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR };
 
-export const LEADER_BOARD_START_TIME = '2023-09-08';
+const GOERLI_LEADER_BOARD_START_TIME = '2023-09-08';
+const MAINNET_LEADER_BOARD_START_TIME = '2023-12-06';
+
+let leaderBoardStartTime = GOERLI_LEADER_BOARD_START_TIME;
+
+if (CURRENT_CHAIN_ID === MAIN_CHAIN_ID) {
+    leaderBoardStartTime = MAINNET_LEADER_BOARD_START_TIME;
+}
+
+export const LEADER_BOARD_START_TIME = leaderBoardStartTime;
 
 export const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY;
 
@@ -59,10 +71,6 @@ export const Routes = [
     {
         path: '/leaderboard',
         name: 'Leaderboard'
-    },
-    {
-        path: '/test',
-        name: 'Test'
     }
 ];
 
@@ -86,3 +94,5 @@ export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';
 export const MAINNET_ETHER_SCAN_URL_PREFIX = 'https://etherscan.io';
 
 export const GOERLI_ETHER_SCAN_URL_PREFIX  = 'https://goerli.etherscan.io';
+
+export const LAUNCH_TIME = getLaunchTime();

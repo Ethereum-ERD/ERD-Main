@@ -1,10 +1,14 @@
+import dayjs from 'dayjs';
 import { ethers } from 'ethers';
 import { format } from 'mathjs';
+import utcPlugin from 'dayjs/plugin/utc';
 
 import { TERMS_SAVED_KEY, DO_NOT_SHOW_AGAIN_KEY, CONTRACT_ERROR_PREFIX, MAINNET_ETHER_SCAN_URL_PREFIX, GOERLI_ETHER_SCAN_URL_PREFIX } from 'src/constants';
 import { MAIN_CHAIN_ID } from 'src/chain-id';
 import { CURRENT_CHAIN_ID } from 'src/env';
 import { Errors } from 'src/Error';
+
+dayjs.extend(utcPlugin);
 
 export const getEmptyObject = () => Object.create(null);
 
@@ -146,4 +150,32 @@ export function translateUint(v: number) {
 export function OpenEtherScan(path: string) {
     const urlPrefix = CURRENT_CHAIN_ID === MAIN_CHAIN_ID ? MAINNET_ETHER_SCAN_URL_PREFIX : GOERLI_ETHER_SCAN_URL_PREFIX;
     window.open(`${urlPrefix}${path}`, '_blank');
+}
+
+export function getLaunchTime() {
+    const LAUNCH_TIME_IN_UTC = process.env.REACT_APP_LAUNCH_TIME || '2023-12-06 12:00:00';
+
+    return dayjs.utc(LAUNCH_TIME_IN_UTC);
+}
+
+function formatMilliseconds(milliseconds: number) {
+    const seconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    
+    return [hours, minutes, remainingSeconds];
+}
+
+export function timeToLaunch() {
+    const now = dayjs();
+    const launchTime = getLaunchTime();
+
+    const countdownMilliseconds = launchTime.diff(now);
+
+    if (countdownMilliseconds <= 0) {
+        return [0, 0, 0];
+    }
+
+    return formatMilliseconds(countdownMilliseconds);
 }

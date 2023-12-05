@@ -1,6 +1,161 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "BO_BadMaxFee",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CannotDecreaseICRInRM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollAmountZero",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollNotActiveOrNotSupported",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollsCannotContainWETH",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollsCannotWithdrawalInRM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollsDuplicate",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_CollsOverlap",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_DebtIncreaseZero",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_ETHNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_ExceedMarketCap",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_ICRLessThanCCR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_ICRLessThanMCR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_LengthZero",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_MaxFeeExceed100",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_MustChangeForCollOrDebt",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_NotPermitInRM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_TCRLessThanCCR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_TroveDebtLessThanMinDebt",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_TroveIsActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_TroveNotExistOrClosed",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BO_USDEInsufficient",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBorrowerOrSP",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotCM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotSP",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LengthMismatch",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ProtocolPaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ZeroValue",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -76,6 +231,19 @@ export default {
             }
           ],
           "name": "Initialized",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_newMarketCap",
+              "type": "uint256"
+            }
+          ],
+          "name": "MarketCapChanged",
           "type": "event"
         },
         {
@@ -693,10 +861,29 @@ export default {
           "type": "function"
         },
         {
-          "inputs": [],
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_marketCap",
+              "type": "uint256"
+            }
+          ],
           "name": "initialize",
           "outputs": [],
           "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "marketCap",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -892,6 +1079,19 @@ export default {
         {
           "inputs": [
             {
+              "internalType": "uint256",
+              "name": "_marketCap",
+              "type": "uint256"
+            }
+          ],
+          "name": "setMarketCap",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
               "internalType": "bool",
               "name": "val",
               "type": "bool"
@@ -968,6 +1168,24 @@ export default {
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_val",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "updateUSDEGas",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "usdeToken",
           "outputs": [
@@ -1036,6 +1254,6 @@ export default {
           "stateMutability": "nonpayable",
           "type": "function"
         }
-    ],
-    addr: '0x27433b79EeC5350162b116F8f18016624de1471A'
+      ],
+    addr: '0x7667F5c06F9fc099E2d3A5fE01335136078B2D8a'
 }

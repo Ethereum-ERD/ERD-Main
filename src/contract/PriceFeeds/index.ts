@@ -1,6 +1,21 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "PF_ChainlinkNotWork",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -298,6 +313,6 @@ export default {
           "stateMutability": "nonpayable",
           "type": "function"
         }
-    ],
-    addr: '0x1d00E86748573C322f4cc41518AA0e77BD912Eb4'
+      ],
+    addr: '0x4E23265Bb7ef1ADF6Cb414A5F509Bbccb21b58f9'
 }

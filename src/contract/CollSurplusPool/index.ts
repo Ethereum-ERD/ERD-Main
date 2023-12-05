@@ -1,6 +1,36 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "CSP_CannotClaim",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotBO",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTMLOrTMR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SendETHFailed",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -62,19 +92,6 @@ export default {
           "anonymous": false,
           "inputs": [
             {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_newCollateralManagerAddress",
-              "type": "address"
-            }
-          ],
-          "name": "CollateralManagerAddressChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
               "indexed": true,
               "internalType": "address",
               "name": "_account",
@@ -93,7 +110,7 @@ export default {
               "type": "uint256[]"
             }
           ],
-          "name": "CollateralSent",
+          "name": "CollateralClaimedSent",
           "type": "event"
         },
         {
@@ -102,17 +119,11 @@ export default {
             {
               "indexed": false,
               "internalType": "address",
-              "name": "_to",
+              "name": "_newCollateralManagerAddress",
               "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "_amount",
-              "type": "uint256[]"
             }
           ],
-          "name": "CollateralSent",
+          "name": "CollateralManagerAddressChanged",
           "type": "event"
         },
         {
@@ -138,6 +149,25 @@ export default {
             }
           ],
           "name": "CollateralSent",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256[]",
+              "name": "_amount",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "CollateralsSent",
           "type": "event"
         },
         {
@@ -616,6 +646,6 @@ export default {
           "stateMutability": "payable",
           "type": "receive"
         }
-    ],
-    addr: '0xF9B45960310bB5f7436eCF644f7FCBbF65e8bb5d'
+      ],
+    addr: '0x3AA2ce9f4D297EB2fA3c52fF34F9eD41e80a3Ff1'
 }

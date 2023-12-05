@@ -1,6 +1,66 @@
 export default {
     abi: [
         {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Caller_NotTM",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LengthMismatch",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotContract",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_BadMaxFee",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_BadUSDEBalance",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_CannotRedeem",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_CannotRedeemWhenTCRLessThanMCR",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_RedemptionAmountExceedBalance",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_RedemptionNotAllowed",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TMR_ZeroValue",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "TM_BadFee",
+          "type": "error"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
@@ -333,19 +393,6 @@ export default {
               "internalType": "uint256",
               "name": "_newTotalStakes",
               "type": "uint256"
-            }
-          ],
-          "name": "TotalStakesUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "_newTotalStakes",
-              "type": "uint256[]"
             }
           ],
           "name": "TotalStakesUpdated",
@@ -1009,6 +1056,6 @@ export default {
           "stateMutability": "view",
           "type": "function"
         }
-    ],
-    addr: '0xd7Ff8F85D28412561e89FB005f836d8f06483051'
+      ],
+    addr: '0xc58601D93b44989122d08Ff4f0824a1dF3196665'
 }
