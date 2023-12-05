@@ -22,12 +22,19 @@ import {
 import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject, timeToLaunch } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
+import { MAIN_CHAIN_ID } from 'src/chain-id';
 import ContractConfig from 'src/contract';
 import { CURRENT_CHAIN_ID } from 'src/env';
 
+let networkName = Network.ETH_GOERLI;
+
+if (CURRENT_CHAIN_ID === MAIN_CHAIN_ID) {
+    networkName = Network.ETH_MAINNET;
+}
+
 const settings = {
     apiKey: ALCHEMY_API_KEY,
-    network: Network.ETH_GOERLI
+    network: networkName
 };
 
 const alchemy = new Alchemy(settings);
