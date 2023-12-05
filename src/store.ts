@@ -24,10 +24,17 @@ import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import ContractConfig from 'src/contract';
 import { CURRENT_CHAIN_ID } from 'src/env';
+import { MAIN_CHAIN_ID } from './chain-id';
+
+let network = Network.ETH_GOERLI;
+
+if (CURRENT_CHAIN_ID === MAIN_CHAIN_ID) {
+    network = Network.ETH_MAINNET;
+}
 
 const settings = {
     apiKey: ALCHEMY_API_KEY,
-    network: Network.ETH_GOERLI
+    network
 };
 
 const alchemy = new Alchemy(settings);
@@ -526,6 +533,7 @@ export default class Store {
                 this.isLoadingSupportAsset = false;
             });
         } catch (e) {
+            debugger
             // @ts-ignore
             console.log('querySupportCollateral failed: ', e.message);
         }
