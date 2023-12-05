@@ -1407,12 +1407,25 @@ export default class Store {
             TroveManagerRedemption.getEntireSystemDebt(),
             TroveManager.calcDecayedBaseRate()
         ]);
-        const squareTerm = toBN(this.dec(1005, 15)).add(decayedBaseRate); // BR + .5%
-        const sqrtTerm = squareTerm.mul(squareTerm); //.div(this.toBN(this.dec(1,18))) // Square term squared, over the precision
-        const sqrtTerm2 = ((toBN(this.dec(2, 0))).mul(USDEAmount)).mul(toBN(this.dec(1, 36))).div(totalEUSDSupply);
-        const finalSqrtTerm = this.sqrt((sqrtTerm.add(sqrtTerm2)).mul(toBN(this.dec(1, 18)))); //.div(this.toBN(this.dec(1,9)))
 
-        const finalEUSDAmount = totalEUSDSupply.mul(finalSqrtTerm.sub(squareTerm.mul(toBN(this.dec(1, 9))))).div(toBN(this.dec(1, 27)));
+        const s1 = this.dec(1005, 15);
+
+        const s2 = this.dec(2, 0);
+
+        const s3 = this.dec(1, 36);
+
+        const s4 = this.dec(1, 18);
+
+        const s5 = this.dec(1, 9);
+
+        const s6 = this.dec(1, 27);
+
+        const squareTerm = toBN(s1).add(decayedBaseRate[0]); // BR + .5%
+        const sqrtTerm = squareTerm.mul(squareTerm); //.div(this.toBN(this.dec(1,18))) // Square term squared, over the precision
+        const sqrtTerm2 = ((toBN(s2)).mul(USDEAmount)).mul(toBN(s3)).div(totalEUSDSupply);
+        const finalSqrtTerm = this.sqrt((sqrtTerm.add(sqrtTerm2)).mul(toBN(s4))); //.div(this.toBN(this.dec(1,9)))
+
+        const finalEUSDAmount = totalEUSDSupply.mul(finalSqrtTerm.sub(squareTerm.mul(toBN(s5)))).div(toBN(s6));
         return finalEUSDAmount;
     }
 
@@ -1431,12 +1444,7 @@ export default class Store {
             console.log('redeemAmountBN: ', redeemAmountBN.toString());
 
             let finalEUSDAmount = toBN(0);
-            try {
-                finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
-            } catch (e) {
-                // @ts-ignore
-                console.log('estimateEligible: ', e.message);
-            }
+            finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
 
             console.log('finalEUSDAmount: ', finalEUSDAmount, finalEUSDAmount.toString());
             if (finalEUSDAmount.lte(toBN(0))) {
