@@ -1364,6 +1364,10 @@ export default class Store {
             let finalEUSDAmount = toBN(0);
             finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
 
+            if (finalEUSDAmount.eq(toBN(0))) {
+                return { status: false, hash: '', msg: 'Can not redeem now' };
+            }
+
             const redemptionHint = await HintHelpers.getRedemptionHints(finalEUSDAmount, ethPrice, 0);
 
             const firstRedemptionHint = redemptionHint[0];
@@ -1489,11 +1493,22 @@ export default class Store {
                 if (!approved) return { status: false, hash: '', msg: '' };
             }
 
+            const gasLimit = await StabilityPool
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .provideToSP(
+                    amountBN,
+                    EMPTY_ADDRESS
+                );
+
+            const moreGasLimit = +gasLimit * 1.5;
+
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
                 .provideToSP(
                     amountBN,
-                    EMPTY_ADDRESS
+                    EMPTY_ADDRESS,
+                    { gasLimit: toBN(~~moreGasLimit) }
                 );
             const result = await this.waitForTransactionConfirmed(hash);
 
