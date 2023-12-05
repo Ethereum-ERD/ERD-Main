@@ -1364,7 +1364,7 @@ export default class Store {
             let finalEUSDAmount = toBN(0);
             finalEUSDAmount = await this.estimateEligible(redeemAmountBN);
 
-            console.log('finalEUSDAmount: ', finalEUSDAmount);
+            console.log('finalEUSDAmount: ', finalEUSDAmount, finalEUSDAmount.toNumber());
 
             if (finalEUSDAmount.lte(toBN(0))) {
                 return { status: false, hash: '', msg: 'Can not redeem now' };
