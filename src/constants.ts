@@ -96,3 +96,7 @@ export const MAINNET_ETHER_SCAN_URL_PREFIX = 'https://etherscan.io';
 export const GOERLI_ETHER_SCAN_URL_PREFIX  = 'https://goerli.etherscan.io';
 
 export const LAUNCH_TIME = getLaunchTime();
+
+export const SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
+
+export const RAY = 1e27;

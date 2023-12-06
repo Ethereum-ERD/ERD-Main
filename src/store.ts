@@ -9,7 +9,8 @@ import {
     EMPTY_ADDRESS, RANDOM_SEED, WETH_ADDR, BN_ZERO,
     MOCK_ETH_ADDR, BN_ETHER, MAX_FEE,
     MAX_ITERATIONS, ALCHEMY_API_KEY,
-    TOKEN_IMG_URL, ROW_PER_PAGE
+    TOKEN_IMG_URL, ROW_PER_PAGE,
+    SECONDS_PER_YEAR, RAY
 } from 'src/constants';
 
 import {
@@ -449,7 +450,10 @@ export default class Store {
             ]);
     
             this.querySystemTCR(true);
-    
+
+            const borrowAPR = troveData.currentBorrowRate / RAY;
+            const borrowAPY = ((1 + (borrowAPR / SECONDS_PER_YEAR)) ** SECONDS_PER_YEAR) - 1;
+
             runInAction(() => {
                 this.minBorrowAmount = +minDebt;
                 this.systemCCR = systemCCR / 1e18;
@@ -460,7 +464,7 @@ export default class Store {
                 this.redeemFeeFloor = redeemFeeFloor / 1e18;
                 this.stableCoinTotalSupply = +stableCoinTotalSupply;
                 this.spOwnStableCoinAmount = +spOwnStableCoinAmount;
-                this.interestRatio = troveData.currentBorrowRate / 1e27;
+                this.interestRatio = borrowAPY;
             });
         } catch (e) {
             // @ts-ignore
