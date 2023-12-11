@@ -8,14 +8,15 @@ import { TOKEN_IMG_URL, USDE_ADDR, EMPTY_ADDRESS } from 'src/constants';
 import CircleHelp from "src/components/common/CircleHelp";
 import { useStore } from "src/hooks";
 
-import USDE from 'src/asset/usde.svg';
-
 import s from "./Dashboard.module.scss";
+
+const USDE = 'https://erd-fe-storage.s3.amazonaws.com/etherscan/USDE.png';
 
 export default observer(function Dashboard() {
     const { store } = useStore();
 
     const {
+        interestRatio,
         troveAmount,
         systemTCR,
         isNormalMode,
@@ -132,15 +133,27 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {protocolValInETH} <span>ETH</span>
-                                <span>
-                                    ($ {valueInUSD}
-                                    {"\u00A0"}
-                                    {valueInUSDUint})
-                                </span>
-                            </p>
+                            <div className={s.indexValue}>
+                                <p>
+                                    {protocolValInETH} <span>ETH</span>
+                                    <span>
+                                        ($ {valueInUSD}
+                                        {"\u00A0"}
+                                        {valueInUSDUint})
+                                    </span>
+                                </p>
+                            </div>
                         </div>
+                        <div className={s.indexItem}>
+                            <div className={s.indexName}>
+                                Borrow APY
+                            </div>
+                            <div className={s.indexValue}>
+                                <p>{truncateDecimal(interestRatio * 100, 2)}<span>%</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={s.index}>
                         <div className={s.indexItem}>
                             <div className={s.indexName}>
                                 Minting Fee
@@ -163,13 +176,10 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {truncateDecimal(mintingFeeRatio * 100, 2)}
-                                <span>%</span>
-                            </p>
+                            <div className={s.indexValue}>
+                                <p>{truncateDecimal(mintingFeeRatio * 100, 2)}<span>%</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={s.index}>
                         <div className={s.indexItem}>
                             <div className={s.indexName}>
                                 Troves
@@ -188,10 +198,12 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {troveAmount >= 0 ? troveAmount : 0}
-                            </p>
+                            <div className={s.indexValue}>
+                                <p>{troveAmount >= 0 ? troveAmount : 0}</p>
+                            </div>
                         </div>
+                    </div>
+                    <div className={s.index}>
                         <div className={s.indexItem}>
                             <div className={s.indexName}>
                                 {stableCoinName} Supply
@@ -210,13 +222,10 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {totalSupply}
-                                <span>{totalSupplyUint}</span>
-                            </p>
+                            <div className={s.indexValue}>
+                                <p>{totalSupply}<span>{totalSupplyUint}</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={s.index}>
                         <div className={s.indexItem}>
                             <div className={s.indexName}>
                                 Stability Pool
@@ -236,14 +245,16 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {spOwn}
-                                {spOwnUint}
-                                <span>{stableCoinName}</span>
-                            </p>
+                            <div className={s.indexValue}>
+                                <p>
+                                    {spOwn}{spOwnUint}<span>{stableCoinName}</span>
+                                </p>
+                            </div>
                         </div>
-                        <div className={s.indexItem}>
-                            <div className={s.indexName}>
+                    </div>
+                    <div className={s.index}>
+                    <div className={s.indexItem}>
+                        <div className={s.indexName}>
                                 TCR
                                 <Popover
                                     arrow={false}
@@ -265,13 +276,11 @@ export default observer(function Dashboard() {
                                     </div>
                                 </Popover>
                             </div>
-                            <p className={s.indexValue}>
-                                {(systemTCR * 100).toFixed(0)}
+                            <div className={s.indexValue}>
+                                <p>{(systemTCR * 100).toFixed(0)}</p>
                                 <span>%</span>
-                            </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={s.index}>
                         <div className={s.indexItem}>
                             <div className={s.indexName}>
                                 Recovery Mode
