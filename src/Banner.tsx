@@ -32,14 +32,13 @@ const trigger: any = ["click"];
 function Banner() {
     const {
         store: {
-            isLaunch,
+            userTrove,
+            walletAddr,
             userTotalPoints,
             displayWallet,
-            walletAddr,
             connectWallet,
             currentRoutePath,
             disConnectWallet,
-            userTrove,
             stableCoinDecimals,
             toggleShowMobileAvatarMenu,
         },
@@ -62,7 +61,7 @@ function Banner() {
                         onCopy={() => message.success("Copied")}
                     >
                         <div
-                            className={cx(s.item, 'popMenuItem')}
+                            className={cx(s.item, "popMenuItem")}
                             onClick={(e: any) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -78,9 +77,13 @@ function Banner() {
             {
                 key: "View-on-explore",
                 label: (
-                    <div className={cx(s.item, 'popMenuItem')}>
+                    <div className={cx(s.item, "popMenuItem")}>
                         <img src={View} alt="view on explore" />
-                        <div onClick={() => OpenEtherScan(`/address/${walletAddr}`)}>
+                        <div
+                            onClick={() =>
+                                OpenEtherScan(`/address/${walletAddr}`)
+                            }
+                        >
                             View on Explorer
                         </div>
                     </div>
@@ -89,7 +92,10 @@ function Banner() {
             {
                 key: "Disconnect",
                 label: (
-                    <div onClick={disConnectWallet} className={cx(s.item, 'popMenuItem')}>
+                    <div
+                        onClick={disConnectWallet}
+                        className={cx(s.item, "popMenuItem")}
+                    >
                         <img src={Exit} alt="disconnect" />
                         Disconnect
                     </div>
@@ -102,105 +108,104 @@ function Banner() {
         <div className={s.wrap}>
             <div className={s.container}>
                 <div className={s.leftWrap}>
-                    <div className={s.brandWrap} onClick={() => handleGo('/')}>
+                    <div className={s.brandWrap} onClick={() => handleGo("/")}>
                         <img src={Logo} alt="" />
                     </div>
-                    {isLaunch && (
-                        <div className={s.tabs}>
-                            {Routes.map((route) => {
-                                const isActive = currentRoutePath === route.path;
-                                return (
-                                    <p
-                                        key={route.name}
-                                        onClick={() => handleGo(route.path)}
-                                        className={cx(s.tab, {
-                                            [s.active]: isActive,
-                                        })}
-                                    >
-                                        {route.name}
-                                    </p>
-                                );
-                            })}
+                    <div className={s.tabs}>
+                        {Routes.map((route) => {
+                            const isActive = currentRoutePath === route.path;
+                            return (
+                                <p
+                                    key={route.name}
+                                    onClick={() => handleGo(route.path)}
+                                    className={cx(s.tab, {
+                                        [s.active]: isActive,
+                                    })}
+                                >
+                                    {route.name}
+                                </p>
+                            );
+                        })}
+                    </div>
+                </div>
+                <div className={s.padTabsWrap}>
+                    {Routes.map((route) => {
+                        const isActive = currentRoutePath === route.path;
+                        return (
+                            <p
+                                key={route.name}
+                                onClick={() => handleGo(route.path)}
+                                className={cx(s.tab, {
+                                    [s.active]: isActive,
+                                })}
+                            >
+                                {route.name}
+                            </p>
+                        );
+                    })}
+                </div>
+                <div className={s.rightWrap}>
+                    <div className={s.accountInfo}>
+                        <div className={s.accountInfoItem}>
+                            <span>Total Points</span>
+                            <p>{formatNumber(userTotalPoints)}</p>
+                        </div>
+                        <div className={s.accountInfoItem}>
+                            <span>Total Debt</span>
+                            <p>
+                                {formatNumber(
+                                    (userTrove?.debt || 0) /
+                                        Math.pow(10, stableCoinDecimals)
+                                )}
+                            </p>
+                        </div>
+                    </div>
+                    {walletAddr && (
+                        <Dropdown
+                            arrow={false}
+                            menu={{ items: WalletItems }}
+                            trigger={trigger}
+                            placement="bottomRight"
+                            rootClassName={s.popMenuRoot}
+                        >
+                            <div className={s.walletAddr}>{displayWallet}</div>
+                        </Dropdown>
+                    )}
+                    {!walletAddr && (
+                        <div className={s.walletAddr} onClick={connectWallet}>
+                            {displayWallet}
                         </div>
                     )}
                 </div>
-                {isLaunch && (
-                    <>
-                        <div className={s.padTabsWrap}>
-                            {Routes.map((route) => {
-                                const isActive = currentRoutePath === route.path;
-                                return (
-                                    <p
-                                        key={route.name}
-                                        onClick={() => handleGo(route.path)}
-                                        className={cx(s.tab, {
-                                            [s.active]: isActive,
-                                        })}
-                                    >
-                                        {route.name}
-                                    </p>
-                                );
-                            })}
+                <div className={s.mobileIcons}>
+                    <Dropdown
+                        arrow={false}
+                        menu={{ items }}
+                        trigger={trigger}
+                        placement="bottomRight"
+                        rootClassName={s.popMenuRoot}
+                    >
+                        <div className={s.menuIcon}>
+                            <img src={MenuIcon} alt="" />
                         </div>
-                        <div className={s.rightWrap}>
-                            <div className={s.accountInfo}>
-                                <div className={s.accountInfoItem}>
-                                    <span>Total Points</span>
-                                    <p>{formatNumber(userTotalPoints)}</p>
-                                </div>
-                                <div className={s.accountInfoItem}>
-                                    <span>Total Debt</span>
-                                    <p>{formatNumber((userTrove?.debt || 0) / Math.pow(10, stableCoinDecimals))}</p>
-                                </div>
-                            </div>
-                            {walletAddr && (
-                                <Dropdown
-                                    arrow={false}
-                                    menu={{ items: WalletItems }}
-                                    trigger={trigger}
-                                    placement="bottomRight"
-                                    rootClassName={s.popMenuRoot}
-                                >
-                                    <div className={s.walletAddr}>{displayWallet}</div>
-                                </Dropdown>
-                            )}
-                            {!walletAddr && (
-                                <div className={s.walletAddr} onClick={connectWallet}>
-                                    {displayWallet}
-                                </div>
-                            )}
+                    </Dropdown>
+                    {walletAddr && (
+                        <div
+                            className={s.avatar}
+                            onClick={toggleShowMobileAvatarMenu}
+                        >
+                            <img src={generateAvatarURL(walletAddr)} alt="" />
                         </div>
-                        <div className={s.mobileIcons}>
-                            <Dropdown
-                                arrow={false}
-                                menu={{ items }}
-                                trigger={trigger}
-                                placement="bottomRight"
-                                rootClassName={s.popMenuRoot}
-                            >
-                                <div className={s.menuIcon}>
-                                    <img src={MenuIcon} alt="" />
-                                </div>
-                            </Dropdown>
-                            {walletAddr && (
-                                <div
-                                    className={s.avatar}
-                                    onClick={toggleShowMobileAvatarMenu}
-                                >
-                                    <img src={generateAvatarURL(walletAddr)} alt="" />
-                                </div>
-                            )}
-                            {!walletAddr && (
-                                <div className={s.avatar} onClick={connectWallet}>
-                                    <img
-                                        src={generateAvatarURL(EMPTY_ADDRESS)}
-                                        alt=""
-                                    />
-                                </div>
-                            )}
+                    )}
+                    {!walletAddr && (
+                        <div className={s.avatar} onClick={connectWallet}>
+                            <img
+                                src={generateAvatarURL(EMPTY_ADDRESS)}
+                                alt=""
+                            />
                         </div>
-                    </>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );

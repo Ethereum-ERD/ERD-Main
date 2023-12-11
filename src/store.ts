@@ -20,7 +20,7 @@ import {
     RankItem, TroveStatus
 } from 'src/types';
 
-import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject, timeToLaunch } from 'src/util';
+import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject, formatEthAddress } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
 import { SupportAssets } from 'src/AssetsHelp';
 import { MAIN_CHAIN_ID } from 'src/chain-id';
@@ -174,8 +174,6 @@ export default class Store {
 
     rankList: Array<RankItem> = [];
 
-    isLaunch = false;
-
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
 
@@ -217,7 +215,6 @@ export default class Store {
 
         reaction(() => this.walletAddr, this.getUserEnsName);
 
-        this.isLaunch = timeToLaunch().every(remain => remain === 0);
     }
 
     @computed get isMainNet() {
@@ -245,9 +242,8 @@ export default class Store {
     @computed get displayWallet() {
         const { walletAddr } = this;
         if (!walletAddr) return 'Connect App';
-        const len = walletAddr.length;
 
-        return walletAddr.slice(0, 3) + '....' + walletAddr.slice(len - 4);
+        return formatEthAddress(walletAddr);
     }
 
     @computed get isMetaMask() {
@@ -293,12 +289,6 @@ export default class Store {
         });
         this.initContract();
         this.querySystemTotalValueAndDebt();
-    }
-
-    setIsLaunch() {
-        runInAction(() => {
-            this.isLaunch = true;
-        });
     }
 
     async getWeeklyQuota() {
