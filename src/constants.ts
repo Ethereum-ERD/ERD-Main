@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 import { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR, CURRENT_CHAIN_ID } from 'src/env';
 
 import { MAIN_CHAIN_ID } from './chain-id';
-import { getLaunchTime } from 'src/util';
 
 export { WETH_ADDR, ST_ETH_ADDR, R_ETH_ADDR, CB_ETH_ADDR, USDE_ADDR };
 
@@ -81,7 +80,7 @@ export const TOKEN_IMG_URL = {
     [R_ETH_ADDR]: 'https://etherscan.io/token/images/rocketpooleth_32.png?v=2',
     [ST_ETH_ADDR]: 'https://etherscan.io/token/images/lido-steth_32.png',
     [CB_ETH_ADDR]: 'https://etherscan.io/token/images/cbeth_32.png',
-    [USDE_ADDR]: 'https://erd-fe-storage.s3.amazonaws.com/usde.svg',
+    [USDE_ADDR]: 'https://erd-fe-storage.s3.amazonaws.com/etherscan/USDE.png',
     [EMPTY_ADDRESS]: 'https://etherscan.io/images/svg/brands/ethereum-original.svg'
 };
 
@@ -94,8 +93,6 @@ export const DO_NOT_SHOW_AGAIN_KEY = 'DoNotShowAgain';
 export const MAINNET_ETHER_SCAN_URL_PREFIX = 'https://etherscan.io';
 
 export const GOERLI_ETHER_SCAN_URL_PREFIX  = 'https://goerli.etherscan.io';
-
-export const LAUNCH_TIME = getLaunchTime();
 
 export const SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
 
