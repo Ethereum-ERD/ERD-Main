@@ -41,7 +41,7 @@ export default observer(function UserTroveShow() {
                     </p>
                 </div>
                 <div className={s.item}>
-                    <p>APY</p>
+                    <p>Borrow APY</p>
                     <p>{(interestRatio * 100).toFixed(2)}%</p>
                 </div>
                 <div className={s.item}>

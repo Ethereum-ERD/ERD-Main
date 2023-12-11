@@ -14,10 +14,10 @@ export const getEmptyObject = () => Object.create(null);
 
 export const getContractErrorMsg = (code: string) => {
     if (!code) return 'Unknown error';
-    const errorCode = 
+    const errorCode =
         `${code}`
-        .replace(CONTRACT_ERROR_PREFIX, '')
-        .replace(/\s/g, '');
+            .replace(CONTRACT_ERROR_PREFIX, '')
+            .replace(/\s/g, '');
 
     return Errors[errorCode] || `Unknown error code ${code}`;
 };
@@ -147,35 +147,35 @@ export function translateUint(v: number) {
     return [`${v.toFixed(0)}`, ''];
 }
 
+export function generateEtherscanUrl(path: string) {
+    const urlPrefix = CURRENT_CHAIN_ID === MAIN_CHAIN_ID ? MAINNET_ETHER_SCAN_URL_PREFIX : GOERLI_ETHER_SCAN_URL_PREFIX; 
+    return `${urlPrefix}${path}`;
+}
+
+export function generateEtherscanAddressUrl(address: string) {
+    return generateEtherscanUrl(`/address/${address}`);
+}
+
+export function generateEtherscanTokenUrl(token: string) {
+    return generateEtherscanUrl(`/token/${token}`);
+}
+
+export function generateEtherscanTxUrl(hash: string) {
+    return generateEtherscanUrl(`/tx/${hash}`);
+}
+
 export function OpenEtherScan(path: string) {
     const urlPrefix = CURRENT_CHAIN_ID === MAIN_CHAIN_ID ? MAINNET_ETHER_SCAN_URL_PREFIX : GOERLI_ETHER_SCAN_URL_PREFIX;
     window.open(`${urlPrefix}${path}`, '_blank');
 }
 
-export function getLaunchTime() {
-    const LAUNCH_TIME_IN_UTC = process.env.REACT_APP_LAUNCH_TIME || '2023-12-06 12:00:00';
-
-    return dayjs.utc(LAUNCH_TIME_IN_UTC);
-}
-
-function formatMilliseconds(milliseconds: number) {
-    const seconds = Math.floor(milliseconds / 1000);
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-    
-    return [hours, minutes, remainingSeconds];
-}
-
-export function timeToLaunch() {
-    const now = dayjs();
-    const launchTime = getLaunchTime();
-
-    const countdownMilliseconds = launchTime.diff(now);
-
-    if (countdownMilliseconds <= 0) {
-        return [0, 0, 0];
+export function formatEthAddress(address: string) {
+    if (address.length !== 42) {
+        return address;
     }
 
-    return formatMilliseconds(countdownMilliseconds);
+    const start = address.substring(0, 4);
+    const end = address.substring(address.length - 4);
+
+    return `${start}...${end}`;
 }
