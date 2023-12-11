@@ -979,5 +979,5 @@ export default {
           "type": "function"
         }
       ],
-    addr: '0xF58f06a6A59a63a793d1bcC14490Fd77994AaaFa'
+    addr: '0xdf5Bb8eE730817fB4F5FB42DcE5f207BF56c190a'
 }

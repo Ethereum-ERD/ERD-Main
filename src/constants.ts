@@ -17,7 +17,7 @@ if (CURRENT_CHAIN_ID === MAIN_CHAIN_ID) {
 
 export const LEADER_BOARD_START_TIME = leaderBoardStartTime;
 
-export const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY || 'LWSwBcoKgtbYnEYGp6Rxl_aFwDyOlgJq';
+export const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY;
 
 export const MAINNET_RPC_URL = `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 
