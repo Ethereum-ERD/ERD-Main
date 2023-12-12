@@ -10,7 +10,9 @@ import {
     MOCK_ETH_ADDR, BN_ETHER, MAX_FEE,
     MAX_ITERATIONS, ALCHEMY_API_KEY,
     TOKEN_IMG_URL, ROW_PER_PAGE,
-    SECONDS_PER_YEAR, RAY
+    SECONDS_PER_YEAR, RAY,
+    OPEN_TROVE_GAS_LIMIT,
+    OPEN_TROVE_LABEL
 } from 'src/constants';
 
 import {
@@ -1031,9 +1033,19 @@ export default class Store {
 
             const tokenAddr = formatCollateral.map(c => c.token);
 
-            const approveAmountList: Array<ethers.BigNumber> = await Promise.all(
-                tokenAddr.map(t => this.getApproveAmount(t, BorrowerOperation.address))
-            );
+            console.time(OPEN_TROVE_LABEL);
+            const [
+                [lowerHint, upperHint],
+                ...approveAmountList
+            ] = await Promise.all([
+                this.getBorrowerOpsListHint(
+                    formatCollateral,
+                    debtAmount
+                ),
+                ...tokenAddr.map(t => this.getApproveAmount(t, BorrowerOperation.address)),
+            ]);
+
+            console.timeEnd(OPEN_TROVE_LABEL);
 
             const needNewApproveList = approveAmountList.reduce((list, item, idx) => {
                 const collateral = formatCollateral[idx];
@@ -1054,11 +1066,6 @@ export default class Store {
                 }
             }
 
-            const [lowerHint, upperHint] = await this.getBorrowerOpsListHint(
-                formatCollateral,
-                debtAmount
-            );
-
             const override = { value: BN_ZERO };
 
             const ethCollateralIdx = formatCollateral.findIndex(c => c.token === MOCK_ETH_ADDR);
@@ -1068,22 +1075,6 @@ export default class Store {
             }
 
             const pass2ContractCollateral = formatCollateral.filter((_, idx) => idx !== ethCollateralIdx);
-
-            const gasLimit = await BorrowerOperation
-                .connect(web3Provider.getSigner())
-                .estimateGas
-                ['openTrove(address[],uint256[],uint256,uint256,address,address,address)'](
-                    pass2ContractCollateral.map(c => c.token),
-                    pass2ContractCollateral.map(c => c.amount),
-                    maxFeePerAmount,
-                    debtAmount,
-                    upperHint,
-                    lowerHint,
-                    refer,
-                    override
-                );
-
-            const moreGasLimit = +gasLimit * 1.5;
 
             const { hash } = await BorrowerOperation
                 .connect(web3Provider.getSigner())
@@ -1095,7 +1086,7 @@ export default class Store {
                     upperHint,
                     lowerHint,
                     refer,
-                    { ...override, gasLimit: toBN(~~moreGasLimit) }
+                    { ...override, gasLimit: toBN(OPEN_TROVE_GAS_LIMIT) }
                 );
             const result = await this.waitForTransactionConfirmed(hash);
 

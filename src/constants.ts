@@ -96,4 +96,8 @@ export const GOERLI_ETHER_SCAN_URL_PREFIX  = 'https://goerli.etherscan.io';
 
 export const SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
 
+export const OPEN_TROVE_GAS_LIMIT = 2 * Math.pow(10, 6);
+
+export const OPEN_TROVE_LABEL = 'OPEN_TROVE';
+
 export const RAY = 1e27;
