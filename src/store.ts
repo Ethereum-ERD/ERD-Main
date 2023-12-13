@@ -1558,6 +1558,7 @@ export default class Store {
         try {
             const amountBN = toBN(amount);
 
+            console.time('s1');
             const approveAmount = await this.getApproveAmount(StableCoin.address, StabilityPool.address);
 
             if (approveAmount.lt(amountBN)) {
@@ -1570,12 +1571,17 @@ export default class Store {
                 if (!approved) return { status: false, hash: '', msg: '' };
             }
 
+            console.timeEnd('s1');
+
+            console.time('s2');
             const { hash } = await StabilityPool
                 .connect(web3Provider.getSigner())
                 .provideToSP(
                     amountBN,
                     EMPTY_ADDRESS
                 );
+            console.timeEnd('s2');
+
             const result = await this.waitForTransactionConfirmed(hash);
 
             if (result.status === 1) {
