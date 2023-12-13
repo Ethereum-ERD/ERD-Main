@@ -959,12 +959,15 @@ export default class Store {
         try {
             if (tokenAddr === MOCK_ETH_ADDR) return true;
             const { ERC20 } = this.contractMap;
+            console.time('check allowance');
             const allowance = await ERC20
                 .attach(tokenAddr)
                 .allowance(
                     this.walletAddr,
                     spender
                 );
+            console.timeEnd('check allowance');
+            
             if (allowance.lt(value)) {
                 const { hash } = await ERC20
                     .attach(tokenAddr)
