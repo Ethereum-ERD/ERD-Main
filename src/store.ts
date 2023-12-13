@@ -1551,15 +1551,19 @@ export default class Store {
         const { web3Provider, contractMap } = this;
         const { StabilityPool, StableCoin } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
+        console.time('networkCheck');
         const checkResult = await this.networkCheck();
+        console.timeEnd('networkCheck');
+
         if (!checkResult) {
             return { status: false, hash: '', msg: 'Bad network id' };
         }
         try {
             const amountBN = toBN(amount);
 
-            console.time('s1');
+            console.time('getApproveAmount');
             const approveAmount = await this.getApproveAmount(StableCoin.address, StabilityPool.address);
+            console.timeEnd('getApproveAmount');
 
             if (approveAmount.lt(amountBN)) {
                 const approved = await this.approve(
@@ -1570,8 +1574,6 @@ export default class Store {
     
                 if (!approved) return { status: false, hash: '', msg: '' };
             }
-
-            console.timeEnd('s1');
 
             console.time('s2');
             const { hash } = await StabilityPool
