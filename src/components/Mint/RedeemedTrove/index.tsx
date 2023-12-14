@@ -77,7 +77,7 @@ export default observer(function RedeemedTrove() {
             </div>
         </div>
         <div
-            className={cx(s.btn, { [s.disable]: supportAssets.length < 1 })}
+            className={cx(s.btn, s.disable, { [s.disable]: supportAssets.length < 1 })}
             onClick={handleClick}
         >
             {userHasCollToClaimAfterRedeem ? 'Claim' : 'Get Start'}
