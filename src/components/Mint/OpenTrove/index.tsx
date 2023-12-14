@@ -353,7 +353,7 @@ export default observer(function OpenTrove() {
                             toggleStartBorrow();
                         }}>Cancel</div>
                         <div
-                            className={cx(s.btn, {
+                            className={cx(s.btn, s.disable, {
                                 [s.disable]: borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount || collateralRatio < systemMCR,
                                 [s.loading]: isProcessing
                             })}

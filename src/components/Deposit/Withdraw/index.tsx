@@ -95,7 +95,7 @@ function Withdraw() {
             </div>
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartWithdraw}>Cancel</div>
-                <div className={cx(s.btn, {
+                <div className={cx(s.btn, s.disable, {
                         [s.disable]: +withdrawNum > +formatUnits(userDepositAmount, stableCoinDecimals) || +withdrawNum < 1,
                         [s.loading]: isProcessing
                     })}

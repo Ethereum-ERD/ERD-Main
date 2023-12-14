@@ -117,7 +117,7 @@ function Redeem() {
                         ({(redeemFeeRatio * 100).toFixed(2)}%)
                     </p>
                 </div>
-                <div className={cx(s.btn, {
+                <div className={cx(s.btn, s.disable, {
                             [s.disable]: +redeemNum === 0 || isProcessing,
                             [s.loading]: isProcessing
                         }

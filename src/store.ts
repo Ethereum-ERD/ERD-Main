@@ -241,7 +241,7 @@ export default class Store {
 
     @computed get displayWallet() {
         const { walletAddr } = this;
-        if (!walletAddr) return 'Connect App';
+        if (!walletAddr) return 'Connect';
 
         return formatEthAddress(walletAddr);
     }
@@ -953,33 +953,21 @@ export default class Store {
 
     async approve(
         tokenAddr: string,
-        spender: string,
-        value: ethers.BigNumber
+        spender: string
     ) {
         try {
             if (tokenAddr === MOCK_ETH_ADDR) return true;
             const { ERC20 } = this.contractMap;
-            console.time('check allowance');
-            const allowance = await ERC20
+
+            const { hash } = await ERC20
                 .attach(tokenAddr)
-                .allowance(
-                    this.walletAddr,
-                    spender
+                .connect(this.web3Provider.getSigner())
+                .approve(
+                    spender,
+                    ethers.constants.MaxUint256
                 );
-            console.timeEnd('check allowance');
-            
-            if (allowance.lt(value)) {
-                const { hash } = await ERC20
-                    .attach(tokenAddr)
-                    .connect(this.web3Provider.getSigner())
-                    .approve(
-                        spender,
-                        ethers.constants.MaxUint256
-                    );
-                const result = await this.web3Provider.waitForTransaction(hash);
-                return result.status === 1;
-            }
-            return true;
+            const result = await this.web3Provider.waitForTransaction(hash);
+            return result.status === 1;
         } catch {
             return false;
         }
@@ -1011,6 +999,7 @@ export default class Store {
         collateralRatio: number,
         maxFeePercentage = 1e18
     ) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const checkResult = await this.networkCheck();
         if (!checkResult) {
             return { status: false, hash: '', msg: 'Bad network id' };
@@ -1049,7 +1038,7 @@ export default class Store {
 
             if (needNewApproveList.length > 0) {
                 const approveList = await Promise.all(
-                    needNewApproveList.map((t) => this.approve(t, BorrowerOperation.address, ethers.constants.MaxUint256))
+                    needNewApproveList.map((t) => this.approve(t, BorrowerOperation.address))
                 );
 
                 if (!approveList.every(x => x)) {
@@ -1137,6 +1126,7 @@ export default class Store {
         newStableCoinAmount: number,
         maxFeePercentage = 1e18
     ) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const checkResult = await this.networkCheck();
         if (!checkResult) {
             return { status: false, hash: '', msg: 'Bad network id' };
@@ -1274,7 +1264,7 @@ export default class Store {
 
                 if (needNewApproveList.length > 0) {
                     const approveList = await Promise.all(
-                        needNewApproveList.map(c => this.approve(c, BorrowerOperation.address, ethers.constants.MaxUint256))
+                        needNewApproveList.map(c => this.approve(c, BorrowerOperation.address))
                     );
         
                     if (!approveList.every(x => x)) return { status: false, hash: '' };
@@ -1360,6 +1350,7 @@ export default class Store {
     }
 
     async closeTrove() {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { BorrowerOperation } = this.contractMap;
         if (!BorrowerOperation) return { status: false, hash: '', msg: '' };
         const checkResult = await this.networkCheck();
@@ -1427,6 +1418,7 @@ export default class Store {
     }
 
     async redeem(amount: number) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { web3Provider, contractMap, latestRandomSeed } = this;
         const { TroveManager, HintHelpers, PriceFeeds, SortTroves } = contractMap;
         if (!TroveManager || !HintHelpers || !PriceFeeds) return { status: false, hash: '', msg: '' };
@@ -1512,6 +1504,7 @@ export default class Store {
     }
 
     async liquidate(borrowerList: Array<string> | number) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { web3Provider, contractMap, isLiquidateIng } = this;
         const { TroveManager } = contractMap;
         if (!TroveManager || isLiquidateIng) return { status: false, hash: '', msg: '' };
@@ -1551,6 +1544,7 @@ export default class Store {
     }
 
     async depositToStabilityPool(amount: number) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { web3Provider, contractMap } = this;
         const { StabilityPool, StableCoin } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
@@ -1571,8 +1565,7 @@ export default class Store {
             if (approveAmount.lt(amountBN)) {
                 const approved = await this.approve(
                     StableCoin.address,
-                    StabilityPool.address,
-                    ethers.constants.MaxUint256
+                    StabilityPool.address
                 );
     
                 if (!approved) return { status: false, hash: '', msg: '' };
@@ -1604,6 +1597,7 @@ export default class Store {
     }
 
     async withdrawFromStabilityPool(amount: number) {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
@@ -1643,6 +1637,7 @@ export default class Store {
     }
 
     async claimDepositReward() {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { web3Provider, contractMap } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
@@ -1690,6 +1685,7 @@ export default class Store {
     }
 
     async claimRewardAndMoveToTrove() {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { contractMap, web3Provider } = this;
         const { StabilityPool } = contractMap;
         if (!StabilityPool) return { status: false, hash: '', msg: '' };
@@ -1731,6 +1727,7 @@ export default class Store {
     }
 
     async claimExistCollAfterHasBeenRedeemed() {
+        return { status: false, hash: '', msg: 'Frontend is paused' };
         const { contractMap, web3Provider } = this;
         const { BorrowerOperation } = contractMap;
         if (!BorrowerOperation) return { status: false, hash: '', msg: '' };

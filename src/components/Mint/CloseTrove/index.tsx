@@ -61,7 +61,7 @@ export default observer(function CloseTrove() {
             <div className={s.btnArea}>
                 <div className={cx(s.btn, s.cancel)} onClick={toggleStartRepay}>Cancel</div>
                 <div
-                    className={cx(s.btn, {
+                    className={cx(s.btn, s.disable, {
                         [s.disable]: userStableCoinBalance < userTrove.debt,
                         [s.loading]: isProcessing
                     })}
