@@ -63,7 +63,7 @@ function ClaimRewards({
                 </div>
                 <div className={s.modalFoot}>
                     <div
-                        className={cx(s.btn, s.leftBtn, s.disable, { [s.disable]: !userCanClaimDepositRewards })}
+                        className={cx(s.btn, s.leftBtn, { [s.disable]: !userCanClaimDepositRewards })}
                         onClick={(e) => onLeftBtnClick(e)}
                     >
                         Move to trove
@@ -78,7 +78,7 @@ function ClaimRewards({
                         </Popover>
                     </div>
                     <div
-                        className={cx(s.btn, s.disable, { [s.disable]: !userCanClaimDepositRewards })}
+                        className={cx(s.btn, { [s.disable]: !userCanClaimDepositRewards })}
                         onClick={(e) => onRightBtnClick(e)}
                     >
                         Claim
