@@ -346,7 +346,7 @@ export default observer(function AdjustTrove() {
                 {validColls.length > 0 && (
                     <>
                         <div className={cx(s.btn, s.cancel)} onClick={toggleStartAdjustTrove}>Cancel</div>
-                        <div className={cx(s.btn, s.disable, {
+                        <div className={cx(s.btn,  {
                             [s.disable]: collateralRatio < systemMCR || borrowNum * Math.pow(10, stableCoinDecimals) < minBorrowAmount,
                                 [s.loading]: isProcessing
                             })}
