@@ -15,6 +15,12 @@ if (CURRENT_CHAIN_ID === MAIN_CHAIN_ID) {
     leaderBoardStartTime = MAINNET_LEADER_BOARD_START_TIME;
 }
 
+export const ETH_USD_PAIR    = '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419';
+
+export const rETH_ETH_PAIR  = '0x536218f9E9Eb48863970252233c8F271f554C2d0';
+
+export const stETH_ETH_PAIR = '0x86392dC19c0b719886221c78AB11eb8Cf5c52812';
+
 export const LEADER_BOARD_START_TIME = leaderBoardStartTime;
 
 export const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY;
