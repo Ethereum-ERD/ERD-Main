@@ -10,7 +10,10 @@ import {
     MOCK_ETH_ADDR, BN_ETHER, MAX_FEE,
     MAX_ITERATIONS, ALCHEMY_API_KEY,
     TOKEN_IMG_URL, ROW_PER_PAGE,
-    SECONDS_PER_YEAR, RAY
+    SECONDS_PER_YEAR, RAY,
+    stETH_ETH_PAIR,
+    rETH_ETH_PAIR,
+    ETH_USD_PAIR
 } from 'src/constants';
 
 import {
@@ -22,10 +25,10 @@ import {
 
 import { formatUnits, toBN, getContractErrorMsg, addCommas, getEmptyObject, formatEthAddress } from 'src/util';
 import { createBoard, getSaveWallet, clearWallet } from 'src/wallet';
+import { CURRENT_CHAIN_ID, ST_ETH_ADDR, R_ETH_ADDR } from 'src/env';
 import { SupportAssets } from 'src/AssetsHelp';
 import { MAIN_CHAIN_ID } from 'src/chain-id';
 import ContractConfig from 'src/contract';
-import { CURRENT_CHAIN_ID } from 'src/env';
 
 let networkName = Network.ETH_GOERLI;
 
@@ -533,40 +536,64 @@ export default class Store {
     }
 
     async queryCollateralValue(assetList: Array<SupportAssetsItem>) {
-        const { CollateralManager, PriceFeeds } = this.contractMap;
-        if (!CollateralManager || !PriceFeeds) return;
+        const { Chainlink } = this.contractMap;
+        if (!Chainlink) return;
 
         if (assetList.length < 1) return;
 
         try {
-            const tokenAddr = assetList
+            const oracles = assetList
                 .map(asset => asset.tokenAddr)
-                .filter(addr => addr !== MOCK_ETH_ADDR);
-    
-            const collateralInfo = await Promise.all(
-                tokenAddr.map(t => CollateralManager.getCollateralParams(t === MOCK_ETH_ADDR ? WETH_ADDR : t))
-            );
-    
-            const oracles = collateralInfo.map(c => c.oracle);
-    
-            const ethPrice = await PriceFeeds.fetchPrice_view();
-            const ethPriceInNormal = +ethPrice / 1e18;
-    
-            const prices = await Promise.all(
-                oracles.map(o => {
-                    if (o === EMPTY_ADDRESS) {
-                        return 0;
+                .map(addr => {
+                    if (addr === MOCK_ETH_ADDR) {
+                        return Chainlink.attach(ETH_USD_PAIR);
                     }
-                    return PriceFeeds.attach(o).fetchPrice_view()
-                })
-            );
-    
+                    if (addr === ST_ETH_ADDR) {
+                        return Chainlink.attach(stETH_ETH_PAIR);
+                    }
+                    // @TODO: for other asset
+                    // if (addr === R_ETH_ADDR) {
+                    //     return Chainlink.attach(R_ETH_ETH_PAIR);
+                    // }
+                    return Chainlink.attach(rETH_ETH_PAIR);
+                });
+
+            const pricesResult = await Promise.all([
+                ...oracles.map(o => o.latestRoundData()),
+                ...oracles.map(o => o.decimals())
+            ]);
+
+            const { prices, decimals } = pricesResult.reduce((map, item, idx) => {
+                if (idx < oracles.length) {
+                    map.prices.push(+item.answer);
+                } else {
+                    map.decimals.push(item);
+                }
+
+                return map;
+            }, { prices: [], decimals: [] });
+            
+            const ethPriceIdx = assetList.findIndex((asset) => asset.tokenAddr === MOCK_ETH_ADDR);
+
+            const ethPrice = prices[ethPriceIdx] / Math.pow(10, decimals[ethPriceIdx]);
+
+            // @ts-ignore
+            const priceMap = prices.reduce((map, item, idx) => {
+                const decimal = decimals[idx];
+                const assetAddr = assetList[idx].tokenAddr;
+                let price;
+                if (assetAddr === MOCK_ETH_ADDR) {
+                    price = ethPrice;
+                } else {
+                    price = ethPrice * item / Math.pow(10, decimal);
+                }
+                map[assetAddr] = price;
+
+                return map;
+            }, {});
+
             runInAction(() => {
-                this.collateralValueInfo = tokenAddr.reduce((v, t, i) => {
-                    v[t] = +prices[i] / 1e18 * ethPriceInNormal;
-    
-                    return v;
-                }, { [MOCK_ETH_ADDR]: ethPriceInNormal } as { [key: string]: number });
+                this.collateralValueInfo = priceMap;
             });
         } catch (e) {
             // @ts-ignore
