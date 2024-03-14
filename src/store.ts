@@ -2047,4 +2047,40 @@ export default class Store {
             return addr;
         }
     }
+
+    async handleRefund() {
+        const { web3Provider, contractMap } = this;
+        const { BorrowerOperation } = contractMap;
+        if (!BorrowerOperation) return { status: false, hash: '', msg: '' };
+
+        const checkResult = await this.networkCheck();
+        if (!checkResult) {
+            return { status: false, hash: '', msg: 'Bad network id' };
+        }
+
+        try {
+            const gasLimit = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .estimateGas
+                .refund();
+
+            const moreGasLimit = +gasLimit * 1.5;
+
+            const { hash } = await BorrowerOperation
+                .connect(web3Provider.getSigner())
+                .refund({ gasLimit: toBN(~~moreGasLimit) });
+
+            const result = await this.waitForTransactionConfirmed(hash);
+
+            if (result.status === 1) {
+                this.getUserTroveInfo(true);
+            }
+
+            return { status: result.status === 1, hash, msg: '' };
+        } catch (e) {
+            // @ts-ignore
+            const msg = getContractErrorMsg(e?.reason || e?.message);
+            return { status: false, hash: '', msg };
+        }
+    }
 }

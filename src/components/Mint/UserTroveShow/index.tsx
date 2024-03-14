@@ -1,17 +1,18 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import cx from 'classnames';
-import { Popover } from 'antd';
+import { Popover, notification } from 'antd';
 
 import MintTitle from 'src/components/common/MintTitle';
-import { addCommas, formatUnits } from 'src/util';
+import { addCommas, formatUnits, OpenEtherScan } from 'src/util';
 import { useStore } from 'src/hooks';
 
 import s from './index.module.scss';
 
 export default observer(function UserTroveShow() {
+    const [isProcessing, setIsProcessing] = useState(false);
     const { store } = useStore();
-    const { interestRatio, userPoolShare, userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, gasCompensation, systemCCR, systemMCR, collateralValueInfo } = store;
+    const { handleRefund, interestRatio, userPoolShare, userTrove, stableCoinDecimals, stableCoinName, toggleStartRepay, toggleStartAdjustTrove, gasCompensation, systemCCR, systemMCR, collateralValueInfo } = store;
 
     const { collateral = [], debt = 0, ICR = 0 } = userTrove || {};
 
@@ -27,6 +28,24 @@ export default observer(function UserTroveShow() {
         }
         return classes;
     }, [ICR, systemCCR, systemMCR]);
+
+    const refund = async () => {
+        if (isProcessing) return;
+        setIsProcessing(true);
+        const result = await handleRefund();
+
+        if (result.status) {
+            notification.success({
+                message: 'Transaction complete',
+                onClick: () => OpenEtherScan(`/tx/${result.hash}`)
+            });
+        } else {
+            notification.error({
+                message: result.msg || 'Transaction failed'
+            });
+        }
+        setIsProcessing(false);
+    };
 
     return (
         <div className={s.wrap}>
@@ -120,8 +139,7 @@ export default observer(function UserTroveShow() {
                 })}
             </div>
             <div className={s.btnArea}>
-                <div className={cx(s.btn, s.repay)} onClick={toggleStartRepay}>Close</div>
-                <div className={s.btn} onClick={toggleStartAdjustTrove}>Adjust</div>
+                <div className={s.btn} onClick={refund}>Refund</div>
             </div>
         </div>
     );
